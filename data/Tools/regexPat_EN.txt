@@ -1,0 +1,11 @@
+[Rr]ead\s*full\s*article\s*
+<a href=\"http://www.guardian.co.uk\">guardian.co.uk</a>\s*.*\s*2012 Guardian News and Media Limited or its affiliated companies. All rights reserved.\s*
+Use of this content is subject to our <a href=\"http://users.guardian.co.uk/help/article/0,,933909,00.html\">Terms\s*.*\s*Conditions</a>\s*
+<a href=\"http://www.guardian.co.uk/help/feeds\">More Feeds</a>
+\s*[Rr]ead\s*more\s*of\s*this\s*story\s*at\s*[Ss]lashdot\s*
+RSS\s*and\s*RSS\s*[Ff]eed\s*via\s*[Ff]eedzilla\s*
+RSS\s*[Ff]eeds\s*and\s*[Ww]idgets\s*via\s*[Ff]eedzilla\s*
+[Ss]hare\s*[Ww]ith\s*[Ff]riends[:]*\s*\|\s*\|*\s*IT\s*[-]*\s*[Oo]pen\s*[Ss]ource\s*(News|Stories)\s*
+[Nn]ews\s*[Ff]eeds\s*and\s*[Nn]ews\s*via\s*[Ff]eedzilla\s*
+\A\w+\s*\w*,*\s*\w*\s*\([Rr]euters\)\s*-*\s*
+[Ii]\s*\w+\s*to\s*[Ss]upport\s*([Ss][Cc][Ii][Ff][Yy]|\w*\s*\w*\s*\w*)!\s*\Z

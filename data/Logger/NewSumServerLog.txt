@@ -1,0 +1,48 @@
+Jun 19, 2013 9:27:19 PM org.scify.NewSumServer.Server.Sources.RSSSources <init>
+INFO: NOW Reading Sources From ./data/Sources/v1.0.RSSSourcesEN.txt
+Jun 19, 2013 9:27:19 PM org.scify.NewSumServer.Server.Comms.Communicator readConfigFile
+INFO: Looking for settings file: /home/gkioumis/Programming/Java/NewSumProject/NewSumServer/./data/BaseDir/ServerConfig.txt
+Jun 19, 2013 9:27:19 PM org.scify.NewSumServer.Server.Comms.Communicator readConfigFile
+INFO: Settings loaded.
+Jun 19, 2013 9:27:19 PM org.scify.NewSumServer.Server.Sources.RssParser <init>
+INFO: Processing pattern EN
+Jun 19, 2013 9:27:26 PM org.scify.NewSumServer.Server.Sources.RssParser getAllNewsByCategory
+INFO: Processing category Top News
+Jun 19, 2013 9:27:34 PM org.scify.NewSumServer.Server.Sources.RssParser postProcessArticles
+INFO: Removed 6 Articles
+Jun 19, 2013 9:27:37 PM org.scify.NewSumServer.Server.Sources.RssParser postProcessArticles
+INFO: Removed 4 Articles
+Jun 19, 2013 9:27:37 PM org.scify.NewSumServer.Server.Utils.Utilities checkForPossibleSpam
+INFO: No SPAM occurencies
+Jun 19, 2013 9:27:37 PM org.scify.NewSumServer.Server.Sources.RssParser saveAllArticles
+INFO: 
+Filtered a total of 20 matches
+Added new Date to 0 articles
+Acquired date from previous run to 0 articles
+Removed 10 Articles older than 5 days
+Jun 19, 2013 9:27:37 PM org.scify.NewSumServer.Server.Sources.RssParser saveAllArticles
+INFO: Saving 174 Articles...
+Jun 19, 2013 9:27:37 PM org.scify.NewSumServer.Server.Summarisation.ArticleClusterer calculateClusters
+INFO: Clustering Version :1
+Jun 19, 2013 9:27:37 PM org.scify.NewSumServer.Server.Summarisation.ArticleClusterer getPairs
+INFO: Creating Pairs...
+Jun 19, 2013 9:27:39 PM org.scify.NewSumServer.Server.Summarisation.ArticleClusterer getPairs
+INFO: Created 15,037 Pairs in 2 seconds
+Jun 19, 2013 9:27:39 PM org.scify.NewSumServer.Server.Summarisation.ArticleClusterer calculateClusters
+INFO: Examining pairs...
+Jun 19, 2013 9:28:16 PM org.scify.NewSumServer.Server.Summarisation.ArticleClusterer calculateClusters
+INFO: Examining pairs DONE.
+Jun 19, 2013 9:28:16 PM org.scify.NewSumServer.Server.Summarisation.ArticleClusterer checkForInconsistencies
+INFO: Checked 174 items.
+Jun 19, 2013 9:28:16 PM org.scify.NewSumServer.Server.Summarisation.ArticleClusterer checkForInconsistencies
+INFO: Reversed Checked Mappings Done
+Jun 19, 2013 9:28:16 PM org.scify.NewSumServer.Server.Summarisation.ArticleClusterer calculateClusters
+INFO: Saving Clusters...
+Jun 19, 2013 9:28:16 PM org.scify.NewSumServer.Server.Summarisation.ArticleClusterer saveAllClusteredArticles
+INFO: Found 144 Identical Topics and switched to old IDs
+Jun 19, 2013 9:28:17 PM org.scify.NewSumServer.Server.Summarisation.ArticleClusterer calculateClusters
+INFO: Clusters saved succesfully
+Jun 19, 2013 9:28:19 PM org.scify.NewSumServer.Server.Summarisation.Summariser getSummaries
+INFO: Obtaining Summaries...
+Jun 19, 2013 9:28:21 PM org.scify.NewSumServer.Server.Summarisation.Summariser getSummaries
+INFO: Summaries obtained Succesfully

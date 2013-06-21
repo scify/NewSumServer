@@ -1,0 +1,52 @@
+?UNCLASSIFIED
+?http://www.aljazeera.com/Services/Rss/?PostingId=2007731105943979989***Al Jazeera
+??Al Jazeera feeds less that 40 words
+?http://feeds.latimes.com/latimes/news***Los Angeles Times
+?http://feeds.reuters.com/reuters/topNews***Reuters
+?http://rss.dw-world.de/rdf/rss-en-top***Deutsche Welle
+?http://rss.cnn.com/rss/edition.rss***CNN
+??Deutsche Welle feeds less than 40 words
+Europe
+http://feeds.bbci.co.uk/news/world/europe/rss.xml***BBC
+http://feeds.latimes.com/latimes/europe***Los Angeles Times
+http://www.spiegel.de/international/europe/index.rss***Spiegel
+http://www.nytimes.com/services/xml/rss/nyt/Europe.xml***New York Times
+http://rss.cnn.com/rss/edition_europe.rss***CNN
+http://feeds.feedburner.com/euronews/en/europa?format=xml***EURONEWS
+World
+http://feeds.reuters.com/Reuters/worldNews***Reuters
+http://feeds.latimes.com/latimes/news/nationworld/world***Los Angeles Times
+http://www.spiegel.de/international/world/index.rss***Spiegel
+http://www.nytimes.com/services/xml/rss/nyt/World.xml***New York Times
+http://rss.cnn.com/rss/edition_world.rss***CNN
+http://www.telegraph.co.uk/news/worldnews/rss***TELEGRAPH
+Science
+http://feeds.bbci.co.uk/news/science_and_environment/rss.xml***BBC
+?http://www.bbc.com/future/sections/science-environment/feed.rss***BBC Future
+http://feeds.reuters.com/reuters/scienceNews***Reuters
+http://feeds.latimes.com/latimes/news/science***Los Angeles Times
+http://www.nytimes.com/services/xml/rss/nyt/Science.xml***New York Times
+http://rss.cnn.com/rss/edition_space.rss***CNN
+http://feeds.feedburner.com/euronews/en/sci-tech?format=xml***EURONEWS
+Lifestyle
+http://feeds.reuters.com/reuters/lifestyle***Reuters
+http://rss.dw-world.de/rdf/rss-en-cul***Deutsche Welle
+Open Source
+http://www.zdnet.com/blog/open-source/rss.xml***ZDNet
+http://rss.slashdot.org/Slashdot/slashdot***SlashDot
+http://rss.computerworld.com/computerworld/s/feed/topic/88?format=xml***ComputerWorld
+http://feeds.feedburner.com/d0od?format=xml***OMG Ubuntu
+http://ectnews.com.feedsportal.com/c/34520/f/632001/index.rss***Linux Insider
+Business
+http://feeds.reuters.com/reuters/globalmarketsNews?format=xml***Reuters
+http://feeds.latimes.com/latimes/business?format=xml***Los Angeles Times
+http://www.spiegel.de/international/business/index.rss***Spiegel
+http://rss.dw.de/rdf/rss-en-bus***Deutsche Welle
+Technology
+http://www.bbc.com/future/feed.rss***BBC
+http://feeds.reuters.com/reuters/technologyNews?format=xml***Reuters
+http://rss.cnn.com/rss/cnn_tech.rss***CNN
+http://feeds.latimes.com/latimes/technology?format=xml***Los Angeles Times
+Education
+http://feeds.latimes.com/latimes/news/education?format=xml***Los Angeles Times
+http://rss.feedsportal.com/c/266/f/3526/index.rss***The Independent

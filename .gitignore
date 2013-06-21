@@ -1,0 +1,36 @@
+#ant specific
+dist/
+build/
+ 
+#netbeans specific
+core
+nbproject/*
+!nbproject/project.properties
+!nbproject/project.xml
+ 
+#java specific
+*.class
+ 
+#general swap/backup/script files
+*.so
+*.log
+*.out
+*~
+*.swp
+*.DS_Store
+*.lock
+*.sh
+
+#project specific
+data/Articles/*.txt
+data/Summaries/*.Summary
+data/MachineLearningData/*.cg
+data/txtSummaries/*
+data/temp
+data/BaseDir/*.Links
+data/BaseDir/*.generic
+data/BaseDir/*.nameList
+
+# libs
+lib/*.jar
+
