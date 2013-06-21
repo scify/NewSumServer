@@ -8,4 +8,5 @@ RSS\s*[Ff]eeds\s*and\s*[Ww]idgets\s*via\s*[Ff]eedzilla\s*
 [Ss]hare\s*[Ww]ith\s*[Ff]riends[:]*\s*\|\s*\|*\s*IT\s*[-]*\s*[Oo]pen\s*[Ss]ource\s*(News|Stories)\s*
 [Nn]ews\s*[Ff]eeds\s*and\s*[Nn]ews\s*via\s*[Ff]eedzilla\s*
 \A\w+\s*\w*,*\s*\w*\s*\([Rr]euters\)\s*-*\s*
-[Ii]\s*\w+\s*to\s*[Ss]upport\s*([Ss][Cc][Ii][Ff][Yy]|\w*\s*\w*\s*\w*)!\s*\Z
+(?i)i\s*\w+\s*to\s*support\s*(scify|\w*\s*\w*\s*\w*)!*\s*\Z
+(?i)\[More\]\s*\Z

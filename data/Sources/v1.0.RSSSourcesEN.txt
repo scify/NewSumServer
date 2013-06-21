@@ -26,18 +26,23 @@ http://feeds.bbci.co.uk/news/science_and_environment/rss.xml***BBC
 http://feeds.reuters.com/reuters/scienceNews***Reuters
 http://feeds.latimes.com/latimes/news/science***Los Angeles Times
 ?http://www.nytimes.com/services/xml/rss/nyt/Science.xml***New York Times
-http://rss.cnn.com/rss/edition_space.rss***CNN
+?http://rss.cnn.com/rss/edition_space.rss***CNN
 http://feeds.feedburner.com/euronews/en/sci-tech?format=xml***EuroNews
 http://www.the-scientist.com/?rss.feed/***The Scientist
+http://www.scienceworldreport.com/rss/articles/topnews/all.rss***Science World Report
+http://rss.sciam.com/ScientificAmerican-News***Scientific American
+http://feeds.sciencedaily.com/sciencedaily/top_news/top_science***Science Daily
 ?Lifestyle
 ?http://feeds.reuters.com/reuters/lifestyle***Reuters
 ?http://rss.dw-world.de/rdf/rss-en-cul***Deutsche Welle
 Open Source
 http://www.zdnet.com/blog/open-source/rss.xml***ZDNet
-http://rss.slashdot.org/Slashdot/slashdot***SlashDot
+http://feeds.feedburner.com/linuxtoday/linux?format=xml***Linux Today
 http://rss.computerworld.com/computerworld/s/feed/topic/88?format=xml***ComputerWorld
 http://feeds.feedburner.com/d0od?format=xml***OMG Ubuntu
 http://ectnews.com.feedsportal.com/c/34520/f/632001/index.rss***Linux Insider
+http://www.linux.com/feeds/all-content***Linux dot Com
+http://creativecommons.org/weblog/feed/rss***Creative Commons
 Business
 http://feeds.reuters.com/reuters/globalmarketsNews?format=xml***Reuters
 http://feeds.latimes.com/latimes/business?format=xml***Los Angeles Times

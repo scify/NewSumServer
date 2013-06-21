@@ -11,6 +11,8 @@ http://topontiki.gr/rss***ΤΟ ΠΟΝΤΙΚΙ
 ?AVGI RSS Currently non-existing
 http://www.enikos.gr/feeds/menu/specials.xml***ΕΝΙΚΟΣ
 http://xstefanou.infowarproductions.com/feed/***INFOWAR
+http://www.news.gr/rss.ashx?colid=2***NEWS GR
+http://www.newsit.gr/rss/artrss.php***NEWSIT
 ?http://www.palo.gr/rss/simantikoterarss/***PALO
 Αθλητισμός
 http://www.tovima.gr/feed/sports/***ΤΟ ΒΗΜΑ
@@ -33,6 +35,7 @@ http://www.parapolitika.gr/RSS/tabid/75/rssid/32/Default.aspx***ΠΑΡΑΠΟΛΙ
 http://www.onair24.gr/rss/channel/2***ONAIR24
 http://www.epikaira.gr/content/feed.php?category=87***ΕΠΙΚΑΙΡΑ
 http://www.ert.gr/eidiseis/diethni?format=feed***ΕΡΤ
+http://www.news.gr/rss.ashx?catid=10***NEWS GR
 Πολιτισμός
 http://rss.in.gr/feed/news/culture/***ΙΝ GR
 http://www.tovima.gr/feed/culture/***ΤΟ ΒΗΜΑ
@@ -54,6 +57,7 @@ http://www.epikaira.gr/content/feed.php?category=86***ΕΠΙΚΑΙΡΑ
 http://www.onair24.gr/rss/channel/1***ONAIR24
 ?http://www.palo.gr/category/rss/?cid=23***PALO
 http://www.ert.gr/eidiseis/greece?format=feed***ΕΡΤ
+http://www.news.gr/rss.ashx?catid=7***NEWS GR
 Επιστήμη
 http://rss.in.gr/feed/news/science/***ΙΝ GR
 http://www.tovima.gr/feed/science/***ΤΟ ΒΗΜΑ
@@ -72,6 +76,7 @@ http://www.protothema.gr/rss/news/economy***ΠΡΩΤΟ ΘΕΜΑ
 http://feeds.feedburner.com/skai/oPUt?format=xml***ΣΚΑΙ
 http://www.onair24.gr/rss/channel/5***ONAIR24
 http://www.ert.gr/eidiseis/oikonomia?format=feed***ΕΡΤ
+http://www.news.gr/rss.ashx?catid=9***NEWS GR
 Τεχνολογία
 http://www.protothema.gr/rss/news/technology***ΠΡΩΤΟ ΘΕΜΑ
 http://www.epikaira.gr/content/feed.php?category=631***ΕΠΙΚΑΙΡΑ
