@@ -3,9 +3,6 @@ NewSumServer
 [NewSum](http://www.scify.gr/site/en/our-projects/completed-projects/newsum-menu-en) is a cutting edge summarization application developed for getting summaries from various news sources.
 -
 NewSum requires java 6 and above.
--
-
-Please use it *accordingly*
 
 
 NewSum crawls given RSS feeds, creates Articles, creates clusters of Articles and generates summaries for these Clusters.
