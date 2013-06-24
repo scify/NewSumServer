@@ -37,6 +37,7 @@ import gr.demokritos.iit.jinsect.structs.GraphSimilarity;
 import gr.demokritos.iit.jinsect.structs.Pair;
 import gr.demokritos.iit.jinsect.utils;
 import java.io.*;
+import java.text.Collator;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
@@ -387,8 +388,98 @@ public class ArticleClusterer {
 //            System.out.println("**** Match (NVS=" + NVS + ", SS=" + gs.SizeSimilarity +
 //                    ") : \n" + aA + "\n---\n" + aB);
         //////////////
+        // check titles for word similarity
+        boolean test = isPossiblySameSentence(
+                aA.getTitle(), aB.getTitle());
+//        if (test) {
+            Utilities.appendToFile("/home/gkioumis/Programming/Java/NewSum/NewSumServer/data/temp/TestingTitles.csv",
+                bMatch + " : " + test + " === " + aA.getTitle() + " : " + aB.getTitle());
+//        }
+        //////////////
         return bMatch;
     }
+    private boolean isPossiblySameSentence(String s1, String s2) {
+        // split to words
+        String[] as1 = s1.split("[ :-;!?]+");
+        String[] as2 = s2.split("[ :-;!?]+");
+        // remove words smaller than 4 letters
+        ArrayList<String> ls1 = new ArrayList<String>();
+        for (String a : as1) {
+            if (a.length() > 3) {
+                ls1.add(a);
+            }
+        }
+        ArrayList<String> ls2 = new ArrayList<String>();
+        for (String b : as2) {
+            if (b.length() > 3) {
+                ls2.add(b);
+            }
+        }
+        int iEqual = 0;
+        float iAvLen = (float) (ls1.size() + ls2.size()) / 2 ;
+        // for each word, compare similarity of words
+        for (int i=0; i < ls1.size(); i++) {
+            for (String bWord : ls2) {
+                if (isPossiblyEqual(ls1.get(i), bWord)) {
+                    iEqual ++;
+                    break; // continue from another base word
+                }
+            }
+        }
+//        System.out.println(ls1.toString() + " : " + ls2.toString());
+        float fRes = (float) iEqual / iAvLen;
+//        System.out.println("WORDS EQUAL: " + iEqual);
+//        System.out.println("SENTENCES AV LEN: " + iAvLen);
+//        System.out.println("RESULT " + fRes);
+        // if some similarity
+        if (iEqual >= 3 && // if not iEqual, nothing found
+                ((float) iEqual / Math.min(ls1.size(), ls2.size()) >= 0.50 // if 3 out of 5 words from
+                                                            // a set are match with other 3 out of 7
+                        || fRes >= 0.50)) { // if num of equals to average length is more than half
+            return true;
+        }
+        return false;
+    }
+    private boolean isBothGreekLocale(String aWord, String bWord) {
+        return Utilities.isGreekWord(aWord) && Utilities.isGreekWord(bWord);
+    }
+    private boolean isPossiblyEqual(String aWord, String bWord) {
+        // set collator locale and strength
+        Collator col;
+        if (isBothGreekLocale(aWord, bWord)) {
+            col = Collator.getInstance(new Locale("el", "gr"));
+        } else {
+            col = Collator.getInstance(Locale.ENGLISH);
+        }
+        col.setStrength(Collator.PRIMARY);
+        // trim words
+        aWord = aWord.trim(); bWord = bWord.trim();
+        // if words equal return
+        if (aWord.equals(bWord)) {
+            return true;
+        }
+        // get the max number of characters
+        int iMax = Math.max(aWord.length(), bWord.length());
+        int iMin = Math.min(aWord.length(), bWord.length());
+        int iSame = 0;
+        // compare each character (string)
+        boolean bCon = true; // must be continuous match, else abort
+        for (int i = 0; i < iMin; i++) {
+            if (col.compare(aWord.substring(i, i+1), bWord.substring(i, i+1)) == 0) {
+                iSame ++;
+            } else {
+                bCon = false;
+            }
+            if (!bCon) {
+                break;
+            }
+        }
+        if ((iSame == iMin) || ((float) iSame / iMax) >= 0.65 ) {
+            return true;
+        }
+        return false;
+    }
+
 
     /**
      * Use to create Article Pairs
