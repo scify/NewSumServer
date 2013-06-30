@@ -125,7 +125,7 @@ public class RSSSources {
         if (ids.objectExists(ids.getLinksName(), sUserID)) {
             //load it
             this.hmRssSources = ids.readSources(sUserID);
-        } else { // give the fucker some default sources
+        } else { // give the guy some default sources
             initializeSources();
         }
         sCategories = getCurrentCategories();

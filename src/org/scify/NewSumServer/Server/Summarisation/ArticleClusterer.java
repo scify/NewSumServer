@@ -101,6 +101,9 @@ public class ArticleClusterer {
      */
     private Integer tChanged = 0;
 
+//    private List<Pair> lsArticlePairs = Collections.synchronizedList(new LinkedList());
+    private List<Pair> lsArticlePairs = new LinkedList();
+
     /**
      * Main Constructor of The ArticleClusterer Class.
      * After the variables are initialized, the Clusters are being calculated
@@ -389,14 +392,15 @@ public class ArticleClusterer {
 //                    ") : \n" + aA + "\n---\n" + aB);
         //////////////
         // check titles for word similarity
-        boolean test = isPossiblySameSentence(
+        boolean TitleMatch = isPossiblySameSentence(
                 aA.getTitle(), aB.getTitle());
+        // debug lines
 //        if (test) {
-            Utilities.appendToFile("/home/gkioumis/Programming/Java/NewSum/NewSumServer/data/temp/TestingTitles.csv",
-                bMatch + " : " + test + " === " + aA.getTitle() + " : " + aB.getTitle());
+//            Utilities.appendToFile("/home/gkioumis/Programming/Java/NewSum/NewSumServer/data/temp/TestingTitles.csv",
+//                bMatch + " : " + TitleMatch + " === " + aA.getTitle() + " : " + aB.getTitle());
 //        }
         //////////////
-        return bMatch;
+        return bMatch || TitleMatch;
     }
     private boolean isPossiblySameSentence(String s1, String s2) {
         // split to words
@@ -416,7 +420,6 @@ public class ArticleClusterer {
             }
         }
         int iEqual = 0;
-        float iAvLen = (float) (ls1.size() + ls2.size()) / 2 ;
         // for each word, compare similarity of words
         for (int i=0; i < ls1.size(); i++) {
             for (String bWord : ls2) {
@@ -426,23 +429,31 @@ public class ArticleClusterer {
                 }
             }
         }
-//        System.out.println(ls1.toString() + " : " + ls2.toString());
-        float fRes = (float) iEqual / iAvLen;
-//        System.out.println("WORDS EQUAL: " + iEqual);
-//        System.out.println("SENTENCES AV LEN: " + iAvLen);
-//        System.out.println("RESULT " + fRes);
-        // if some similarity
-        if (iEqual >= 3 && // if not iEqual, nothing found
-                ((float) iEqual / Math.min(ls1.size(), ls2.size()) >= 0.50 // if 3 out of 5 words from
-                                                            // a set are match with other 3 out of 7
-                        || fRes >= 0.50)) { // if num of equals to average length is more than half
-            return true;
-        }
-        return false;
+
+        // measure similarity > 0.50
+        //  = 2 * sum of words equal / (Len of Words 1 + Len of Words 2)
+        float fSim = (float) 2 * iEqual / (ls1.size() + ls2.size());
+
+        return fSim > 0.50;
+
     }
+    /**
+     *
+     * @param aWord the first word
+     * @param bWord the second word
+     * @return true whether both words are greek, i.e. they all
+     * consist of Greek characters
+     */
     private boolean isBothGreekLocale(String aWord, String bWord) {
         return Utilities.isGreekWord(aWord) && Utilities.isGreekWord(bWord);
     }
+    /**
+     *
+     * @param aWord The first word
+     * @param bWord The second word
+     * @return True when the two words are possibly similar,
+     * by counting letter equality
+     */
     private boolean isPossiblyEqual(String aWord, String bWord) {
         // set collator locale and strength
         Collator col;
@@ -486,11 +497,69 @@ public class ArticleClusterer {
      * @param lsArticleList the List of Articles to mess
      * @return A list of article Pairs
      */
-    private List<Pair> getPairs(List<Article> lsArticleList) {
-        LOGGER.log(Level.INFO, "Creating Pairs...");
+    private List<Pair> getPairs(final List<Article> lsArticleList) {
         // Create a list of Pairs
-        List lsArticlePairs = new LinkedList();
+//        List lsArticlePairs = new LinkedList();
+        LOGGER.log(Level.INFO, "Creating Pairs...");
         long time = System.currentTimeMillis();
+        // get available processors
+//        int iThreads = Runtime.getRuntime().availableProcessors();
+//        LOGGER.log(Level.INFO, "Creating Pairs on {0} threads...", iThreads);
+//        // Create executor service
+//        ExecutorService es = Executors.newFixedThreadPool(iThreads);
+//        // divide list into iThreads parts
+//        int iParts = lsArticleList.size() / iThreads;
+//        final List allLists = new ArrayList<List<Article>>();
+//        // create sublists
+//        for (int i = 0; i < lsArticleList.size(); i += iParts) {
+//            allLists.add(lsArticleList.subList(i, i + Math.min(iParts, lsArticleList.size() - i)));
+//        }
+//        // for every sublist
+//        for (final ListIterator<List<Article>> it = allLists.listIterator(); it.hasNext();) {
+//            // call new thread
+//            es.submit(new Runnable() {
+//
+//                @Override
+//                public void run() {
+//                    // get Sublist index
+//                    int iSubListCount = it.nextIndex();
+//                    // process every sublist
+//                    List tmpList = it.next();
+//                    for (ListIterator<Article> parent = tmpList.listIterator(); parent.hasNext();) {
+//                        // get current index, in order to process the other items sequentially
+//                        int iIndex = parent.nextIndex();
+//                        // get article
+//                        Article aFirst = parent.next();
+//                        // compare with all subsequent articles from same list
+//                        for (ListIterator<Article> same = tmpList.listIterator(iIndex+1); same.hasNext();) {
+//                            // get article
+//                            Article aSecond = same.next();
+//                            // add pair if not exist
+//                            addPair(aFirst, aSecond);
+//
+//                        }
+//                        // compare with all articles from other lists
+//                        for (ListIterator<List<Article>> OtherLists =
+//                                allLists.listIterator(iSubListCount+1); OtherLists.hasNext();) {
+//                            List otherList = OtherLists.next();
+//                            for (ListIterator<Article> child = otherList.listIterator(); child.hasNext();) {
+//                                // get article
+//                                Article aChild = child.next();
+//                                // add pair if not exist
+//                                addPair(aFirst, aChild);
+//                            }
+//                        }
+//                    }
+//                }
+//            });
+//        }
+//        es.shutdown();
+//        try {
+//            es.awaitTermination(1, TimeUnit.DAYS);
+//        } catch (InterruptedException ex) {
+//            LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
+//        }
+        // brutal
         for (int i=0; i < lsArticleList.size()-1; i++) {
             Article aFirst = lsArticleList.get(i); // first feed
             for (int j=i+1; j < lsArticleList.size(); j++) {
@@ -498,7 +567,7 @@ public class ArticleClusterer {
                 // create feed pair
                 if (aFirst.getCategory().equals(aSecond.getCategory()) &&
                         !aFirst.getSource().equals(aSecond.getSource())) {
-                    //DEBUUUUG
+
                     Pair<Article, Article> tmpPair = new Pair(aFirst, aSecond);
                     Pair<Article, Article> reverse = new Pair(aSecond, aFirst);
                     if (!lsArticlePairs.contains(tmpPair) &&
@@ -509,8 +578,30 @@ public class ArticleClusterer {
             }
         }
         time = System.currentTimeMillis() - time;
-        LOGGER.log(Level.INFO, "Created {0} Pairs in {1} seconds", new Object[] {lsArticlePairs.size(), time/1000});
+        LOGGER.log(Level.INFO, "Created {0} Pairs in {1} seconds",
+                new Object[] {lsArticlePairs.size(), time/1000});
         return lsArticlePairs;
+    }
+    /**
+     * for improved speed
+     * @param tmpPair the pair of articles to add
+     */
+    private void addPair(Article aFirst, Article aSecond) {
+        
+        if (aFirst.getCategory().equals(aSecond.getCategory())
+                && !aFirst.getSource().equals(aSecond.getSource())) {
+
+            Pair<Article, Article> tmpPair = new Pair(aFirst, aSecond);
+            Pair<Article, Article> reverse = new Pair(aSecond, aFirst);
+
+            synchronized (this) {
+
+                if (!lsArticlePairs.contains(tmpPair) &&
+                        !lsArticlePairs.contains(reverse)) {
+                    lsArticlePairs.add(0, tmpPair);
+                }
+            }
+        }
     }
     /**
      *

@@ -425,12 +425,12 @@ public class Communicator {
             public int compare(Topic o1, Topic o2) {
                 // get the date difference in days
                 int iDiff = Utilities.getDiffInDays(o2, o1);
-                // get the articles number difference
-                int iSourceDiff = o2.getArticlesCount() - o1.getArticlesCount();
                 // First compare their dates
                 if (iDiff != 0) {
                     return iDiff;
                 }
+                // get the articles number difference
+                int iSourceDiff = o2.getArticlesCount() - o1.getArticlesCount();
                 // else compare their Source Count
                 if (iSourceDiff != 0) {
                     return iSourceDiff;

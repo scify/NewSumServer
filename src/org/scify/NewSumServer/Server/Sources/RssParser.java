@@ -36,6 +36,7 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -43,6 +44,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -199,7 +203,7 @@ public class RssParser implements ISourceParser {
                             new Article(permalink, title.trim(),
                             description, sCategory, urlString, true);
                     //filter article text
-                    tmpArt = preProcessArticle(tmpArt, 9);
+                    tmpArt = preProcessArticle(tmpArt, 10);
                     // Add the Article found to the list, avoid possible duplicates
                     if (tmpArt != null) {
                         Utilities.addItemToList(lsItems, tmpArt);
@@ -235,10 +239,11 @@ public class RssParser implements ISourceParser {
         }
     }
     @Override
-    public List<Article> getAllArticles(HashMap<String, String> Sources) {
-        ArrayList<Article> AllArticles = new ArrayList<Article>();
+    public List<Article> getAllArticles(final HashMap<String, String> Sources) {
+        final List<Article> AllArticles = 
+                new ArrayList<Article>();
         Collection<String> sCategories = new HashSet<String>(Sources.values());
-        for (String each : sCategories) {
+        for (final String each : sCategories) {
             List<String> Links = new ArrayList<String>(
                     (HashSet<String>) Utilities.getKeysByValue(Sources, each));
             List<Article> lsAr = getAllNewsByCategory(Links, each);
@@ -341,7 +346,7 @@ public class RssParser implements ISourceParser {
         }
         ArrayList<Article> clear = new ArrayList<Article>(hsArts);
         int Initial = clear.size();
-        //filter Articles so that Text smaller than 10 words are ommited
+        // Specific filtering
         Iterator it = clear.iterator();
         if (PATTERN.equals(PATTERN_EN)) { //english articles
             while (it.hasNext()) {
@@ -355,6 +360,12 @@ public class RssParser implements ISourceParser {
                     if (each.getText().
                             matches("\\A[Aa]t the [Ll]e[Ww]eb\\s*\\d+\\s*conference in\\s*\\w+(.|\\\n)*")) {
                         it.remove(); //Euronews Leweb
+                    }
+                }
+                if (each.getFeed().contains("scientist")) {
+                    if (each.getTitle().matches("(?is)\\Aimage\\s*of\\s*[the ]*day.*")) {
+                        it.remove(); // remove articles 'Image of the Day from scientist'
+                        //FIXME maybe need to accept again when we have images
                     }
                 }
             }
@@ -492,7 +503,8 @@ public class RssParser implements ISourceParser {
         ArrayList<Article> oldArticles;
         try {
             // get the category-daystokeep map from file to memory
-            HashMap<String, Integer> hsCategoryDays = Utilities.readDaysPerCategoryFile(hsSwitches.get("sCatsDaysFile"));
+            HashMap<String, Integer> hsCategoryDays =
+                    Utilities.readDaysPerCategoryFile(hsSwitches.get("sCatsDaysFile"));
             // load articles from previous run
             oldArticles = (ArrayList<Article>) this.ids.loadObject("AllArticles", "feeds");
             // for each current article
