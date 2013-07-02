@@ -530,9 +530,9 @@ public class ArticleClusterer {
                         // get article
                         Article aFirst = curListIter.next();
                         // compare with all articles from main list
-                       for (ListIterator<Article> mailListIter = lsArticleList.listIterator(); mailListIter.hasNext();) {
+                       for (ListIterator<Article> mainListIter = lsArticleList.listIterator(); mainListIter.hasNext();) {
                             // get article
-                            Article aSecond = mailListIter.next();
+                            Article aSecond = mainListIter.next();
                             // compare category and source
                             if (aFirst.getCategory().equals(aSecond.getCategory())
                                     && !aFirst.getSource().equals(aSecond.getSource())) {                            
