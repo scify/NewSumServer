@@ -104,7 +104,7 @@ public class ArticleClusterer {
      * The list containing all the pairs of articles to be fed to the 
      * cluster calculation engine
      */
-    private List<Pair> lsArticlePairs = Collections.synchronizedList(new LinkedList());
+    private List<Pair> lsArticlePairs = Collections.synchronizedList(new ArrayList());
 
     /**
      * Main Constructor of The ArticleClusterer Class.
@@ -500,11 +500,9 @@ public class ArticleClusterer {
      * @return A list of article Pairs
      */
     private List<Pair> getPairs(final List<Article> lsArticleList) {
-        // Create a list of Pairs
-        long time = System.currentTimeMillis();
         // get available processors
         int iThreads = Runtime.getRuntime().availableProcessors();
-        LOGGER.log(Level.INFO, "Creating Pairs on {0} threads...", iThreads);
+        LOGGER.log(Level.INFO, "Creating Pairs...");
         // Create executor service
         ExecutorService es = Executors.newFixedThreadPool(iThreads);
         // divide list into iThreads parts
@@ -523,23 +521,31 @@ public class ArticleClusterer {
                 public void run() {
                     // create a set of Pairs
                     HashSet<Pair<Article, Article>> tmpPairs = new HashSet<Pair<Article, Article>>();
+                    // know index of list 
+                    int tmpIndex = it.nextIndex();
                     // process every sublist
-                    List tmpList = it.next();
+                    List<Article> tmpList = it.next();
+                    // create the list with the remaining items (if we are in sublist 2, then create list combined (2-3-4))
+                    List<Article> tmpRemained = new ArrayList<Article>();
+                    for (ListIterator<Article> remainedIter = allLists.listIterator(tmpIndex); remainedIter.hasNext();) {
+                        List<Article> nextList = (List<Article>) remainedIter.next();
+                        tmpRemained.addAll(nextList);
+                    }
                     // for every sublist's article
                     for (ListIterator<Article> curListIter = tmpList.listIterator(); curListIter.hasNext();) {
                         // get article
                         Article aFirst = curListIter.next();
-                        // compare with all articles from main list
-                       for (ListIterator<Article> mainListIter = lsArticleList.listIterator(); mainListIter.hasNext();) {
+                        // compare with all remaining articles from main list (main list - sublist)
+                        for (ListIterator<Article> others = tmpRemained.listIterator();others.hasNext();) {
                             // get article
-                            Article aSecond = mainListIter.next();
+                            Article aSecond = others.next();
                             // compare category and source
                             if (aFirst.getCategory().equals(aSecond.getCategory())
                                     && !aFirst.getSource().equals(aSecond.getSource())) {                            
                                 // create and add pair
-                                Pair<Article, Article> tmpPair = new Pair(aFirst, aSecond);
-                                if (!tmpPairs.contains(new Pair(aSecond, aFirst))) {
-                                    tmpPairs.add(tmpPair);
+                                Pair reverse = new Pair(aSecond, aFirst);
+                                if (!tmpPairs.contains(reverse)) {
+                                    tmpPairs.add(new Pair(aFirst, aSecond));
                                 }
                             }
                         }
@@ -560,9 +566,7 @@ public class ArticleClusterer {
             LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
         }
 
-        time = System.currentTimeMillis() - time;
-        LOGGER.log(Level.INFO, "Created {0} Pairs in {1} seconds",
-                new Object[] {lsArticlePairs.size(), time/1000});
+        LOGGER.log(Level.INFO, "Created {0} Article Pairs", lsArticlePairs.size());
         return lsArticlePairs;
     }
 

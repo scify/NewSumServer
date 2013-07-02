@@ -30,11 +30,13 @@ package org.scify.NewSumServer.Server.Utils;
 
 import gr.demokritos.iit.jinsect.storage.INSECTDB;
 import gr.demokritos.iit.jinsect.storage.INSECTFileDBWithDir;
+import gr.demokritos.iit.jinsect.structs.Pair;
 import gr.demokritos.iit.jinsect.utils;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
@@ -52,6 +54,9 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -65,6 +70,7 @@ import org.scify.NewSumServer.Server.Structures.Sentence;
 import org.scify.NewSumServer.Server.Structures.Topic;
 import org.scify.NewSumServer.Server.Summarisation.ArticleClusterer;
 import org.scify.NewSumServer.Server.Summarisation.Summariser;
+import static org.scify.NewSumServer.Server.Utils.Main.sBaseDir;
 import static org.scify.NewSumServer.Server.Utils.Utilities.isAlphabetic;
 import static org.scify.NewSumServer.Server.Utils.Utilities.isGreekLetter;
 import static org.scify.NewSumServer.Server.Utils.Utilities.writeStringListToFile;
@@ -85,6 +91,9 @@ public class Utilities {
     private static final String sDelimiter = "[*]{3}"; // regex pattern, for split
 
     private static final String sDelimiterSimple = "***"; // simple format, 'contains'
+    
+        private static List<Pair> lsArticlePairs = Collections.synchronizedList(new LinkedList());
+
 
     /**
      * Checks if a URL is Valid
@@ -916,7 +925,6 @@ public class Utilities {
 //        String sTop = cm.getTopicsByKeyword(ind, term, "All");
 //        System.out.println(sTop);
         /////////////////CHECK SEARCH END///////////////////////////////////
-
 
     }
 //    public class debugLogger {

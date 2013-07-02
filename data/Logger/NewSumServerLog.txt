@@ -1,64 +1,64 @@
-Jul 02, 2013 1:09:57 PM org.scify.NewSumServer.Server.Sources.RSSSources <init>
+Jul 02, 2013 5:25:16 PM org.scify.NewSumServer.Server.Sources.RSSSources <init>
 INFO: NOW Reading Sources From ./data/Sources/v1.0.RSSSourcesGR.txt
-Jul 02, 2013 1:09:57 PM org.scify.NewSumServer.Server.Comms.Communicator readConfigFile
+Jul 02, 2013 5:25:16 PM org.scify.NewSumServer.Server.Comms.Communicator readConfigFile
 INFO: Looking for settings file: /home/gkioumis/Programming/Java/NewSum/NewSumServer/./data/BaseDir/ServerConfig.txt
-Jul 02, 2013 1:09:57 PM org.scify.NewSumServer.Server.Comms.Communicator readConfigFile
+Jul 02, 2013 5:25:16 PM org.scify.NewSumServer.Server.Comms.Communicator readConfigFile
 INFO: Settings loaded.
-Jul 02, 2013 1:09:57 PM org.scify.NewSumServer.Server.Sources.RssParser <init>
+Jul 02, 2013 5:25:17 PM org.scify.NewSumServer.Server.Sources.RssParser <init>
 INFO: Processing pattern GR
-Jul 02, 2013 1:09:57 PM org.scify.NewSumServer.Server.Sources.RssParser getAllNewsByCategory
+Jul 02, 2013 5:25:17 PM org.scify.NewSumServer.Server.Sources.RssParser getAllNewsByCategory
 INFO: Processing category Τεχνολογία
-Jul 02, 2013 1:10:03 PM org.scify.NewSumServer.Server.Sources.RssParser postProcessArticles
-INFO: Removed 90 Articles
-Jul 02, 2013 1:10:05 PM org.scify.NewSumServer.Server.Sources.RssParser postProcessArticles
+Jul 02, 2013 5:25:21 PM org.scify.NewSumServer.Server.Sources.RssParser postProcessArticles
+INFO: Removed 91 Articles
+Jul 02, 2013 5:25:23 PM org.scify.NewSumServer.Server.Sources.RssParser postProcessArticles
 INFO: Removed 16 Articles
-Jul 02, 2013 1:10:10 PM org.scify.NewSumServer.Server.Sources.RssParser postProcessArticles
-INFO: Removed 5 Articles
-Jul 02, 2013 1:10:15 PM org.scify.NewSumServer.Server.Sources.RssParser postProcessArticles
-INFO: Removed 1 Articles
-Jul 02, 2013 1:10:15 PM org.scify.NewSumServer.Server.Sources.RssParser getAllNewsByCategory
-INFO: Processing category Επιστήμη
-Jul 02, 2013 1:10:35 PM org.scify.NewSumServer.Server.Sources.RssParser postProcessArticles
-INFO: Removed 6 Articles
-Jul 02, 2013 1:10:35 PM org.scify.NewSumServer.Server.Sources.RssParser getAllNewsByCategory
-INFO: Processing category Αθλητισμός
-Jul 02, 2013 1:10:42 PM org.scify.NewSumServer.Server.Sources.RssParser getAllNewsByCategory
-INFO: Processing category Ελλάδα
-Jul 02, 2013 1:10:45 PM org.scify.NewSumServer.Server.Sources.RssParser postProcessArticles
-INFO: Removed 31 Articles
-Jul 02, 2013 1:10:47 PM org.scify.NewSumServer.Server.Sources.RssParser ProcessFeed
-WARNING: File not found: http://www.ert.gr/eidiseis/greece?format=feed
-Jul 02, 2013 1:10:53 PM org.scify.NewSumServer.Server.Sources.RssParser postProcessArticles
-INFO: Removed 9 Articles
-Jul 02, 2013 1:10:57 PM org.scify.NewSumServer.Server.Sources.RssParser getAllNewsByCategory
-INFO: Processing category Κόσμος
-Jul 02, 2013 1:10:59 PM org.scify.NewSumServer.Server.Sources.RssParser postProcessArticles
-INFO: Removed 68 Articles
-Jul 02, 2013 1:11:09 PM org.scify.NewSumServer.Server.Sources.RssParser ProcessFeed
-WARNING: File not found: http://www.ert.gr/eidiseis/diethni?format=feed
-Jul 02, 2013 1:11:11 PM org.scify.NewSumServer.Server.Sources.RssParser getAllNewsByCategory
-INFO: Processing category SciFY News
-Jul 02, 2013 1:11:13 PM org.scify.NewSumServer.Server.Sources.RssParser postProcessArticles
-INFO: Removed 9 Articles
-Jul 02, 2013 1:11:13 PM org.scify.NewSumServer.Server.Sources.RssParser postProcessArticles
+Jul 02, 2013 5:25:28 PM org.scify.NewSumServer.Server.Sources.RssParser postProcessArticles
 INFO: Removed 4 Articles
-Jul 02, 2013 1:11:13 PM org.scify.NewSumServer.Server.Sources.RssParser getAllNewsByCategory
+Jul 02, 2013 5:25:32 PM org.scify.NewSumServer.Server.Sources.RssParser postProcessArticles
+INFO: Removed 1 Articles
+Jul 02, 2013 5:25:32 PM org.scify.NewSumServer.Server.Sources.RssParser getAllNewsByCategory
+INFO: Processing category Επιστήμη
+Jul 02, 2013 5:25:47 PM org.scify.NewSumServer.Server.Sources.RssParser postProcessArticles
+INFO: Removed 5 Articles
+Jul 02, 2013 5:25:47 PM org.scify.NewSumServer.Server.Sources.RssParser getAllNewsByCategory
+INFO: Processing category Αθλητισμός
+Jul 02, 2013 5:25:51 PM org.scify.NewSumServer.Server.Sources.RssParser getAllNewsByCategory
+INFO: Processing category Ελλάδα
+Jul 02, 2013 5:25:54 PM org.scify.NewSumServer.Server.Sources.RssParser postProcessArticles
+INFO: Removed 34 Articles
+Jul 02, 2013 5:25:55 PM org.scify.NewSumServer.Server.Sources.RssParser ProcessFeed
+WARNING: File not found: http://www.ert.gr/eidiseis/greece?format=feed
+Jul 02, 2013 5:26:00 PM org.scify.NewSumServer.Server.Sources.RssParser postProcessArticles
+INFO: Removed 9 Articles
+Jul 02, 2013 5:26:04 PM org.scify.NewSumServer.Server.Sources.RssParser getAllNewsByCategory
+INFO: Processing category Κόσμος
+Jul 02, 2013 5:26:06 PM org.scify.NewSumServer.Server.Sources.RssParser postProcessArticles
+INFO: Removed 66 Articles
+Jul 02, 2013 5:26:12 PM org.scify.NewSumServer.Server.Sources.RssParser ProcessFeed
+WARNING: File not found: http://www.ert.gr/eidiseis/diethni?format=feed
+Jul 02, 2013 5:26:14 PM org.scify.NewSumServer.Server.Sources.RssParser getAllNewsByCategory
+INFO: Processing category SciFY News
+Jul 02, 2013 5:26:15 PM org.scify.NewSumServer.Server.Sources.RssParser postProcessArticles
+INFO: Removed 9 Articles
+Jul 02, 2013 5:26:15 PM org.scify.NewSumServer.Server.Sources.RssParser postProcessArticles
+INFO: Removed 4 Articles
+Jul 02, 2013 5:26:15 PM org.scify.NewSumServer.Server.Sources.RssParser getAllNewsByCategory
 INFO: Processing category Γενικά
-Jul 02, 2013 1:11:27 PM org.scify.NewSumServer.Server.Sources.RssParser ProcessFeed
-WARNING: org.jdom.input.JDOMParseException: Error on line 10: The entity "mdash" was referenced, but not declared.
-org.apache.commons.feedparser.FeedParserException: org.jdom.input.JDOMParseException: Error on line 10: The entity "mdash" was referenced, but not declared.
+Jul 02, 2013 5:26:21 PM org.scify.NewSumServer.Server.Sources.RssParser ProcessFeed
+WARNING: org.jdom.input.JDOMParseException: Error on line 54: The entity "mdash" was referenced, but not declared.
+org.apache.commons.feedparser.FeedParserException: org.jdom.input.JDOMParseException: Error on line 54: The entity "mdash" was referenced, but not declared.
 	at org.apache.commons.feedparser.FeedParserImpl.parse(FeedParserImpl.java:85)
 	at org.scify.NewSumServer.Server.Sources.RssParser.ProcessFeed(RssParser.java:234)
 	at org.scify.NewSumServer.Server.Sources.RssParser.getNewsFromFeed(RssParser.java:301)
 	at org.scify.NewSumServer.Server.Sources.RssParser.getAllNewsByCategory(RssParser.java:276)
 	at org.scify.NewSumServer.Server.Sources.RssParser.getAllArticles(RssParser.java:249)
 	at org.scify.NewSumServer.Server.Utils.Main.main(Main.java:246)
-Caused by: org.jdom.input.JDOMParseException: Error on line 10: The entity "mdash" was referenced, but not declared.
+Caused by: org.jdom.input.JDOMParseException: Error on line 54: The entity "mdash" was referenced, but not declared.
 	at org.jdom.input.SAXBuilder.build(SAXBuilder.java:533)
 	at org.jdom.input.SAXBuilder.build(SAXBuilder.java:865)
 	at org.apache.commons.feedparser.FeedParserImpl.parse(FeedParserImpl.java:72)
 	... 5 more
-Caused by: org.xml.sax.SAXParseException; lineNumber: 10; columnNumber: 315; The entity "mdash" was referenced, but not declared.
+Caused by: org.xml.sax.SAXParseException; lineNumber: 54; columnNumber: 315; The entity "mdash" was referenced, but not declared.
 	at com.sun.org.apache.xerces.internal.util.ErrorHandlerWrapper.createSAXParseException(ErrorHandlerWrapper.java:198)
 	at com.sun.org.apache.xerces.internal.util.ErrorHandlerWrapper.fatalError(ErrorHandlerWrapper.java:177)
 	at com.sun.org.apache.xerces.internal.impl.XMLErrorReporter.reportError(XMLErrorReporter.java:441)
@@ -77,53 +77,53 @@ Caused by: org.xml.sax.SAXParseException; lineNumber: 10; columnNumber: 315; The
 	at org.jdom.input.SAXBuilder.build(SAXBuilder.java:518)
 	... 7 more
 
-Jul 02, 2013 1:11:33 PM org.scify.NewSumServer.Server.Sources.RssParser getAllNewsByCategory
+Jul 02, 2013 5:26:27 PM org.scify.NewSumServer.Server.Sources.RssParser getAllNewsByCategory
 INFO: Processing category Οικονομία
-Jul 02, 2013 1:11:35 PM org.scify.NewSumServer.Server.Sources.RssParser ProcessFeed
+Jul 02, 2013 5:26:29 PM org.scify.NewSumServer.Server.Sources.RssParser ProcessFeed
 WARNING: File not found: http://www.ert.gr/eidiseis/oikonomia?format=feed
-Jul 02, 2013 1:11:38 PM org.scify.NewSumServer.Server.Sources.RssParser postProcessArticles
-INFO: Removed 65 Articles
-Jul 02, 2013 1:11:38 PM org.scify.NewSumServer.Server.Sources.RssParser getAllNewsByCategory
+Jul 02, 2013 5:26:32 PM org.scify.NewSumServer.Server.Sources.RssParser postProcessArticles
+INFO: Removed 67 Articles
+Jul 02, 2013 5:26:32 PM org.scify.NewSumServer.Server.Sources.RssParser getAllNewsByCategory
 INFO: Processing category Εκπαίδευση
-Jul 02, 2013 1:11:45 PM org.scify.NewSumServer.Server.Sources.RssParser postProcessArticles
+Jul 02, 2013 5:26:32 PM org.scify.NewSumServer.Server.Sources.RssParser postProcessArticles
 INFO: Removed 23 Articles
-Jul 02, 2013 1:11:50 PM org.scify.NewSumServer.Server.Sources.RssParser postProcessArticles
+Jul 02, 2013 5:26:40 PM org.scify.NewSumServer.Server.Sources.RssParser postProcessArticles
 INFO: Removed 8 Articles
-Jul 02, 2013 1:11:52 PM org.scify.NewSumServer.Server.Sources.RssParser getAllNewsByCategory
+Jul 02, 2013 5:26:40 PM org.scify.NewSumServer.Server.Sources.RssParser getAllNewsByCategory
 INFO: Processing category Πολιτισμός
-Jul 02, 2013 1:11:54 PM org.scify.NewSumServer.Server.Sources.RssParser postProcessArticles
-INFO: Removed 19 Articles
-Jul 02, 2013 1:11:55 PM org.scify.NewSumServer.Server.Utils.Utilities checkForPossibleSpam
+Jul 02, 2013 5:26:42 PM org.scify.NewSumServer.Server.Sources.RssParser postProcessArticles
+INFO: Removed 17 Articles
+Jul 02, 2013 5:26:42 PM org.scify.NewSumServer.Server.Utils.Utilities checkForPossibleSpam
 WARNING: Found possible SPAM sentences, check 'Tools' folder
-Jul 02, 2013 1:11:55 PM org.scify.NewSumServer.Server.Sources.RssParser saveAllArticles
+Jul 02, 2013 5:26:42 PM org.scify.NewSumServer.Server.Sources.RssParser saveAllArticles
 INFO: 
-Filtered a total of 605 matches
-Added new Date to 13 articles
-Acquired date from previous run to 276 articles
+Filtered a total of 602 matches
+Added new Date to 5 articles
+Acquired date from previous run to 284 articles
 Removed 354 Articles older than 5 days
-Jul 02, 2013 1:11:55 PM org.scify.NewSumServer.Server.Sources.RssParser saveAllArticles
-INFO: Saving 888 Articles...
-Jul 02, 2013 1:11:55 PM org.scify.NewSumServer.Server.Summarisation.ArticleClusterer calculateClusters
+Jul 02, 2013 5:26:42 PM org.scify.NewSumServer.Server.Sources.RssParser saveAllArticles
+INFO: Saving 884 Articles...
+Jul 02, 2013 5:26:42 PM org.scify.NewSumServer.Server.Summarisation.ArticleClusterer calculateClusters
 INFO: Clustering Version :1
-Jul 02, 2013 1:11:55 PM org.scify.NewSumServer.Server.Summarisation.ArticleClusterer getPairs
-INFO: Creating Pairs on 2 threads...
-Jul 02, 2013 1:11:56 PM org.scify.NewSumServer.Server.Summarisation.ArticleClusterer getPairs
-INFO: Created 66,596 Pairs in 0 seconds
-Jul 02, 2013 1:11:56 PM org.scify.NewSumServer.Server.Summarisation.ArticleClusterer calculateClusters
+Jul 02, 2013 5:26:42 PM org.scify.NewSumServer.Server.Summarisation.ArticleClusterer getPairs
+INFO: Creating Pairs...
+Jul 02, 2013 5:26:43 PM org.scify.NewSumServer.Server.Summarisation.ArticleClusterer getPairs
+INFO: Created 55,731 Article Pairs
+Jul 02, 2013 5:26:43 PM org.scify.NewSumServer.Server.Summarisation.ArticleClusterer calculateClusters
 INFO: Examining pairs...
-Jul 02, 2013 1:13:48 PM org.scify.NewSumServer.Server.Summarisation.ArticleClusterer calculateClusters
+Jul 02, 2013 5:28:13 PM org.scify.NewSumServer.Server.Summarisation.ArticleClusterer calculateClusters
 INFO: Examining pairs DONE.
-Jul 02, 2013 1:13:48 PM org.scify.NewSumServer.Server.Summarisation.ArticleClusterer checkForInconsistencies
-INFO: Checked 888 items.
-Jul 02, 2013 1:13:48 PM org.scify.NewSumServer.Server.Summarisation.ArticleClusterer checkForInconsistencies
+Jul 02, 2013 5:28:13 PM org.scify.NewSumServer.Server.Summarisation.ArticleClusterer checkForInconsistencies
+INFO: Checked 884 items.
+Jul 02, 2013 5:28:13 PM org.scify.NewSumServer.Server.Summarisation.ArticleClusterer checkForInconsistencies
 INFO: Reversed Checked Mappings Done
-Jul 02, 2013 1:13:48 PM org.scify.NewSumServer.Server.Summarisation.ArticleClusterer calculateClusters
+Jul 02, 2013 5:28:13 PM org.scify.NewSumServer.Server.Summarisation.ArticleClusterer calculateClusters
 INFO: Saving Clusters...
-Jul 02, 2013 1:13:49 PM org.scify.NewSumServer.Server.Summarisation.ArticleClusterer saveAllClusteredArticles
-INFO: Found 608 Identical Topics and switched to old IDs
-Jul 02, 2013 1:13:49 PM org.scify.NewSumServer.Server.Summarisation.ArticleClusterer calculateClusters
+Jul 02, 2013 5:28:14 PM org.scify.NewSumServer.Server.Summarisation.ArticleClusterer saveAllClusteredArticles
+INFO: Found 601 Identical Topics and switched to old IDs
+Jul 02, 2013 5:28:15 PM org.scify.NewSumServer.Server.Summarisation.ArticleClusterer calculateClusters
 INFO: Clusters saved succesfully
-Jul 02, 2013 1:13:54 PM org.scify.NewSumServer.Server.Summarisation.Summariser getSummaries
+Jul 02, 2013 5:28:19 PM org.scify.NewSumServer.Server.Summarisation.Summariser getSummaries
 INFO: Obtaining Summaries...
-Jul 02, 2013 1:14:05 PM org.scify.NewSumServer.Server.Summarisation.Summariser getSummaries
+Jul 02, 2013 5:28:30 PM org.scify.NewSumServer.Server.Summarisation.Summariser getSummaries
 INFO: Summaries obtained Succesfully
