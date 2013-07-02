@@ -100,9 +100,11 @@ public class ArticleClusterer {
      * Counts the Topics that were assigned an older ID
      */
     private Integer tChanged = 0;
-
-//    private List<Pair> lsArticlePairs = Collections.synchronizedList(new LinkedList());
-    private List<Pair> lsArticlePairs = new LinkedList();
+    /**
+     * The list containing all the pairs of articles to be fed to the 
+     * cluster calculation engine
+     */
+    private List<Pair> lsArticlePairs = Collections.synchronizedList(new LinkedList());
 
     /**
      * Main Constructor of The ArticleClusterer Class.
@@ -499,110 +501,71 @@ public class ArticleClusterer {
      */
     private List<Pair> getPairs(final List<Article> lsArticleList) {
         // Create a list of Pairs
-//        List lsArticlePairs = new LinkedList();
-        LOGGER.log(Level.INFO, "Creating Pairs...");
         long time = System.currentTimeMillis();
         // get available processors
-//        int iThreads = Runtime.getRuntime().availableProcessors();
-//        LOGGER.log(Level.INFO, "Creating Pairs on {0} threads...", iThreads);
-//        // Create executor service
-//        ExecutorService es = Executors.newFixedThreadPool(iThreads);
-//        // divide list into iThreads parts
-//        int iParts = lsArticleList.size() / iThreads;
-//        final List allLists = new ArrayList<List<Article>>();
-//        // create sublists
-//        for (int i = 0; i < lsArticleList.size(); i += iParts) {
-//            allLists.add(lsArticleList.subList(i, i + Math.min(iParts, lsArticleList.size() - i)));
-//        }
-//        // for every sublist
-//        for (final ListIterator<List<Article>> it = allLists.listIterator(); it.hasNext();) {
-//            // call new thread
-//            es.submit(new Runnable() {
-//
-//                @Override
-//                public void run() {
-//                    // get Sublist index
-//                    int iSubListCount = it.nextIndex();
-//                    // process every sublist
-//                    List tmpList = it.next();
-//                    for (ListIterator<Article> parent = tmpList.listIterator(); parent.hasNext();) {
-//                        // get current index, in order to process the other items sequentially
-//                        int iIndex = parent.nextIndex();
-//                        // get article
-//                        Article aFirst = parent.next();
-//                        // compare with all subsequent articles from same list
-//                        for (ListIterator<Article> same = tmpList.listIterator(iIndex+1); same.hasNext();) {
-//                            // get article
-//                            Article aSecond = same.next();
-//                            // add pair if not exist
-//                            addPair(aFirst, aSecond);
-//
-//                        }
-//                        // compare with all articles from other lists
-//                        for (ListIterator<List<Article>> OtherLists =
-//                                allLists.listIterator(iSubListCount+1); OtherLists.hasNext();) {
-//                            List otherList = OtherLists.next();
-//                            for (ListIterator<Article> child = otherList.listIterator(); child.hasNext();) {
-//                                // get article
-//                                Article aChild = child.next();
-//                                // add pair if not exist
-//                                addPair(aFirst, aChild);
-//                            }
-//                        }
-//                    }
-//                }
-//            });
-//        }
-//        es.shutdown();
-//        try {
-//            es.awaitTermination(1, TimeUnit.DAYS);
-//        } catch (InterruptedException ex) {
-//            LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
-//        }
-        // brutal
-        for (int i=0; i < lsArticleList.size()-1; i++) {
-            Article aFirst = lsArticleList.get(i); // first feed
-            for (int j=i+1; j < lsArticleList.size(); j++) {
-                Article aSecond = lsArticleList.get(j); // second feed
-                // create feed pair
-                if (aFirst.getCategory().equals(aSecond.getCategory()) &&
-                        !aFirst.getSource().equals(aSecond.getSource())) {
+        int iThreads = Runtime.getRuntime().availableProcessors();
+        LOGGER.log(Level.INFO, "Creating Pairs on {0} threads...", iThreads);
+        // Create executor service
+        ExecutorService es = Executors.newFixedThreadPool(iThreads);
+        // divide list into iThreads parts
+        int iParts = lsArticleList.size() / iThreads;
+        final List allLists = new ArrayList<List<Article>>();
+        // create sublists
+        for (int i = 0; i < lsArticleList.size(); i += iParts) {
+            allLists.add(lsArticleList.subList(i, i + Math.min(iParts, lsArticleList.size() - i)));
+        }
+        // for every sublist
+        for (final ListIterator<List<Article>> it = allLists.listIterator(); it.hasNext();) {
+            // call new thread
+            es.submit(new Runnable() {
 
-                    Pair<Article, Article> tmpPair = new Pair(aFirst, aSecond);
-                    Pair<Article, Article> reverse = new Pair(aSecond, aFirst);
-                    if (!lsArticlePairs.contains(tmpPair) &&
-                            !lsArticlePairs.contains(reverse)) {
-                        lsArticlePairs.add(0, tmpPair);
+                @Override
+                public void run() {
+                    // create a set of Pairs
+                    HashSet<Pair<Article, Article>> tmpPairs = new HashSet<Pair<Article, Article>>();
+                    // process every sublist
+                    List tmpList = it.next();
+                    // for every sublist's article
+                    for (ListIterator<Article> curListIter = tmpList.listIterator(); curListIter.hasNext();) {
+                        // get article
+                        Article aFirst = curListIter.next();
+                        // compare with all articles from main list
+                       for (ListIterator<Article> mailListIter = lsArticleList.listIterator(); mailListIter.hasNext();) {
+                            // get article
+                            Article aSecond = mailListIter.next();
+                            // compare category and source
+                            if (aFirst.getCategory().equals(aSecond.getCategory())
+                                    && !aFirst.getSource().equals(aSecond.getSource())) {                            
+                                // create and add pair
+                                Pair<Article, Article> tmpPair = new Pair(aFirst, aSecond);
+                                if (!tmpPairs.contains(new Pair(aSecond, aFirst))) {
+                                    tmpPairs.add(tmpPair);
+                                }
+                            }
+                        }
+                    }
+                    // when done, add to final list
+                    synchronized (lsArticlePairs) {
+                        
+                        lsArticlePairs.addAll(tmpPairs);
+                        
                     }
                 }
-            }
+            });
         }
+        es.shutdown();
+        try {
+            es.awaitTermination(1, TimeUnit.DAYS);
+        } catch (InterruptedException ex) {
+            LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+
         time = System.currentTimeMillis() - time;
         LOGGER.log(Level.INFO, "Created {0} Pairs in {1} seconds",
                 new Object[] {lsArticlePairs.size(), time/1000});
         return lsArticlePairs;
     }
-    /**
-     * for improved speed
-     * @param tmpPair the pair of articles to add
-     */
-    private void addPair(Article aFirst, Article aSecond) {
-        
-        if (aFirst.getCategory().equals(aSecond.getCategory())
-                && !aFirst.getSource().equals(aSecond.getSource())) {
 
-            Pair<Article, Article> tmpPair = new Pair(aFirst, aSecond);
-            Pair<Article, Article> reverse = new Pair(aSecond, aFirst);
-
-            synchronized (this) {
-
-                if (!lsArticlePairs.contains(tmpPair) &&
-                        !lsArticlePairs.contains(reverse)) {
-                    lsArticlePairs.add(0, tmpPair);
-                }
-            }
-        }
-    }
     /**
      *
      * @return A map containing a Unique identifier for

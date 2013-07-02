@@ -1,4 +1,4 @@
-DebugRun=true
+DebugRun=false
 sCatsDaysFile=./data/Sources/DaysPerCategory.txt
 BaseDir=./data/BaseDir/
 ToolPath=./data/Tools/
@@ -7,4 +7,4 @@ ArticleMaxDays=5
 useInputDirData=false
 indexPath=./data/Indexed/
 SummaryPath=./data/Summaries/
-PathToSources=./data/Sources/v1.0.RSSSourcesEN.txt
+PathToSources=./data/Sources/v1.0.RSSSourcesGR.txt

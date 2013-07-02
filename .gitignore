@@ -20,6 +20,7 @@ nbproject/*
 *.DS_Store
 *.lock
 *.sh
+*.txt.*
 
 #project specific
 data/Articles/*.txt
@@ -30,6 +31,7 @@ data/temp
 data/BaseDir/*.Links
 data/BaseDir/*.generic
 data/BaseDir/*.nameList
+data/Logger/*.txt
 
 # libs
 lib/*.jar
