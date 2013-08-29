@@ -28,6 +28,7 @@
 
 package org.scify.NewSumServer.Server.Sources;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Collection;
@@ -38,6 +39,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.scify.NewSumServer.Server.Storage.IDataStorage;
 import org.scify.NewSumServer.Server.Structures.User;
+import org.scify.NewSumServer.Server.SystemFactory.Configuration;
 import org.scify.NewSumServer.Server.Utils.Main;
 import org.scify.NewSumServer.Server.Utils.Utilities;
 
@@ -49,6 +51,10 @@ import org.scify.NewSumServer.Server.Utils.Utilities;
 public class RSSSources {
 
     private static final Logger LOGGER = Main.getLogger();
+    
+    
+    private Configuration conf;
+    
     /**
      * The Structure that maps each RSS link to its relative Category.
      */
@@ -74,14 +80,24 @@ public class RSSSources {
      */
     private String                  sPathToSources;
 
+    
+    private String                  sCatsDaysFilePath;
+    
     /**
      * Initializes the RSS Sources taking into account their categories,
      * using a default collection of sources.
      * @param ids The data storage module for file IO operations
      * @param sSourcesPath The full path to the file where the sources are declared
      */
-    public RSSSources(IDataStorage ids, String sSourcesPath) {
-        this.sPathToSources = sSourcesPath;
+    public RSSSources(IDataStorage ids, Configuration config) {
+        
+        // get current configuration
+        this.conf = config;
+        
+        this.sPathToSources = this.conf.getSourcesPath();
+        
+        this.sCatsDaysFilePath = this.conf.getCategoriesDaysFileLocation();
+        
         try {
             LOGGER.log(Level.INFO, "NOW Reading Sources From {0}", this.sPathToSources);//debug
             initializeSources();//load sources from the text file
@@ -261,7 +277,7 @@ public class RSSSources {
             this.hmRssSources.clear();
         }
         try {
-            this.hmRssSources = Utilities.getSourcesFromFile(this.sPathToSources);
+            this.hmRssSources = Utilities.getSourcesFromFile(this.sPathToSources, this.sCatsDaysFilePath);
         } catch (FileNotFoundException ex) {
             LOGGER.log(Level.SEVERE, "File not found ", ex.getMessage());
         } catch (IOException ex) {

@@ -46,9 +46,9 @@ public class UnlabeledArticle extends Article {
      * @param Feed The feed url that this article is derived from
      * @param ToWrap if true, the article will be used to train the Category Classifier
      */
-    public UnlabeledArticle(String Source, String Title, String Text, String Category, String Feed, Boolean ToWrap) {
+    public UnlabeledArticle(String Source, String Title, String Text, String Category, String Feed, String imageUrl, Boolean ToWrap) {
 
-        super(Source, Title, Text, Category, Feed, ToWrap);
+        super(Source, Title, Text, Category, Feed, imageUrl, ToWrap);
 
     }
 

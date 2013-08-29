@@ -9,13 +9,13 @@ http://rss.cnn.com/rss/edition.rss***CNN
 http://feeds.nbcnews.com/feeds/topstories***NBC
 http://feeds.abcnews.com/abcnews/topstories***ABC
 Europe
-http://feeds.bbci.co.uk/news/world/europe/rss.xml***BBC
-http://feeds.latimes.com/latimes/europe***Los Angeles Times
-http://www.spiegel.de/international/europe/index.rss***Spiegel
-?http://www.nytimes.com/services/xml/rss/nyt/Europe.xml***New York Times
-http://rss.cnn.com/rss/edition_europe.rss***CNN
-http://feeds.feedburner.com/euronews/en/europa?format=xml***EuroNews
-http://www.ft.com/rss/home/europe***Financial Times
+?http://feeds.bbci.co.uk/news/world/europe/rss.xml***BBC
+?http://feeds.latimes.com/latimes/europe***Los Angeles Times
+?http://www.spiegel.de/international/europe/index.rss***Spiegel
+http://www.nytimes.com/services/xml/rss/nyt/Europe.xml***New York Times
+?http://rss.cnn.com/rss/edition_europe.rss***CNN
+?http://feeds.feedburner.com/euronews/en/europa?format=xml***EuroNews
+?http://www.ft.com/rss/home/europe***Financial Times
 World
 http://feeds.reuters.com/Reuters/worldNews***Reuters
 http://feeds.latimes.com/latimes/news/nationworld/world***Los Angeles Times

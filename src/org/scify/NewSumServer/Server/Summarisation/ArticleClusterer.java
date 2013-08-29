@@ -52,6 +52,7 @@ import org.scify.NewSumServer.Server.Storage.IDataStorage;
 import org.scify.NewSumServer.Server.Structures.Article;
 import org.scify.NewSumServer.Server.Structures.Topic;
 import static org.scify.NewSumServer.Server.Summarisation.ArticleClusterer.LOGGER;
+import org.scify.NewSumServer.Server.SystemFactory.Configuration;
 import org.scify.NewSumServer.Server.Utils.Main;
 import org.scify.NewSumServer.Server.Utils.Utilities;
 
@@ -69,6 +70,9 @@ public class ArticleClusterer {
      * The Logger Class used for logging various info and higher level messages
      */
     protected final static Logger               LOGGER     = Main.getLogger();
+    
+    protected Configuration                     conf;
+    
     /**
      * The separator used for creating the Article Text files.
      */
@@ -89,6 +93,7 @@ public class ArticleClusterer {
      * The Original List of Articles to process
      */
     protected List<Article>                     origArticles;
+    
     /** The folder where the Articles will be saved */
     protected String                            ArticlePath;
 
@@ -116,7 +121,7 @@ public class ArticleClusterer {
      */
     public ArticleClusterer(List<Article> lsArticles,
             IDataStorage ids,
-            String ArticlePath) {
+            Configuration config) {
         // should be constructed with the list of Articles
         // that the method getAllNews() of the SourceParser class returns
 
@@ -126,7 +131,10 @@ public class ArticleClusterer {
         hsArticlesPerCluster    = new HashMap<String, Topic>();
         hsClusterPerArticle     = new HashMap<Article, String>();
         this.ids                = ids;
-        this.ArticlePath        = ArticlePath;
+        
+        this.conf = config;
+        
+        this.ArticlePath        = this.conf.getArticlePath();
 
 //        // DEBUG LINES
 //        System.out.println("Input " + lsArticles.size() + " articles");

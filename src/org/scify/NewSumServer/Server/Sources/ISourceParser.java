@@ -28,12 +28,10 @@
 
 package org.scify.NewSumServer.Server.Sources;
 
+import com.sun.syndication.io.FeedException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
-import org.apache.commons.feedparser.FeedParserException;
-import org.apache.commons.feedparser.network.NetworkException;
-import org.scify.NewSumServer.Server.Storage.IDataStorage;
 import org.scify.NewSumServer.Server.Structures.Article;
 
 /**
@@ -52,7 +50,7 @@ public interface ISourceParser {
     * @throws FeedParserException
     */
     List<Article> getNewsFromFeed(String sLinkToFeed, String sCategory)
-            throws NetworkException, IOException, FeedParserException;
+            throws IOException, FeedException;
 
     /**
     * Fetches all the Articles from a given list of feeds

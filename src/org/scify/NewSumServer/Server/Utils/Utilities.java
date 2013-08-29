@@ -62,6 +62,7 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.scify.NewSumServer.Server.Comms.Communicator;
+import org.scify.NewSumServer.Server.JSon.CategoriesData;
 import org.scify.NewSumServer.Server.Searching.Indexer;
 import org.scify.NewSumServer.Server.Storage.IDataStorage;
 import org.scify.NewSumServer.Server.Storage.InsectFileIO;
@@ -82,8 +83,6 @@ import static org.scify.NewSumServer.Server.Utils.Utilities.writeStringListToFil
  */
 public class Utilities {
 
-    public static final String  sCatsDaysFile = Communicator.getSwitches().get("sCatsDaysFile");
-
     private static final Logger LOGGER = Main.getLogger();
     /**
      * The Delimiter Used in the Sources File, in ./data/Sources/RSSSources.txt
@@ -91,9 +90,6 @@ public class Utilities {
     private static final String sDelimiter = "[*]{3}"; // regex pattern, for split
 
     private static final String sDelimiterSimple = "***"; // simple format, 'contains'
-    
-        private static List<Pair> lsArticlePairs = Collections.synchronizedList(new LinkedList());
-
 
     /**
      * Checks if a URL is Valid
@@ -161,7 +157,7 @@ public class Utilities {
      * @throws FileNotFoundException
      * @throws IOException
      */
-    public static HashMap<String, String> getSourcesFromFile(String sPathToFile)
+    public static HashMap<String, String> getSourcesFromFile(String sPathToFile, String sPathToDaysPerCategoryFile)
             throws FileNotFoundException, IOException {
 
         File fFile = new File(sPathToFile);
@@ -194,7 +190,7 @@ public class Utilities {
                             // The number after the delimiter
                                 // represents the number of days old news to fetch for that category.
                             // Write categories - days file
-                            appendToFile(sCatsDaysFile, tmpCat + "=" + sLine.split(sDelimiter)[1]);
+                            appendToFile(sPathToDaysPerCategoryFile, tmpCat + "=" + sLine.split(sDelimiter)[1]);
                         } else {
                             tmpCat = sLine;
                         }
@@ -445,10 +441,10 @@ public class Utilities {
      * @param lsToWrite the list of strings to store to file, line by line for
      * each entry.
      */
-    public static void writeStringListToFile(List<String> lsToWrite) {
+    public static void writeStringListToFile(String sLang, List<String> lsToWrite) {
         String sPathtoFile =
                 System.getProperty("user.dir")
-                + System.getProperty("file.separator") + "data"
+                + System.getProperty("file.separator") + "data" + sLang
                 + System.getProperty("file.separator") + "Tools"
                 + System.getProperty("file.separator") + "PatternCheck.txt";
         File fFile = new File(sPathtoFile);
@@ -620,7 +616,7 @@ public class Utilities {
             return counter;
         }
     }
-    public static void checkForPossibleSpam(List<Article> lsArticleList) {
+    public static void checkForPossibleSpam(List<Article> lsArticleList, String sLang) {
         List lsSame = new LinkedList();
         for (int i = 0; i < lsArticleList.size() - 1; i++) {
             Article aFirst = lsArticleList.get(i); // first feed
@@ -651,7 +647,7 @@ public class Utilities {
                 if (!lsRes.isEmpty()) {
                     LOGGER.log(Level.WARNING, "Found possible SPAM sentences, check 'Tools' folder");
                     System.out.println(lsRes.toString());
-                    writeStringListToFile(lsRes);
+                    writeStringListToFile(sLang, lsRes);
                 }
             } else {
                 LOGGER.info("No SPAM occurencies");
@@ -926,6 +922,10 @@ public class Utilities {
 //        System.out.println(sTop);
         /////////////////CHECK SEARCH END///////////////////////////////////
 
+        List<String> lsRes = new ArrayList<String>(Arrays.asList(new String[] {"World", "Europe", "Top News"}));
+        CategoriesData cd = new CategoriesData(lsRes);
+        System.out.println(cd.jsonize());
+        System.out.println(cd.get(1));
     }
 //    public class debugLogger {
 //
@@ -943,6 +943,8 @@ public class Utilities {
 //        }
 //    }
 
+
+    
 
 
 

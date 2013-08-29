@@ -52,6 +52,7 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.store.LockObtainFailedException;
 import org.apache.lucene.util.Version;
+import org.scify.NewSumServer.Server.SystemFactory.Configuration;
 import org.scify.NewSumServer.Server.Utils.Main;
 import org.scify.NewSumServer.Server.Utils.Utilities;
 
@@ -63,6 +64,9 @@ public class Indexer {
 
     private static final String FILE_FIELD = "file";
     private static final String TEXT_FIELD = "text";
+    
+    private Configuration   conf;
+    
     /**
      * The Directory containing the Index Files
      */
@@ -93,10 +97,15 @@ public class Indexer {
      * @param sIndexPath The Absolute path to the Directory where the Indexed Files are stored
      * @param loc The locale that the files will be indexed with
      */
-    public Indexer(String sFilesPath, String sIndexPath, Locale loc) {
-        this.sFilesPath = sFilesPath;
-        this.sIndexPath = sIndexPath;
-        this.lLoc       = loc;
+    public Indexer(Configuration conf) {
+        
+        this.conf = conf;
+        
+        this.sFilesPath = this.conf.getArticlePath();
+        this.sIndexPath = this.conf.getindexPath();
+        
+        this.lLoc       = this.conf.getCurrentLocale();
+        
         // The dir the Index files will be saved in
         indexDir        = new File(this.sIndexPath);
     }

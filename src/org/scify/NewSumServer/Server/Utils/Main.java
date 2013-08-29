@@ -31,7 +31,6 @@ package org.scify.NewSumServer.Server.Utils;
 //-PathToSources=./data/Sources/v1.0.RSSSourcesEN.txt
 
 
-import gr.demokritos.iit.conceptualIndex.structs.Distribution;
 import gr.demokritos.iit.jinsect.storage.INSECTDB;
 import gr.demokritos.iit.jinsect.storage.INSECTFileDBWithDir;
 import gr.demokritos.iit.jinsect.utils;
@@ -39,16 +38,16 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.DataInputStream;
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
 import java.util.logging.*;
 import java.util.regex.Pattern;
-import org.apache.commons.feedparser.FeedParserException;
-import org.apache.commons.feedparser.network.NetworkException;
 import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.store.LockObtainFailedException;
 import org.scify.NewSumServer.Server.Comms.Communicator;
@@ -57,6 +56,7 @@ import org.scify.NewSumServer.Server.Searching.Indexer;
 import org.scify.NewSumServer.Server.Sources.ISourceParser;
 import org.scify.NewSumServer.Server.Sources.RSSSources;
 import org.scify.NewSumServer.Server.Sources.RssParser;
+import org.scify.NewSumServer.Server.SystemFactory.Configuration;
 import org.scify.NewSumServer.Server.Storage.IDataStorage;
 import org.scify.NewSumServer.Server.Storage.InsectFileIO;
 import org.scify.NewSumServer.Server.Structures.Article;
@@ -78,41 +78,59 @@ public class Main {
     static final String CustomUserDir = System.getProperty("user.dir");
     static final String UserDir = ".";
     static final String fileSep = System.getProperty("file.separator");
+    
+    
+    public static String sLang;
+    
+    public static String sDataDir;
+            
+    
     /**
      * The Path to the Log file
      */
-    static String       sLogFile =
-            UserDir + fileSep + "data" + fileSep + "Logger" + fileSep + "NewSumServerLog.txt";
+    static String       sLogFile;
+            
     /**
      * The folder where the FileINSECTDB saves
      */
-    public static String sBaseDir =
-            UserDir + fileSep + "data" + fileSep + "BaseDir" + fileSep;
+    public static String sBaseDir;
+            
+    
     /**
      * The file containing the RSS Sources
      */
-    public static String sPathToSources =
-            UserDir + fileSep + "data" + fileSep + "Sources" + fileSep + "v1.0.RSSSourcesGR.txt";
+    public static String sPathToSources;
+            
     /**
      * The folder where the Indexer Class saves it's data
      */
-    public static String sindexPath =
-            UserDir + fileSep + "data" + fileSep + "Indexed" + fileSep;
+    public static String sindexPath;
+            
     /**
      * The Folder where the Summariser class stores it's summaries
      */
-    public static String sSummaryPath =
-            UserDir + fileSep + "data" + fileSep + "Summaries" + fileSep;
+    public static String sSummaryPath;
+            
     /**
      * The folder where the Clusterer saves the Articles
      */
-    public static String sArticlePath =
-            UserDir + fileSep + "data" + fileSep + "Articles" + fileSep;
+    public static String sArticlePath;
+            
     /**
      * Folder for misc tool files
      */
-    public static String sToolPath =
-            UserDir + fileSep + "data" + fileSep + "Tools" + fileSep;
+    public static String sToolPath;
+    
+    /**
+     * The configuration File
+     */
+    protected static File fConfig;
+    
+    /**
+     * the file containing the basic file paths
+     */
+    protected static File properties;
+            
     /**
      * The maximum number of sentences returned by the summarizer
      */
@@ -139,8 +157,8 @@ public class Main {
      * Path to the File that holds the data [Category-days]/line, used by Utilities
      * class to save
      */
-    public static final String  sPathToCatsPerDaysFile =
-        UserDir + fileSep + "data" + fileSep + "Sources" + fileSep + "DaysPerCategory.txt";
+    public static String  sPathToCatsPerDaysFile;
+        
     //should not be used in final version, only for testing
     public static String sSep = " *** ";
 
@@ -148,16 +166,44 @@ public class Main {
      * The plain text summary storage folder (debug)
      */
     protected static String sTxtSumPath =
-            CustomUserDir + fileSep + "data" + fileSep + "txtSummaries" + fileSep;
+            sDataDir + fileSep + "txtSummaries" + fileSep;
 
     public static Integer threshold;
 
     protected static classificationModule clm;
-
+    
+    protected static Configuration ServerConfig;
+    
     //TODO Currently, the ServerConfig.txt that Main class creates is located
     //at ./data/BaseDir. So if User changes this Dir, the freeService won't work
     public static void main(String[] args)
-            throws FeedParserException, NetworkException, IOException {
+            throws IOException {
+
+        //program info
+        System.out.print("NewSumServer Switches:\n\n"
+                + "-Lang: The language Suffix to Run. ----REQUIRED-----"
+                + "\n\te.g. -Lang=EL will launch NewSum on EL (GR) Language\n"
+                + "-BaseDir: The full path to the folder where the storage module stores data\n"
+                + "-PathToSources: The file named RSSSources.txt with it's full path\n"
+                + "\t(e.g. /home/pathtosources/RSSSources.txt)\n"
+                + "-indexPath: The full path to the folder where the Indexer Class stores data\n"
+                + "-SummaryPath: The full path to the folder where the Summarisation package stores data\n"
+                + "-ArticlePath: The full path to the folder where the "
+                + "Summarisation package stores the Clustered Articles\n"
+                + "-ToolPath: The full path to the folder for misc Tools\n"
+                + "-iOutputSize: The max number of Sentences the Summariser prints\n"
+                + "-ArticleMaxDays: The Number of Max Days to Accept an article (until now)\n"
+                + "-useInputDirData: true or false, defaults to false\n"
+                + "-LogFile: The path to save the log file"
+                + "-DebugRun: true if you want to run with category switching (for quicker runs)\n\n"
+                + "Example Usage: java -jar NewSumServer.jar -BaseDir=./data/Dir -iOutputSize=50\n\n");
+        //Parse and check Command Line arguments
+        parseCommandLine(args);
+        
+        //Write Configuration file so that NewSumFreeService reads statics
+        writeConfigFile();
+
+       
         //initialize logger
         Handler h;
         try {
@@ -171,25 +217,7 @@ public class Main {
         } catch (SecurityException ex) {
             LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
         }
-        //program info
-        System.out.print("NewSumServer Switches:\n\n"
-                + "-BaseDir: The full path to the folder where the storage module stores data\n"
-                + "-PathToSources: The file named RSSSources.txt with it's full path\n"
-                + "\t(e.g. /home/pathtosources/RSSSources.txt)\n"
-                + "-indexPath: The full path to the folder where the Indexer Class stores data\n"
-                + "-SummaryPath: The full path to the folder where the Summarisation package stores data\n"
-                + "-ArticlePath: The full path to the folder where the "
-                + "Summarisation package stores the Clustered Articles\n"
-                + "-ToolPath: The full path to the folder for misc Tools\n"
-                + "-iOutputSize: The max number of Sentences the Summariser prints\n"
-                + "-ArticleMaxDays: The Number of Max Days to Accept an article (until now)\n"
-                + "-useInputDirData: true or false, defaults to false\n"
-                + "-DebugRun: true if you want to run with category switching (for quicker runs)\n\n"
-                + "Example Usage: java -jar NewSumServer.jar -BaseDir=./data/Dir -iOutputSize=50\n\n");
-        //Parse and check Command Line arguments
-        parseCommandLine(args);
-        //Write Configuration file so that NewSumFreeService reads statics
-        writeConfigFile();
+        
         // check if splitterTraining file was changed since the previous run
         if (SplitterTrainingFileChanged()) {
             // if so, delete the Model file, in order to get recreated with the new data
@@ -202,19 +230,21 @@ public class Main {
                         + "Please do it manually", sDat.toString());
             }
         }
+        // initialize Configuration File for current run
+        Configuration conf = new Configuration(fConfig);
+        
         //init data storage
         IDataStorage ids = new InsectFileIO(sBaseDir);
-//        justWaitABit(50000);
         
         //init rssSources and read the sources file
-        RSSSources r = new RSSSources(ids, sPathToSources);
+        RSSSources r = new RSSSources(ids, conf);
         //get the sources
         HashMap<String, String> Sources = r.getRssLinks();//link,category
         //get categories
         Collection<String> sCategories = r.getCategories(); // TODO: Ignore UNCLASSIFIED CATEGORY
         ArrayList<String> lCategories = new ArrayList<String>(sCategories);
         //init rssparser
-        ISourceParser isp = new RssParser(ids, iArticleDays);
+        ISourceParser isp = new RssParser(ids, conf);
         //DEBUG LINES //get user input
         List al = new ArrayList(sCategories);
         ArrayList<String> subSources = null;
@@ -246,7 +276,7 @@ public class Main {
             Articles = (ArrayList<Article>) isp.getAllArticles(Sources);
         }
         // check for spam sentences
-        Utilities.checkForPossibleSpam(Articles);
+        Utilities.checkForPossibleSpam(Articles, sLang);
         //Save Article List to Drive, so that the clusterer loads it
         isp.saveAllArticles(); //Name: "AllArticles", Category: "feeds"
 //        ArticleClusterer ac = new ArticleClusterer(subArticles, ids, sArticlePath);
@@ -279,15 +309,12 @@ public class Main {
 //        }
         // Initialize Clusterer
         ArticleClusterer ac = new ArticleClusterer(
-                (ArrayList<Article>) ids.loadObject("AllArticles", "feeds"), ids, sArticlePath);
+                (ArrayList<Article>) ids.loadObject("AllArticles", "feeds"), ids, conf);
         // Perform clustering calculations
         ac.calculateClusters();
 
-        //specify the locale for the indexer
-        Locale loc = sPathToSources.endsWith("GR.txt") ? new Locale("el")
-                : new Locale("en");
         // Create a new indexer
-        Indexer ind = new Indexer(sArticlePath, sindexPath, loc);
+        Indexer ind = new Indexer(conf);
         // Create the Index
         try {
             ind.createIndex();
@@ -304,8 +331,10 @@ public class Main {
                 ac.getArticlesPerCluster().values()), idb);
         // Perform summarization for all clusters
         Map<String, List<Sentence>> AllSummaries;
+        // Obtain Summaries and save to File
         AllSummaries = sum.getSummaries();
 
+        
         if (bDebugRun) {
 
             // DEBUG LINES
@@ -324,27 +353,6 @@ public class Main {
                 }
             }
 
-            // debug communicator
-            Communicator cm = new Communicator(ids, ac, sum, ind);
-            int bb = Integer.valueOf(sCurCateg);
-            if (bb == -1) { bb = 0; }
-            // print summary from communicator
-            int iSummarizedClusterCnt = 0;
-            for (Topic tTopic : ac.getArticlesPerCluster().values()) {
-                if (tTopic.size() > 1) {
-                    System.out.println("Printing summary for topic: " + tTopic.getTitle());
-                    String[] eachSnippet = cm.getSummary(tTopic.getID(), "All").split(cm.getFirstLevelSeparator());
-                    int iAllTmpSourcesCount = eachSnippet[0].split(cm.getSecondLevelSeparator()).length;
-                    System.out.println("With Summary Sources: " + iAllTmpSourcesCount);
-                    for (int i = 1; i<eachSnippet.length; i++) {
-                        String[] eachSent = eachSnippet[i].split(cm.getSecondLevelSeparator());
-                        System.out.println(eachSent[0]);
-                        System.out.println("-----------------------------------");
-                        iSummarizedClusterCnt++;
-                    }
-                    System.out.println("===========================");
-                }
-            }
 
 
 
@@ -392,25 +400,57 @@ public class Main {
 
     }
 
-    private static void parseCommandLine(String[] args) {
+    private static void parseCommandLine(String[] args) throws FileNotFoundException {
         // Parse command line
         Hashtable hSwitches;
         hSwitches = utils.parseCommandLineSwitches(args);
-
-        sPathToSources = utils.getSwitch(hSwitches, "PathToSources", sPathToSources);
-        sBaseDir = addSuffix(utils.getSwitch(hSwitches, "BaseDir", sBaseDir));
-        sindexPath = addSuffix(utils.getSwitch(hSwitches, "indexPath", sindexPath));
-        sSummaryPath = addSuffix(utils.getSwitch(hSwitches, "SummaryPath", sSummaryPath));
-        sArticlePath = addSuffix(utils.getSwitch(hSwitches, "ArticlePath", sArticlePath));
-        sToolPath = addSuffix(utils.getSwitch(hSwitches, "ToolPath", sToolPath));
+        
+        // init Lang.
+        sLang = utils.getSwitch(hSwitches, "Lang", "EL"); // default Lang is EL
+        
+        // init Base Dir Folder (dataLang)
+        sDataDir = UserDir + fileSep + "data" + sLang;
+        File fDataDir = new File(sDataDir);
+        if (!fDataDir.exists()) {
+            throw new FileNotFoundException(sDataDir + " does not Exist. Aborting.");
+        }
+        // get Sources Path
+        sPathToSources = utils.getSwitch(hSwitches, "PathToSources", 
+                sDataDir + fileSep + "Sources" + fileSep + "RSSSources.txt");
+        // get Base Dir (config files, file Storage, etc)
+        sBaseDir = addSuffix(utils.getSwitch(hSwitches, "BaseDir", 
+                sDataDir + fileSep + "BaseDir" + fileSep));
+        // get Index Path
+        sindexPath = addSuffix(utils.getSwitch(hSwitches, "indexPath", 
+                sDataDir + fileSep + "Indexed" + fileSep));
+        // get Summary Storage Path
+        sSummaryPath = addSuffix(utils.getSwitch(hSwitches, "SummaryPath", 
+                sDataDir + fileSep + "Summaries" + fileSep));
+        // get Article Storage Path
+        sArticlePath = addSuffix(utils.getSwitch(hSwitches, "ArticlePath", 
+                sDataDir + fileSep + "Articles" + fileSep));
+        // get Tool folder path
+        sToolPath = addSuffix(utils.getSwitch(hSwitches, "ToolPath", 
+                sDataDir + fileSep + "Tools" + fileSep));
+        // get Output Size value
         iOutputSize = Integer.valueOf(utils.getSwitch(hSwitches, "outputSize",
                 String.valueOf(iOutputSize))).intValue();
+        // get Max Article Days to store value
         iArticleDays = Integer.valueOf(utils.getSwitch(hSwitches, "ArticleMaxDays",
                 String.valueOf(iArticleDays))).intValue();
+        
         bUseInputDirData = Boolean.valueOf(utils.getSwitch(hSwitches,
                 "useInputDirData", Boolean.FALSE.toString()));
+        // debugging switch
         bDebugRun = Boolean.valueOf(utils.getSwitch(hSwitches,
                 "DebugRun", Boolean.FALSE.toString()));
+        // get Log File Path
+        sLogFile = utils.getSwitch(hSwitches, "LogFile", 
+                sDataDir + fileSep + "Logger" + fileSep + "NewSumServerLog.txt");
+        
+        sPathToCatsPerDaysFile = utils.getSwitch(hSwitches, "PathToCatsDaysFile",
+                sDataDir + fileSep + "Sources" + fileSep + "DaysPerCategory.txt");
+        
         //checking user input
         checkPaths(hSwitches.values().toArray()); // Check Switches
     }
@@ -427,7 +467,7 @@ public class Main {
         while (iIter.hasNext()) {
             String sCurSwitch = (String) iIter.next();
             if (!sCurSwitch.endsWith(".txt") && !sCurSwitch.equals("true") && !sCurSwitch.equals("false")
-                    && !Pattern.matches("[1-9]+", sCurSwitch)) {
+                    && !Pattern.matches("[1-9]+", sCurSwitch) && Pattern.matches("\\w{3,}", sCurSwitch)) { // should be dir.
                 File fsw = new File(sCurSwitch);
                 if (!fsw.isDirectory()) {
                     LOGGER.log(Level.WARNING, "Error: {0} is not a directory", fsw);
@@ -525,7 +565,11 @@ public class Main {
     }
     
     private static void writeConfigFile() {
+        
         HashMap switches = new HashMap<String, String>();
+        
+        switches.put("Lang", sLang);
+        switches.put("DataDir", sDataDir);
         switches.put("BaseDir", sBaseDir);
         switches.put("PathToSources", sPathToSources);
         switches.put("indexPath", sindexPath);
@@ -537,12 +581,28 @@ public class Main {
         switches.put("ArticleMaxDays", String.valueOf(iArticleDays));
         switches.put("DebugRun", String.valueOf(bDebugRun));
 //        switches.put("SplitterTraining", String.valueOf(lFileSize));
+        
+        // store locale
+        Locale loc = new Locale(sLang);
+        switches.put("Locale", loc.getLanguage());
+
+        // get Available Languages
+        switches.put("Languages", getAvailableLanguages().replaceAll("\\s", ","));
+        
         //write Config File, so that FreeService reads values from it
-        File fConfig = new File(sBaseDir + "ServerConfig.txt");
+        fConfig = new File(sBaseDir + "ServerConfig.properties");
+        
+        
+        
+        // store file path in properties file
+        HashMap propertiesMap = new HashMap<String, String>();
+        propertiesMap.put("configPath_" + sLang, fConfig.getAbsolutePath());
+        // delete existing file
         if (fConfig.exists()) {
             fConfig.delete();
         }
         try {
+            // create new config file
             fConfig.createNewFile();
         } catch (IOException ex) {
             LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
@@ -568,8 +628,104 @@ public class Main {
                 LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
             }
         }
+        properties = new File(UserDir + fileSep + "NewSum.properties");
+        // create the freaking file
+        
+        if (!properties.exists()) {
+            try {
+                properties.createNewFile();
+            } catch (IOException ex) {
+                LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
+            }
+        }
+        // append important information to properties file
+        updatePropertiesFile(properties, propertiesMap);
+    }
+    
+    private static void updatePropertiesFile(File propertiesFile, HashMap<String, String> sLine) {
+
+        String[] sFileLines = null;
+        if (propertiesFile.canRead()) {
+            sFileLines = Utilities.readFromFile(propertiesFile.getAbsolutePath(), "\n").split("\n");
+        }
+        
+        if (propertiesFile.canWrite()) {
+            try {
+                BufferedWriter bw = null;
+                bw = new BufferedWriter(new FileWriter(propertiesFile, true));
+                
+                if (sFileLines == null || sFileLines[0].isEmpty()) {
+
+                    for (Map.Entry tmpS : sLine.entrySet()) {
+
+                        bw.append((String) tmpS.getKey() + "=" + (String) tmpS.getValue());
+                        bw.append("\n");
+
+                    }
+                
+                    bw.close();
+                } else { // if file exists and not empty
+                    for (String each : sFileLines) {
+                        // get already stored paths
+                        String tmpLang = each.split("=")[0];
+                        String tmpLangPath = each.split("=")[1];
+                        // update values
+                        for (Map.Entry tmpS : sLine.entrySet()) {
+                            String tmpNewLang = (String) tmpS.getKey();
+                            String tmpNewLangPath = (String) tmpS.getValue();
+                            
+                            if (tmpNewLang.equals(tmpLang)) {
+                                // if new path has been specified
+                                if (!tmpLangPath.equals(tmpNewLangPath)) { 
+                                    bw.append(tmpLang + "=" + tmpNewLangPath);
+                                    bw.append("\n");
+                                }
+                                
+                            } else { // write new language path if not already existing
+                                if (!Arrays.asList(sFileLines).contains(tmpNewLang + "=" + tmpNewLangPath)) {
+                                    
+                                    bw.append(tmpNewLang + "=" + tmpNewLangPath);
+                                    bw.append("\n");
+                                    
+                                }
+                            }
+                            bw.close();
+                        }
+                    }
+                }
+            } catch (IOException ex) {
+                LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
+            }
+        } else {
+            try {
+                throw new IOException("Cannot write to file " + properties.getName());
+            } catch (IOException ex) {
+                LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
+            }
+        }
+        
+        
     }
 
+    public static String getAvailableLanguages() {
+        String allLangs = "";
+        File fMainDir = new File(UserDir);
+        
+        for (File each : fMainDir.listFiles(new FileFilter() {
+
+            @Override
+            public boolean accept(File pathname) {
+                
+                return pathname.toString().contains("data") && 
+                            pathname.isDirectory();
+                
+            }
+        })) {
+            allLangs += each.toString().replaceAll(UserDir + fileSep + "data", "");
+            allLangs += " ";
+        }
+        return allLangs;
+    }
     /**
      * @return The Logger that is used
      */
@@ -584,6 +740,17 @@ public class Main {
     public static String getPathToSources() {
         return sPathToSources;
     }
+    
+    public static String getPropertiesFilePath() {
+        return properties != null ? properties.getAbsolutePath() : UserDir + fileSep + "NewSum.properties"; // fak that
+    }
+    
+    public static File getConfigFileForLocaleRun() {
+        
+        return fConfig;
+    
+    }
+    
     ///DEBUGGING function
 
     private static void writeSummaryToFile(List<Sentence> lsSen, String sCluster, HashMap<String, Topic> hsTopics)

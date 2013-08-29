@@ -28,35 +28,31 @@
 
 package org.scify.NewSumServer.Server.Sources;
 
+import com.sun.syndication.feed.synd.SyndEnclosure;
+import com.sun.syndication.feed.synd.SyndEntryImpl;
+import com.sun.syndication.feed.synd.SyndFeed;
+import com.sun.syndication.io.FeedException;
+import com.sun.syndication.io.SyndFeedInput;
+import com.sun.syndication.io.XmlReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.sql.Time;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.apache.commons.feedparser.*;
-import org.apache.commons.feedparser.network.NetworkException;
-import org.apache.commons.feedparser.network.ResourceRequest;
-import org.apache.commons.feedparser.network.ResourceRequestFactory;
-import org.scify.NewSumServer.Server.Comms.Communicator;
-import static org.scify.NewSumServer.Server.Sources.RssParser.hsSwitches;
+import org.jdom.Attribute;
+import org.jdom.Element;
+import org.scify.NewSumServer.Server.SystemFactory.Configuration;
 import org.scify.NewSumServer.Server.Storage.IDataStorage;
 import org.scify.NewSumServer.Server.Structures.Article;
 import org.scify.NewSumServer.Server.Structures.UnlabeledArticle;
@@ -70,6 +66,9 @@ import org.scify.NewSumServer.Server.Utils.Utilities;
  */
 public class RssParser implements ISourceParser {
 
+    
+    
+    private Configuration               conf;
     /**
      * The Storage module used for various I/O operations
      */
@@ -99,6 +98,19 @@ public class RssParser implements ISourceParser {
      */
     public static final String          UNCLASSIFIED = "UNCLASSIFIED";
     /**
+     * The String that null XML attributes get initialized to (We don't 
+     * want null pointer exceptions now, do we?).
+     */
+    public static final String          NULLATTRIBUTE = "";
+    /**
+     * The String that is returned if image src cannot be found.
+     */
+    public static final String          IMAGESRCNOTFOUND = "";
+    /**
+     * Formats of image links accepted.
+     */    
+    public static final String[]        IMAGEFORMATS = {".jpg","jpeg",".png",".gif"};
+     /**
      * Limit number in days to keep articles. Articles older that this
      * number of days are ignored
      */
@@ -117,44 +129,42 @@ public class RssParser implements ISourceParser {
      */
     protected static final Logger       LOGGER =
             org.scify.NewSumServer.Server.Utils.Main.getLogger();
-    /**
-     * Pattern to ommit text from the Articles.
-     */
-    protected static final 
-            HashMap<String, String>     hsSwitches =
-            Communicator.getSwitches();
+
+    protected String                    sLang;
+    
     /**
      * The String containing various regular expression
-     * patterns for the English Articles.
+     * patterns for the Articles.
      */
-    protected static final String       PATTERN_EN = readPattern("EN");
-    /**
-     * The String containing various regular expression patterns
-     * for the Greek Articles.
-     */
-    protected static final String       PATTERN_GR = readPattern("GR");
-    /**
-     * The PATTERN to use for the text filtering.
-     */
-    protected static final String       PATTERN =
-    (hsSwitches.get("PathToSources").endsWith("EN.txt")) ? PATTERN_EN : PATTERN_GR;
+    protected String                    PATTERN;
+
 
     /**
      * Constructor of the RssParser Class. Initializes the {@link #lsItems} list
      *
      * @param iDataS The Data Storage module to use
-     * @param iArtDaysArg The max number of days old that articles are accepted
+     * @param fServerConfig The configuration file
      */
-    public RssParser(IDataStorage iDataS, long iArtDaysArg) {
+    public RssParser(IDataStorage iDataS, Configuration config) {
+        
         this.ids = iDataS;
-        this.iArticleDays = iArtDaysArg;
-        lsItems = new ArrayList<Article>();
-        LOGGER.log(Level.INFO, "Processing pattern {0}",
-                PATTERN.equals(PATTERN_GR) ? "GR" : "EN");
+        
+        this.conf = config;
+        
+        this.iArticleDays = this.conf.getMaxDaysToFetchForArticles();
+        
+        this.sLang = this.conf.getCurrentLanguage();
+        
+        this.PATTERN = readPattern(this.sLang);
+        
+        this.lsItems = new ArrayList<Article>();
+        
+//        LOGGER.log(Level.INFO, "Processing pattern {0}", sLang);
+        
     }
     /**
      * Processes the feeds from the given URL string and adds them to a List
-     * containing an {@link Article} for each item found.
+     * containing an {@link Article} for each item found. Uses Rome.
      *
      * @param urlString the URL string to parse
      * @param sCategory The category that the specified URL is about
@@ -162,46 +172,48 @@ public class RssParser implements ISourceParser {
      * @throws IOException
      */
     public void ProcessFeed(final String urlString, final String sCategory)
-            throws NetworkException, IOException {
-
-        //create a listener for handling our callbacks
-        FeedParserListener listener;
-        listener = new DefaultFeedParserListener() {
-            @Override
-            public void onItem(FeedParserState state,
-                    String title,
-                    String link,
-                    String description,
-                    String permalink) throws FeedParserException {
-                // Use first 30 characters for title...
-                if ((title == null) || (title.trim().length() == 0)) {
-                    title = description.substring(0, 30) + "...";
-                }
-                // TODO for later version
-                // check if category is "Γενικά" || "Top News" and if such, create
-                // new UnlabeledArticle so that it gets category from the
-                // classification Module.
-                
+            throws FeedException,IOException{
+        String title;
+        String permalink;
+        String description;
+        String imageUrl;
+        
+        URL feedUrl = new URL(urlString);
+        SyndFeedInput input = new SyndFeedInput();
+        try{
+            //for the rss corresponding to the link parse the XML
+            SyndFeed feed = input.build(new XmlReader(feedUrl));
+            List <SyndEntryImpl> entries=feed.getEntries();
+            //for each entry in the XML get the data
+            for(SyndEntryImpl entry : entries){
+                //we don't like null, map null to NULLATTRIBUTE
+                title= entry.getTitle()==null? NULLATTRIBUTE : entry.getTitle();
+                permalink=entry.getLink()==null? NULLATTRIBUTE : entry.getLink();
+                description=entry.getDescription().getValue()==null? NULLATTRIBUTE
+                        : entry.getDescription().getValue();
+                imageUrl=getImageUrls(entry);
+                //depeding on the type of sCategory 
                 if (sCategory.equals(UNCLASSIFIED)) {
-                    // Initiate an Unlabeled Article (null Category) with boolean
-                    // toWrap = false, so that
-                    // it is not accessed by the classification trainer
-                    UnlabeledArticle tmpUnArt =
-                            new UnlabeledArticle(permalink, title.trim(),
-                            description, null, urlString, false);
-                    //filter Article text
-                    tmpUnArt = (UnlabeledArticle) preProcessArticle(tmpUnArt, 9);
-                    // Add the Article found to the list, avoid possible duplicates
-                    if (tmpUnArt != null) {
-                        Utilities.addItemToList(lsItems, tmpUnArt);
+                        // Initiate an Unlabeled Article (null Category) with boolean
+                        // toWrap = false, so that
+                        // it is not accessed by the classification trainer
+                        UnlabeledArticle tmpUnArt =
+                                new UnlabeledArticle(permalink, title.trim(),
+                                description, null, urlString,imageUrl, false);
+                        //filter Article text
+                        tmpUnArt = (UnlabeledArticle) preProcessArticle(tmpUnArt, 9);
+                        // Add the Article found to the list, avoid possible duplicates
+                        if (tmpUnArt != null) {
+                            Utilities.addItemToList(lsItems, tmpUnArt);
+                        }
+                        // Otherwise procceed normally with provided category
                     }
-                // Otherwise procceed normally with provided category
-                } else {
+                else{
                     // Initiate a new article with toWrap = true,
                     // so that it feeds the classification trainer
                     Article tmpArt =
                             new Article(permalink, title.trim(),
-                            description, sCategory, urlString, true);
+                            description, sCategory, urlString,imageUrl, true);
                     //filter article text
                     tmpArt = preProcessArticle(tmpArt, 10);
                     // Add the Article found to the list, avoid possible duplicates
@@ -210,34 +222,15 @@ public class RssParser implements ISourceParser {
                     }
                 }
             }
-
-            @Override
-            public void onCreated(FeedParserState state, Date date) throws FeedParserException {
-                if (!lsItems.isEmpty()) {
-                    //Adding date to current Article -- Some feeds don't provide date
-                    Article tmpArt = lsItems.get(lsItems.size() - 1);
-                    tmpArt.setDate(date);
-                }
-            }
-        };
-        // debug
-//        System.out.println("Fetching resource: " + urlString);
-        // debug
-        //use the FeedParser network IO package to fetch our resource URL
-        ResourceRequest request = ResourceRequestFactory.getResourceRequest(urlString);
-        request.setRequestHeaderField("User-Agent", "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:16.0) Gecko/20100101 Firefox/16.0");
-        FeedParser parser = null;
-        try {
-            // Grab input stream
-            InputStream is = request.getInputStream();
-            parser = FeedParserFactory.newFeedParser();
-            parser.parse(listener, is, urlString);
-        } catch (FeedParserException ex) {
-            LOGGER.log(Level.WARNING, ex.getMessage(), ex);
-        } catch (Exception ex) {
-            LOGGER.log(Level.WARNING, ex.getMessage());
+        }catch(IOException ex){
+            LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
         }
+        catch(Exception ex){
+            LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        
     }
+    
     @Override
     public List<Article> getAllArticles(final HashMap<String, String> Sources) {
         final List<Article> AllArticles = 
@@ -278,11 +271,9 @@ public class RssParser implements ISourceParser {
                     // Add the Articles to the list
                     lsResults.addAll(tmpList);
                 }
-            } catch (NetworkException ex) {
-                LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
             } catch (IOException ex) {
                 LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
-            } catch (FeedParserException ex) {
+            } catch (FeedException ex) {
                 LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
             }
         }
@@ -294,7 +285,7 @@ public class RssParser implements ISourceParser {
 
     @Override
     public List<Article> getNewsFromFeed(String sLinkToFeed, String sCategory)
-            throws NetworkException, IOException, FeedParserException {
+            throws IOException, FeedException{
 
         List<Article> lsArticles = null;
         try {
@@ -348,7 +339,7 @@ public class RssParser implements ISourceParser {
         int Initial = clear.size();
         // Specific filtering
         Iterator it = clear.iterator();
-        if (PATTERN.equals(PATTERN_EN)) { //english articles
+        if (sLang.equals("EN")) { //english articles
             while (it.hasNext()) {
                 Article each = (Article) it.next();
                 if (each.getFeed().contains("bbci")) {
@@ -369,7 +360,7 @@ public class RssParser implements ISourceParser {
                     }
                 }
             }
-        } else { // greek pattern
+        } else if (sLang.equals("EL")) { // greek pattern
             while (it.hasNext()) {
                 Article each = (Article) it.next();
                 if (each.getFeed().contains("epikaira")) { // remove [category] tags from titles for these feeds
@@ -454,15 +445,20 @@ public class RssParser implements ISourceParser {
      * @return all the Regular Expression patterns contained in the PATTERN
      * file, splitted by a separator
      */
-    private static String readPattern(String lang) {
+    private String readPattern(String lang) {
         String sRes = null;
-        String sToolPath = hsSwitches.get("ToolPath");
+        String sToolPath = this.conf.getToolPath();
         String sPath = sToolPath + "regexPat_" + lang + ".txt";
         File fFile = new File(sPath);
-        if (fFile.canRead()) {
-            sRes = Utilities.readFromFile(sPath, sPatternSep);
+        if (fFile.exists()) {
+            if (fFile.canRead()) {
+                sRes = Utilities.readFromFile(sPath, sPatternSep);
+            } else {
+                LOGGER.log(Level.SEVERE, "Could not read file {0}", fFile.getPath());
+            }
         } else {
-            LOGGER.log(Level.SEVERE, "Could not read file {0}", fFile.getPath());
+            LOGGER.log(Level.SEVERE, "File {0} does not Exist\n... Will "
+                    + "continue without Article pre-filtering.", fFile.getPath());
         }
         return sRes;
     }
@@ -477,13 +473,28 @@ public class RssParser implements ISourceParser {
      * criteria
      */
     private Article preProcessArticle(Article aArt, int minWords) {
+
         //filter Article text
         if (aArt.getText() != null && !aArt.getText().trim().isEmpty()) {
-            String sClearDescription = filter(aArt.getText(), PATTERN);
-            // Accept article only if description length has more than 9 words
-            if (sClearDescription.split("\\s+").length > minWords) {
-                aArt.setText(sClearDescription);
-                return aArt;
+            if (PATTERN != null) {
+                String sClearDescription = filter(aArt.getText(), PATTERN);
+                // Accept article only if description length has more than 9 words
+                if (sClearDescription.
+                        replaceAll("[.,;:!@]", " ")
+                            .split("\\s+").length > minWords) {
+                    aArt.setText(sClearDescription);
+                    return aArt;
+                }
+            } else { // no regex filtering pattern specified
+                
+                if (aArt.getText().trim().
+                        replaceAll("[.,;:!@]", " ").
+                            split("\\s+").length > minWords) {
+                    
+                    return aArt;
+                    
+                }
+                
             }
         }
         return null;
@@ -504,7 +515,7 @@ public class RssParser implements ISourceParser {
         try {
             // get the category-daystokeep map from file to memory
             HashMap<String, Integer> hsCategoryDays =
-                    Utilities.readDaysPerCategoryFile(hsSwitches.get("sCatsDaysFile"));
+                    Utilities.readDaysPerCategoryFile(this.conf.getCategoriesDaysFileLocation());
             // load articles from previous run
             oldArticles = (ArrayList<Article>) this.ids.loadObject("AllArticles", "feeds");
             // for each current article
@@ -577,5 +588,37 @@ public class RssParser implements ISourceParser {
         }
     }
 
+    private String getImageUrls(SyndEntryImpl entry){
+        Attribute url;
+        String target;
+        //attempt to get image url from "url"
+        List<Element> foreignMarkups = (List<Element>) entry.getForeignMarkup();
+        for(Element each: foreignMarkups){
+            url=each.getAttribute("url");
+            if(url!=null){
+                target=url.getValue();
+                if(isImage(target)){
+                    return target;
+                }
+            }
+        }
+        //attempt to get image url from  Enclosure
+        List<SyndEnclosure> enclosures = entry.getEnclosures();
+        for(SyndEnclosure each: enclosures){
+            if(each.getType().contains("image")){
+               return each.getUrl();             
+            }
+        }
+        return IMAGESRCNOTFOUND;
+    }
+    
+    private boolean isImage(String url){
+        for(int i=0;i<IMAGEFORMATS.length;i++){
+            if(url.endsWith(IMAGEFORMATS[i])){
+                return true;
+            }
+        }
+        return false;
+    }
 }
 

@@ -70,6 +70,10 @@ public class Article implements java.io.Serializable {
      */
     protected String        sdate;
     /**
+     * The url specifying an image for the article.
+     */    
+    protected String        imageUrl;
+    /**
      * The date that the Article was created.
      * Most of the times, it is fetched from the Feed Provider.
      * Otherwise (if the feed does not provide the article date), it
@@ -93,7 +97,7 @@ public class Article implements java.io.Serializable {
      * machine learning algorithm
      */
     public Article(String Source, String Title, String Text, String Category,
-            String Feed, Boolean toWrap) {
+            String Feed, String imageUrl, Boolean toWrap) {
         this.Source = Source;
         if (Text != null) {
             this.Text = cleanUp(Text.trim());
@@ -103,6 +107,7 @@ public class Article implements java.io.Serializable {
         this.Title = cleanUp(Title);
         this.Category = Category;
         this.Feed = Feed;
+        this.imageUrl = imageUrl;
         this.toWrap = toWrap;
     }
     /**
@@ -118,6 +123,13 @@ public class Article implements java.io.Serializable {
      */
     public String getText() {
         return Text;
+    }
+    /**
+     *
+     * @return the imageUrl of the Article
+     */
+    public String getImageUrl() {
+        return imageUrl;
     }
     /**
      *
@@ -140,6 +152,22 @@ public class Article implements java.io.Serializable {
     public String getFeed() {
         return Feed;
     }
+    /**
+     *
+     * @return The date the article was created
+     */
+    public Calendar getDate() {
+        return this.date;
+    }
+    /**
+     *
+     * @return true if the Article will be used to train the
+     * classification package
+     */
+    public boolean getToWrap() {
+        return this.toWrap;
+    }
+    
     /**
      * Sets the source that contains the article
      * @param Source The Source containing the Article
@@ -199,21 +227,6 @@ public class Article implements java.io.Serializable {
         SimpleDateFormat df = new SimpleDateFormat();
         df.applyPattern("dd.MM.yyyy - HH:mm:ss z");
         return df.format(this.date.getTime());
-    }
-    /**
-     *
-     * @return The date the article was created
-     */
-    public Calendar getDate() {
-        return this.date;
-    }
-    /**
-     *
-     * @return true if the Article will be used to train the
-     * classification package
-     */
-    public boolean getToWrap() {
-        return this.toWrap;
     }
     @Override
     public String toString() {

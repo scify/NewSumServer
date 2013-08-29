@@ -31,9 +31,6 @@ package org.scify.NewSumServer.Server.Sources;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
-import org.apache.commons.feedparser.FeedParserException;
-import org.apache.commons.feedparser.network.NetworkException;
-import org.scify.NewSumServer.Server.Storage.IDataStorage;
 import org.scify.NewSumServer.Server.Structures.Article;
 
 /**
@@ -44,7 +41,7 @@ public class BlogParser implements ISourceParser {
 
     @Override
     public List<Article> getNewsFromFeed(String sLinkToFeed, String sCategory)
-            throws NetworkException, IOException, FeedParserException {
+            throws IOException{
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

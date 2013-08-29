@@ -54,6 +54,13 @@ public class Topic extends ArrayList<Article> {
      * The Clustered Topic Unique Identifier
      */
     protected String ID = null;
+    
+    /**
+     * The number of sources the Topic was found.
+     * Initially assigned using {@link #setNewestDate(boolean)}
+     */
+    
+    protected int sourcesNum = 0;     
 
     /**
      * The Date of the Topic.
@@ -77,6 +84,7 @@ public class Topic extends ArrayList<Article> {
     public Topic(String sID) {
         super();
         this.ID = sID;
+        this.sourcesNum=this.size();
     }
     /**
      * Full constructor
@@ -87,8 +95,9 @@ public class Topic extends ArrayList<Article> {
     public Topic(String sID, String sTitle, List<Article> lArticles) {
         super(lArticles);
         this.ID = sID;
+        this.sourcesNum=this.size();
         if (sTitle != null) {
-            this.Title = sTitle + " (" + String.valueOf(this.size()) + ")";
+            this.Title = sTitle;
         }
     }
     /**
@@ -99,7 +108,8 @@ public class Topic extends ArrayList<Article> {
     public Topic(String sTitle, List<Article> lArticles) {
         super(lArticles);
         this.ID = String.valueOf(UUID.randomUUID());
-        this.Title = sTitle + " (" + String.valueOf(this.size()) + ")";
+        this.sourcesNum=this.size();
+        this.Title = sTitle;
     }
     /**
      *
@@ -115,7 +125,7 @@ public class Topic extends ArrayList<Article> {
             return null;
         }
         // Update title
-        this.Title = this.get(0).getTitle() + " (" + String.valueOf(this.size()) + ")";
+        this.Title = this.get(0).getTitle();
         return this.Title;
     }
     /**
@@ -133,7 +143,7 @@ public class Topic extends ArrayList<Article> {
      * @param sNewTitle Assigns the Topic a Title
      */
     public void setTitle(String sNewTitle) {
-        this.Title = sNewTitle + " (" + String.valueOf(this.size()) + ")";
+        this.Title = sNewTitle;
     }
     /**
      * Overwrites the Topic ID (if exists) with the specified one
@@ -142,6 +152,7 @@ public class Topic extends ArrayList<Article> {
     public void setID(String sID) {
         this.ID = sID;
     }
+    
     /**
      *
      * @return The topic ID

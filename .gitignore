@@ -23,15 +23,24 @@ nbproject/*
 *.txt.*
 
 #project specific
-data/Articles/*.txt
-data/Summaries/*.Summary
-data/MachineLearningData/*.cg
-data/txtSummaries/*
-data/temp
-data/BaseDir/*.Links
-data/BaseDir/*.generic
-data/BaseDir/*.nameList
-data/Logger/*.txt
+dataEN/Articles/*.txt
+dataEN/Summaries/*.Summary
+dataEN/MachineLearningData/*.cg
+dataEN/txtSummaries/*
+dataEN/temp
+dataEN/BaseDir/*.Links
+dataEN/BaseDir/*.generic
+dataEN/BaseDir/*.nameList
+dataEN/Logger/*.txt
+dataEL/Articles/*.txt
+dataEL/Summaries/*.Summary
+dataEL/MachineLearningData/*.cg
+dataEL/txtSummaries/*
+dataEL/temp
+dataEL/BaseDir/*.Links
+dataEL/BaseDir/*.generic
+dataEL/BaseDir/*.nameList
+dataEL/Logger/*.txt
 
 # libs
 lib/*.jar
