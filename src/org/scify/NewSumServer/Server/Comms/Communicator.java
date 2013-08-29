@@ -437,7 +437,7 @@ public class Communicator {
 //            System.out.println("Date: " + each.getSortableDate() + " : " + each.getTitle());
 //        }
         for (Topic each : tTopics) { //TODO change
-            data.add(new TopicData(each.getID(), each.getTitle(), each.getDate(), each.getArticlesCount(), null));
+            data.add(new TopicData(each.getID(), each.getTitle(), each.getDate(), each.getArticlesCount(), each.getImageSrc()));
         }
         return data.jsonize();
     }
@@ -654,7 +654,7 @@ public class Communicator {
         ArrayList<SourceData> sources = new ArrayList();
         for (Sentence eachSen : sentences) {
             if (!sources.contains(new SourceData(eachSen.getLinkToSource(), null, null))) { //created object just to use contains
-                sources.add(new SourceData(eachSen.getLinkToSource(), appendSourceLabel(eachSen.getFeed()), null));
+                sources.add(new SourceData(eachSen.getLinkToSource(), appendSourceLabel(eachSen.getFeed()), eachSen.getSourceImageUrl()));
             }
         }
         return sources;

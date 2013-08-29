@@ -105,7 +105,7 @@ public class RssParser implements ISourceParser {
     /**
      * The String that is returned if image src cannot be found.
      */
-    public static final String          IMAGESRCNOTFOUND = "";
+    public static final String          IMAGESSRCNOTFOUND = "";
     /**
      * Formats of image links accepted.
      */    
@@ -609,7 +609,7 @@ public class RssParser implements ISourceParser {
                return each.getUrl();             
             }
         }
-        return IMAGESRCNOTFOUND;
+        return IMAGESSRCNOTFOUND;
     }
     
     private boolean isImage(String url){
