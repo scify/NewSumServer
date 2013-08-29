@@ -31,7 +31,6 @@ package org.scify.NewSumServer.Server.Structures;
 import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.scify.NewSumServer.Server.Comms.Communicator;
 import static org.scify.NewSumServer.Server.Structures.Sentence.LOGGER;
 import org.scify.NewSumServer.Server.Utils.Main;
 import org.scify.NewSumServer.Server.Utils.Utilities;
@@ -61,6 +60,11 @@ public class Sentence implements Serializable {
      */
     protected String    sFeed;                      // The RSSFeed that the article came from
     /**
+     * The Image URL link in the article, as string
+     */
+    protected String    sSourceImageUrl;
+
+    /**
      * The static Sentence Separator
      */
     protected static String    sSentenceSeparator
@@ -73,11 +77,12 @@ public class Sentence implements Serializable {
      * @param sLink         The permalink that links to the article this sentence comes from
      * @param sFeed         The Feed that the sentence came from
      */
-    public Sentence(String sArtSnippet, String sLink, String sFeed) {
+    public Sentence(String sArtSnippet, String sLink, String sFeed, String sSourceImageUrl) {
 
         this.sArtSnippet        = sArtSnippet;
         this.sLink              = sLink;
         this.sFeed              = sFeed;
+        this.sSourceImageUrl    = sSourceImageUrl;
     }
     /**
      *
@@ -86,7 +91,17 @@ public class Sentence implements Serializable {
     public String getSnippet() {
         return sArtSnippet;
     }
-
+    /**
+     *
+     * @return the Article Snippet
+     */
+    public String getSourceImageUrl() {
+        return this.sSourceImageUrl;
+    }
+    
+    public void setSourceImageUrl(String sSourceImageUrlArg) {
+        this.sSourceImageUrl = sSourceImageUrlArg;
+    }
     /**
      *
      * @return The link that the Sentence comes from

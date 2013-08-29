@@ -272,7 +272,11 @@ public class Summariser {
                 if (sCurSentence.trim().length() > 0)
                 {
                     // Create sentence object
-                    Sentence sCur = new Sentence(sCurSentence.trim(), aCur.getSource(), aCur.getFeed());
+                    Sentence sCur = 
+                        new Sentence(sCurSentence.trim(), 
+                                    aCur.getSource(), 
+                                    aCur.getFeed(),
+                                    aCur.getImageUrl());
                     // Add to all sentences list
                     lAllSentences.add(sCur);
                 }
@@ -301,7 +305,11 @@ public class Summariser {
                 if (sCurSentence.trim().length() > 0)
                 {
                     // Create sentence object
-                    Sentence sCur = new Sentence(sCurSentence.trim(), aCur.getSource(), aCur.getFeed());
+                    Sentence sCur = 
+                        new Sentence(sCurSentence.trim(), 
+                                    aCur.getSource(), 
+                                    aCur.getFeed(),
+                                    aCur.getImageUrl());
                     // Add to all sentences list
                     lAllSentences.add(sCur);
                 }
