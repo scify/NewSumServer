@@ -73,7 +73,8 @@ public class SummaryData implements JSonizable{
         }
         return summaries;
     }
-
+//TODO stop using the computer
+    //TODO hashmap <url - > image >
     /**
      * Returns a String of the JSON format of the current object
      * 

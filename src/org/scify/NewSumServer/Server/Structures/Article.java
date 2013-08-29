@@ -200,7 +200,13 @@ public class Article implements java.io.Serializable {
     public void setCategory(String Category) {
         this.Category = Category;
     }
-
+    /**
+     * Sets the ImageUrl corresponding to the article
+     * @param ImageUrl The category that the article belongs to
+     */
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl=imageUrl;
+    }
     /**
      *
      * @param Cal the calendar to set

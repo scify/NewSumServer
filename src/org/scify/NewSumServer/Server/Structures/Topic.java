@@ -35,6 +35,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
+import org.scify.NewSumServer.Server.Sources.RssParser;
 
 /**
  * Describes a specific subject. It is made of all the {@link Article}s that are
@@ -131,6 +132,27 @@ public class Topic extends ArrayList<Article> {
     /**
      * Sets as the Topic Title the title from the Newest Article
      */
+    public String getImageSrc() {
+        return this.get(0).getImageUrl();
+    }
+    /**
+     * Sets as the Topic Title the title from the Newest Article
+     */
+    public ArrayList <String> getImageSrces() {
+        ArrayList <String> srces=new ArrayList <String>();
+        for(int i=0;i<this.size();i++){
+            String check=this.get(i).getImageUrl();
+            if(!check.equals(RssParser.IMAGESSRCNOTFOUND)) {
+                srces.add(this.get(i).getImageUrl());
+            }
+        }
+        if(srces.isEmpty()){
+            srces.add(RssParser.IMAGESSRCNOTFOUND);
+            return srces;
+        }
+        return srces;
+    }
+    
     public void setTitleFromNewest() {
         if (this.Title == null) {
             setTitle(this.get(0).getTitle());
