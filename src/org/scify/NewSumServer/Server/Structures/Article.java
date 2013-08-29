@@ -97,7 +97,7 @@ public class Article implements java.io.Serializable {
      * machine learning algorithm
      */
     public Article(String Source, String Title, String Text, String Category,
-            String Feed, String imageUrl, Boolean toWrap) {
+            String Feed, String imageUrl, Date date, Boolean toWrap) {
         this.Source = Source;
         if (Text != null) {
             this.Text = cleanUp(Text.trim());
@@ -109,6 +109,12 @@ public class Article implements java.io.Serializable {
         this.Feed = Feed;
         this.imageUrl = imageUrl;
         this.toWrap = toWrap;
+        // add date
+        if (date != null) {
+            this.date = Utilities.convertDateToCalendar(date);
+        } else {
+            this.date = null;
+        }
     }
     /**
      *

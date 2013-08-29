@@ -28,6 +28,7 @@
 
 package org.scify.NewSumServer.Server.Structures;
 
+import java.util.Date;
 import org.scify.NewSumServer.Server.MachineLearning.classificationModule;
 import org.scify.NewSumServer.Server.Utils.Main;
 
@@ -46,9 +47,9 @@ public class UnlabeledArticle extends Article {
      * @param Feed The feed url that this article is derived from
      * @param ToWrap if true, the article will be used to train the Category Classifier
      */
-    public UnlabeledArticle(String Source, String Title, String Text, String Category, String Feed, String imageUrl, Boolean ToWrap) {
+    public UnlabeledArticle(String Source, String Title, String Text, String Category, String Feed, String imageUrl, Date date, Boolean ToWrap) {
 
-        super(Source, Title, Text, Category, Feed, imageUrl, ToWrap);
+        super(Source, Title, Text, Category, Feed, imageUrl, date, ToWrap);
 
     }
 

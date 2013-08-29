@@ -194,7 +194,7 @@ public class Main {
                 + "-iOutputSize: The max number of Sentences the Summariser prints\n"
                 + "-ArticleMaxDays: The Number of Max Days to Accept an article (until now)\n"
                 + "-useInputDirData: true or false, defaults to false\n"
-                + "-LogFile: The path to save the log file"
+                + "-LogFile: The path to save the log file\n"
                 + "-DebugRun: true if you want to run with category switching (for quicker runs)\n\n"
                 + "Example Usage: java -jar NewSumServer.jar -BaseDir=./data/Dir -iOutputSize=50\n\n");
         //Parse and check Command Line arguments

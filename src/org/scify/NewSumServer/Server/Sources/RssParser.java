@@ -177,7 +177,7 @@ public class RssParser implements ISourceParser {
         String permalink;
         String description;
         String imageUrl;
-        
+        Date   date;
         URL feedUrl = new URL(urlString);
         SyndFeedInput input = new SyndFeedInput();
         try{
@@ -189,9 +189,12 @@ public class RssParser implements ISourceParser {
                 //we don't like null, map null to NULLATTRIBUTE
                 title= entry.getTitle()==null? NULLATTRIBUTE : entry.getTitle();
                 permalink=entry.getLink()==null? NULLATTRIBUTE : entry.getLink();
-                description=entry.getDescription().getValue()==null? NULLATTRIBUTE
+                description=entry.getDescription() == null? NULLATTRIBUTE
                         : entry.getDescription().getValue();
                 imageUrl=getImageUrls(entry);
+                // add date
+                date = entry.getPublishedDate();
+                
                 //depeding on the type of sCategory 
                 if (sCategory.equals(UNCLASSIFIED)) {
                         // Initiate an Unlabeled Article (null Category) with boolean
@@ -199,7 +202,7 @@ public class RssParser implements ISourceParser {
                         // it is not accessed by the classification trainer
                         UnlabeledArticle tmpUnArt =
                                 new UnlabeledArticle(permalink, title.trim(),
-                                description, null, urlString,imageUrl, false);
+                                description, null, urlString, imageUrl, date, false);
                         //filter Article text
                         tmpUnArt = (UnlabeledArticle) preProcessArticle(tmpUnArt, 9);
                         // Add the Article found to the list, avoid possible duplicates
@@ -213,7 +216,7 @@ public class RssParser implements ISourceParser {
                     // so that it feeds the classification trainer
                     Article tmpArt =
                             new Article(permalink, title.trim(),
-                            description, sCategory, urlString,imageUrl, true);
+                            description, sCategory, urlString, imageUrl, date, true);
                     //filter article text
                     tmpArt = preProcessArticle(tmpArt, 10);
                     // Add the Article found to the list, avoid possible duplicates
