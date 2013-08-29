@@ -16,7 +16,7 @@ The project depends on the following libraries
 - [JInsect.jar](http://sourceforge.net/projects/jinsect/)
 - [Jama-1.0.2.jar](http://math.nist.gov/javanumerics/jama/)
 - OpenJGraph.jar
-- [RSSParser.jar](http://commons.apache.org/dormant/feedparser/source-repository.html)
+- [rome-1.0.jar](https://rometools.jira.com/wiki/display/ROME/Home)
 - [gson-2.2.4.jar](http://code.google.com/p/google-gson/)
 - [jaxen-1.1.3.jar](http://jaxen.codehaus.org/)
 - [jdom-1.1.3.jar](http://www.jdom.org/index.html)
@@ -35,3 +35,4 @@ Contributors
 -
 - *George G. <ggianna@scify.org>*
 - *George K. <gkiom@scify.org>*
+- *Andreas G. <it21005@hua.gr>*
