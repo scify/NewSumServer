@@ -1,0 +1,12 @@
+- generate Source on parsing, acquiring imageurl link and adding source label (text)
+- summary should have a Source as an attribute (?)
+- use summary struct on summarizer class (?)
+- remove splitter training files from src and add to lang specific folder
+
+- remove unneeded packages (such as datacollections, most json implementations -- check)
+
+- after json refactor, recreate NewSumWS.pdf file with new examples
+
+- multithreaded source parsing (next)
+ 
+- ADD here
