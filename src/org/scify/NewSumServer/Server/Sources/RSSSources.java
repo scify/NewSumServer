@@ -296,7 +296,7 @@ public class RSSSources {
             if (ids.objectExists("LinkLabels", "generic")) {
                 ids.deleteObject("LinkLabels", "generic");
             }
-            ids.SaveObject(hsLinkLabels, "LinkLabels", "generic");
+            ids.saveObject(hsLinkLabels, "LinkLabels", "generic");
         } catch (FileNotFoundException ex) {
             LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
         } catch (IOException ex) {
@@ -315,7 +315,7 @@ public class RSSSources {
             if (ids.objectExists("SourceLabels", "generic")) {
                 ids.deleteObject("SourceLabels", "generic");
             }
-            ids.SaveObject(hsSourceLabels, "SourceLabels", "generic");
+            ids.saveObject(hsSourceLabels, "SourceLabels", "generic");
         } catch (FileNotFoundException ex) {
             LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
         } catch (IOException ex) {

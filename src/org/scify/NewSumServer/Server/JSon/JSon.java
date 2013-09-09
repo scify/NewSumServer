@@ -12,16 +12,20 @@ import com.google.gson.Gson;
      * JSonizable interface is implemented for the other classes
      */
 public class JSon {
-    protected static Gson json=new Gson();
+    
+    public static Gson json = new Gson();
  
     /**
      * Returns a String of the JSON format of the object
      * 
      * @param object any object to be converted.
+     * @param classOfT the class that the object belongs to
      * @return JSON format of object.
      */
-    public static String jsonize(Object object){
-        return json.toJson(object);
+    public static String jsonize(Object object, Class<? extends Object> classOfT){
+    
+        return json.toJson(object, classOfT);
+    
     } 
 
     /**
@@ -32,6 +36,8 @@ public class JSon {
      * @return instance of object corresponding to the JSON String.
      */
     public static <T> T unjsonize(String jsonstring, Class<T> classOfT) throws Exception{
+    
         return json.fromJson(jsonstring, classOfT);
+    
     }
 }

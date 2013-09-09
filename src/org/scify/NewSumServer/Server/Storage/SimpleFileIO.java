@@ -230,7 +230,7 @@ public class SimpleFileIO implements IDataStorage {
 
 
     @Override
-    public void SaveObject(Serializable sObj, String sObjName, String sObjCategory) {
+    public void saveObject(Serializable sObj, String sObjName, String sObjCategory) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

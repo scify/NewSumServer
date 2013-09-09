@@ -40,18 +40,26 @@ public class UnlabeledArticle extends Article {
 
     /**
      * Constructor of the unlabeledUrticle. Uses same as it's parent class.
-     * @param Source The Source that contains the article
+     * @param source The source that contains the article
      * @param Title The title of the Article
      * @param Text The text body of the Article
      * @param Category The Category that this article belongs to
      * @param Feed The feed url that this article is derived from
      * @param ToWrap if true, the article will be used to train the Category Classifier
      */
-    public UnlabeledArticle(String Source, String Title, String Text, String Category, String Feed, String imageUrl, Date date, Boolean ToWrap) {
-
-        super(Source, Title, Text, Category, Feed, imageUrl, date, ToWrap);
-
+    public UnlabeledArticle(Source source, String Title, String Text, String Category, String Feed, Date date, Boolean toWrap) {
+    
+        super(source, Title, Text, Category, Feed, date, toWrap);
+    
     }
+
+    
+    
+//    public UnlabeledArticle(String Source, String Title, String Text, String Category, String Feed, String imageUrl, Date date, Boolean ToWrap) {
+//
+//        super(Source, Title, Text, Category, Feed, imageUrl, date, ToWrap);
+//
+//    }
 
     @Override
     public String getCategory() {

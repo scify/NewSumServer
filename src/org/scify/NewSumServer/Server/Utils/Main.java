@@ -42,7 +42,6 @@ import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
@@ -51,6 +50,8 @@ import java.util.regex.Pattern;
 import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.store.LockObtainFailedException;
 import org.scify.NewSumServer.Server.Comms.Communicator;
+import org.scify.NewSumServer.Server.JSon.TopicData;
+import org.scify.NewSumServer.Server.JSon.TopicsData;
 import org.scify.NewSumServer.Server.MachineLearning.classificationModule;
 import org.scify.NewSumServer.Server.Searching.Indexer;
 import org.scify.NewSumServer.Server.Sources.ISourceParser;
@@ -83,8 +84,7 @@ public class Main {
     public static String sLang;
     
     public static String sDataDir;
-            
-    
+              
     /**
      * The Path to the Log file
      */
@@ -233,8 +233,16 @@ public class Main {
         // initialize Configuration File for current run
         Configuration conf = new Configuration(fConfig);
         
-        //init data storage
-        IDataStorage ids = new InsectFileIO(sBaseDir);
+        //init data storage 
+        IDataStorage ids=null; 
+        try{
+            ids=InsectFileIO.initialize(sBaseDir);
+        }catch(InsectFileIO.AlreadyInitializedException e){
+            LOGGER.log(Level.SEVERE, "Something went terribly wrong, did you try"
+                    + " to initialize InsectFileIO from 2 different places "
+                        + "Houston we are going down, Exiting!");
+            System.exit(666);
+        }
         
         //init rssSources and read the sources file
         RSSSources r = new RSSSources(ids, conf);
@@ -357,22 +365,32 @@ public class Main {
 
 
         }
-        //DEBUG LINES //get user input
+//get user input
 //        System.out.println("Enter Search String\n");
 //        Scanner imp = new Scanner(System.in);
 //        String term = imp.next();
-//
+
 
 //        String sTop = cm.getTopicIDsByKeyword(ind, term, "All");
 //        System.out.println(sTop);
 //        System.out.println(cm.getTopicTitlesByIDs(sTop));
 
         // last debug
-//        String sUserSources = "http://rss.in.gr/feed/news/culture/" +
-//            "http://www.tovima.gr/feed/culture/" +
-//            "http://www.naftemporiki.gr/rssFeed?mode=section&id=6&atype=story";
-//        System.out.println(cm.getTopics(sUserSources, (String) al.get(bb)));
-//        System.out.println(cm.getTopics("All", (String) al.get(bb)));
+        Communicator cm=new Communicator(ids,ac,sum,ind,sLang);
+        try{
+            String sUserSources = "http://rss.in.gr/feed/news/culture/" +
+                "http://www.tovima.gr/feed/culture/" +
+                "http://www.naftemporiki.gr/rssFeed?mode=section&id=6&atype=story";
+            TopicsData td=new TopicsData(cm.getTopics("Πολιτισμός","[\"All\"]"));
+            for(TopicData each:  td){
+                System.out.println(each.getTopicTitle());
+                System.out.println("image : " + each.getImageUrl());
+                System.out.println("id : " + each.getTopicID());
+                System.out.println("date :" + each.getDate().toString());
+            }
+        }catch(Exception E){
+            E.printStackTrace();
+        }
         // last debug
 
 //        System.out.println("Found a total of " + iSummarizedClusterCnt + " summaries"

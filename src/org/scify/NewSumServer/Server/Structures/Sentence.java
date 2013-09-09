@@ -31,6 +31,7 @@ package org.scify.NewSumServer.Server.Structures;
 import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.scify.NewSumServer.Server.JSon.JSon;
 import static org.scify.NewSumServer.Server.Structures.Sentence.LOGGER;
 import org.scify.NewSumServer.Server.Utils.Main;
 import org.scify.NewSumServer.Server.Utils.Utilities;
@@ -45,29 +46,29 @@ public class Sentence implements Serializable {
     /**
      * The logger class, inherited from main
      */
-    protected static final Logger LOGGER = Main.getLogger();
+    protected transient static final Logger     LOGGER = Main.getLogger();
     /**
      * The Article Snippet, ie the important sentence of an article
      */
-    protected String    sArtSnippet;                // The Article Snippet
+    protected String                            sArtSnippet;
     /**
      * The permalink that the article, from which the sentence was taken,
      * comes from
      */
-    protected String    sLink;                      // The permalink the article comes from
+    protected String                            sLink;
     /**
      * The RSS Feed link that the article containing the Sentence was found in
      */
-    protected String    sFeed;                      // The RSSFeed that the article came from
+    protected String                            sFeed;
     /**
      * The Image URL link in the article, as string
      */
-    protected String    sSourceImageUrl;
+    protected String                            sSourceImageUrl;
 
     /**
      * The static Sentence Separator
      */
-    protected static String    sSentenceSeparator
+    protected static String         sSentenceSeparator
                                     = "===";       // The Sentence Separator
 
     /**
@@ -78,7 +79,6 @@ public class Sentence implements Serializable {
      * @param sFeed         The Feed that the sentence came from
      */
     public Sentence(String sArtSnippet, String sLink, String sFeed, String sSourceImageUrl) {
-
         this.sArtSnippet        = sArtSnippet;
         this.sLink              = sLink;
         this.sFeed              = sFeed;
@@ -132,7 +132,7 @@ public class Sentence implements Serializable {
             sLink = sLinkToSet;
         } else {
             sLink = "";
-            LOGGER.log(Level.INFO, "Invalid permalink for {0}", this.getSnippet());
+            LOGGER.log(Level.WARNING, "Invalid permalink for {0}", this.getSnippet());
         }
     }
     /**
@@ -145,18 +145,19 @@ public class Sentence implements Serializable {
             sFeed = sFeedToSet;
         } else {
             sFeed = "";
-            LOGGER.log(Level.INFO, "Invalid Link for {0}", this.getSnippet());
+            LOGGER.log(Level.WARNING, "Invalid Link for {0}", this.getSnippet());
         }
-    }
-    /**
-     *
-     * @return The Sentence Separator (i.e. SECOND_LEVEL_SEPARATOR)
-     */
-    public static String getSentenceSeparator() {
-        return sSentenceSeparator;
     }
     @Override
     public String toString() {
-        return sArtSnippet + sSentenceSeparator + sLink + sSentenceSeparator + sFeed;
+        return sArtSnippet + "\n" + sFeed + "\n" + sLink + "\n" + sSourceImageUrl;
     }
+    
+    public String toJSON() {
+        
+        return JSon.jsonize(this, Sentence.class);
+        
+        
+    }
+    
 }

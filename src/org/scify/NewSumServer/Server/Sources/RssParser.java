@@ -52,9 +52,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.jdom.Attribute;
 import org.jdom.Element;
+import org.scify.NewSumServer.Server.DataCollections.Articles;
 import org.scify.NewSumServer.Server.SystemFactory.Configuration;
 import org.scify.NewSumServer.Server.Storage.IDataStorage;
 import org.scify.NewSumServer.Server.Structures.Article;
+import org.scify.NewSumServer.Server.Structures.Source;
 import org.scify.NewSumServer.Server.Structures.UnlabeledArticle;
 import org.scify.NewSumServer.Server.Utils.Utilities;
 
@@ -110,6 +112,10 @@ public class RssParser implements ISourceParser {
      * Formats of image links accepted.
      */    
     public static final String[]        IMAGEFORMATS = {".jpg","jpeg",".png",".gif"};
+    /**
+     * Formats of links
+     */    
+    public static final String[]        LINKFORMATS = {"http://","https://","www","ww2"};
      /**
      * Limit number in days to keep articles. Articles older that this
      * number of days are ignored
@@ -138,7 +144,9 @@ public class RssParser implements ISourceParser {
      */
     protected String                    PATTERN;
 
-
+    
+    protected HashSet<Source>         allSources;
+    
     /**
      * Constructor of the RssParser Class. Initializes the {@link #lsItems} list
      *
@@ -195,14 +203,22 @@ public class RssParser implements ISourceParser {
                 // add date
                 date = entry.getPublishedDate();
                 
+                
+                // create new Source item
+                Source tmpSource = new Source(permalink, "ADD SOURCE NAME", "ADD SOURCE LOGO URL");
+                // add source to sources set
+                allSources.add(tmpSource);
+                
                 //depeding on the type of sCategory 
                 if (sCategory.equals(UNCLASSIFIED)) {
                         // Initiate an Unlabeled Article (null Category) with boolean
                         // toWrap = false, so that
                         // it is not accessed by the classification trainer
                         UnlabeledArticle tmpUnArt =
-                                new UnlabeledArticle(permalink, title.trim(),
-                                description, null, urlString, imageUrl, date, false);
+//                                new UnlabeledArticle(permalink, title.trim(),
+//                                description, null, urlString, imageUrl, date, false);
+                                new UnlabeledArticle(tmpSource, title.trim(), 
+                                    description, sCategory, urlString, date, Boolean.TRUE);
                         //filter Article text
                         tmpUnArt = (UnlabeledArticle) preProcessArticle(tmpUnArt, 9);
                         // Add the Article found to the list, avoid possible duplicates
@@ -214,9 +230,13 @@ public class RssParser implements ISourceParser {
                 else{
                     // Initiate a new article with toWrap = true,
                     // so that it feeds the classification trainer
+                    System.out.println(imageUrl);
+                    System.out.println(urlString);
                     Article tmpArt =
-                            new Article(permalink, title.trim(),
-                            description, sCategory, urlString, imageUrl, date, true);
+//                            new Article(permalink, title.trim(),
+//                            description, sCategory, urlString, imageUrl, date, true);
+                        new Article(tmpSource, title.trim(), description, 
+                                sCategory, urlString, date, Boolean.TRUE);
                     //filter article text
                     tmpArt = preProcessArticle(tmpArt, 10);
                     // Add the Article found to the list, avoid possible duplicates
@@ -319,7 +339,10 @@ public class RssParser implements ISourceParser {
         if (this.ids.objectExists("AllArticles", "feeds")) {
             this.ids.deleteObject("AllArticles", "feeds");
         }
-        this.ids.SaveObject(co, "AllArticles", "feeds");
+        Articles arts=new Articles(co);
+        try{
+        arts.save();
+        }catch(Exception e){}
     }
 
     /**
@@ -612,7 +635,44 @@ public class RssParser implements ISourceParser {
                return each.getUrl();             
             }
         }
+        //for Greeks or people who put their fkin images in the description
+        //Warning annoying code follows
+        if(entry.getDescription()!=null){
+            String value=entry.getDescription().getValue();
+            String youAreL=entry.getLink();
+            Pattern p=Pattern.compile("src=[\"']([^\"']*)");
+
+            Matcher m= p.matcher(value);
+            if(m.find()){
+                String result=m.group(1);
+                if(result.contains("?")){ //some smart people have ?parameters after the img format..
+                                          //remove it
+                    result=result.substring(0, result.indexOf("?"));
+                }
+                if(isImage(result)){ //check if the link has an img format
+                    if(isUrl(result)){
+                        return result;
+                    }
+                    else{ //some people have absolute paths , create the relative one 
+                        youAreL=youAreL.substring(0,youAreL.indexOf("/",youAreL.indexOf(".")));
+                        if(result.startsWith("/")){
+                            return youAreL+result;
+                        }
+                        return youAreL+"/"+result;
+                    }
+                }
+            }
+        }
         return IMAGESSRCNOTFOUND;
+    }
+    
+    private boolean isUrl(String url){
+        for(int i=0;i<LINKFORMATS.length;i++){
+            if(url.startsWith(LINKFORMATS[i])){
+                return true;
+            }
+        }
+        return false;
     }
     
     private boolean isImage(String url){
@@ -623,5 +683,14 @@ public class RssParser implements ISourceParser {
         }
         return false;
     }
+    
+    
+    public HashSet<Source> getAllSources() {
+        
+        return allSources;
+        
+        
+    }
+    
 }
 

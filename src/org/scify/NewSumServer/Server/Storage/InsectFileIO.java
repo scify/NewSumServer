@@ -31,6 +31,7 @@ package org.scify.NewSumServer.Server.Storage;
 import gr.demokritos.iit.jinsect.storage.INSECTFileDBWithDir;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -56,6 +57,7 @@ public class InsectFileIO implements IDataStorage {
     private final String        sTopics    = "Topics";
     private final String        sCategories= "Categories";
     private final String        sGeneric   = "generic";
+    private static InsectFileIO        instance = null;
     private INSECTFileDBWithDir db;
     /**
      * The Directory where the Files are Saved
@@ -63,12 +65,25 @@ public class InsectFileIO implements IDataStorage {
     private String              BaseDir;
     private final static Logger LOGGER      = Main.getLogger();
 
+    public static class AlreadyInitializedException extends IOException{
+
+        public AlreadyInitializedException(String message) {
+            super(message);
+        }
+        
+    }
+    
+    public static class NotInitializedException extends IOException{
+        public NotInitializedException(String message) {
+            super(message);
+        }
+    }
     /**
-     * Main Constructor. Accepts a path to where the instance will store files.
+     * Main Constructor. Singleton. Accepts a path to where the instance will store files.
      * @param sBaseDir The Full path to the Directory where the Files are Saved.
-     * If null, the current directory is used.
+     * If null, the current directory is used. 
      */
-    public InsectFileIO(String sBaseDir) {
+    private InsectFileIO(String sBaseDir) {
         if (sBaseDir == null) {
             LOGGER.log(Level.WARNING, "No Base Directory passed");
             this.BaseDir = new File("").getAbsolutePath();
@@ -85,8 +100,24 @@ public class InsectFileIO implements IDataStorage {
             }
         }
     }
+
+    public static InsectFileIO initialize(String sBaseDir) throws AlreadyInitializedException{
+        if(instance==null){
+            instance= new InsectFileIO(sBaseDir);
+            return instance;
+        }
+        throw new AlreadyInitializedException("An instance of this class already exists");
+    }
+    
+    public static InsectFileIO getInstance() throws NotInitializedException{
+        if(instance==null){
+            throw new NotInitializedException("Data storage has not been initialized");
+        }
+        return instance;
+    }
+    
     @Override
-    public void SaveObject(Serializable sObj, String sObjName, String sObjCategory) {
+    public void saveObject(Serializable sObj, String sObjName, String sObjCategory) {
         this.db.saveObject(sObj, sObjName, sObjCategory);
     }
 

@@ -28,6 +28,7 @@
 
 package org.scify.NewSumServer.Server.Structures;
 
+import com.google.gson.Gson;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -35,6 +36,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
+import org.scify.NewSumServer.Server.JSon.JSon;
 import org.scify.NewSumServer.Server.Sources.RssParser;
 
 /**
@@ -50,24 +52,24 @@ public class Topic extends ArrayList<Article> {
     /**
      * The Clustered Topic Title
      */
-    protected String Title = null;
+    protected String            Title = null;
     /**
      * The Clustered Topic Unique Identifier
      */
-    protected String ID = null;
+    protected String            ID = null;
     
     /**
      * The number of sources the Topic was found.
      * Initially assigned using {@link #setNewestDate(boolean)}
      */
     
-    protected int sourcesNum = 0;     
+    protected int               sourcesNum = 0;     
 
     /**
      * The Date of the Topic.
      * Initially assigned using {@link #setNewestDate(boolean)}
      */
-    protected Calendar date = null;
+    protected Calendar          date = null;
 
     /**
      * Empty constructor of a Topic Object. Upon calling this constructor,
@@ -130,18 +132,46 @@ public class Topic extends ArrayList<Article> {
         return this.Title;
     }
     /**
-     * Sets as the Topic Title the title from the Newest Article
+     * Sets as the Topic Title the title from the Newest Article. 
+     * ({@link #setNewestDate(boolean)} should have been called first)
+     * 
      */
     public String getImageSrc() {
-        return this.get(0).getImageUrl();
+        
+        if (this.size() == 1) {
+            // if exists, return it
+            return this.get(0).getImageUrl() == null ? 
+                    RssParser.IMAGESSRCNOTFOUND : this.get(0).getImageUrl();
+            
+        } else {
+            
+            for (Article each : this) {
+                // if anyone not null, return it
+                if (each.getImageUrl() != null) {
+                    
+                    return each.getImageUrl();
+                    
+                }
+                
+            }
+            // return no image
+            return RssParser.IMAGESSRCNOTFOUND;
+            
+        }
+        
+        
+        
     }
     /**
      * Sets as the Topic Title the title from the Newest Article
      */
-    public ArrayList <String> getImageSrces() {
+    public ArrayList<String> getImageSrces() {
+        
         ArrayList <String> srces=new ArrayList <String>();
+        // for each
         for(int i=0;i<this.size();i++){
             String check=this.get(i).getImageUrl();
+            
             if(!check.equals(RssParser.IMAGESSRCNOTFOUND)) {
                 srces.add(this.get(i).getImageUrl());
             }
@@ -253,15 +283,6 @@ public class Topic extends ArrayList<Article> {
     }
     /**
      *
-     * @return A helpful String representation of this Topic,
-     * Using it's Unique ID and Title
-     */
-    @Override
-    public String toString() {
-        return this.ID + ": " + this.Title;
-    }
-    /**
-     *
      * @return A String representation of this Topic using
      * it's ID and it's date
      */
@@ -294,4 +315,19 @@ public class Topic extends ArrayList<Article> {
     public String getCategory() {
         return this.get(0).getCategory();
     }
+    /**
+     *
+     * @return A helpful String representation of this Topic,
+     * Using it's Unique ID and Title
+     */
+    @Override
+    public String toString() {
+        return this.ID + ": " + this.Title;
+    }
+    public String toJSON() {
+        
+        return JSon.jsonize(this, Topic.class);
+        
+    }
+    
 }

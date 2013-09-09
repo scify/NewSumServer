@@ -28,11 +28,13 @@
 
 package org.scify.NewSumServer.Server.Structures;
 
+import com.google.gson.Gson;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
+import org.scify.NewSumServer.Server.JSon.JSon;
 import org.scify.NewSumServer.Server.Utils.Utilities;
 
 /**
@@ -46,49 +48,49 @@ import org.scify.NewSumServer.Server.Utils.Utilities;
 public class Article implements java.io.Serializable {
 
     /**
-     * The Source URL that the article is derived from.
+     * The source URL that the article is derived from.
      */
-    protected String        Source;
+    protected Source                    source;
     /**
      * The article. The RSS description of the article fetched.
      */
-    protected String        Text;
+    protected String                    Text;
     /**
      * The Title of the Article. The title fetched from the RSS feed.
      */
-    protected String        Title;
+    protected String                    Title;
     /**
      * The Category that this Article belongs to. E.g. Sports, Top News, etc.
      */
-    protected String        Category;
+    protected transient String          Category;
     /**
      * The exact URL to the feed where the article was found at.
      */
-    protected String        Feed;
+    protected String                    Feed;
     /**
      * The date of the Article, in string format.
      */
-    protected String        sdate;
+    protected String                    sdate;
     /**
      * The url specifying an image for the article.
      */    
-    protected String        imageUrl;
+    protected String                    imageUrl;
     /**
      * The date that the Article was created.
      * Most of the times, it is fetched from the Feed Provider.
      * Otherwise (if the feed does not provide the article date), it
      * is the date the article was retrieved
      */
-    protected Calendar      date;
+    protected Calendar                  date;
     /**
      * set True if this article is to be accessed by the classification trainer
      */
-    protected Boolean toWrap;
+    protected transient Boolean         toWrap;
 
     /**
      * The Constructor of the Article Class. Initializes a new Article Object,
      * with the below parameters.
-     * @param Source    The source containing the article (ie the permalink)
+     * @param source    The source containing the article (ie the permalink)
      * @param Title     The title of the article
      * @param Text      The description of the article
      * @param Category  The category that the article belongs to
@@ -96,9 +98,9 @@ public class Article implements java.io.Serializable {
      * @param toWrap    If true, the article's category will used to train the
      * machine learning algorithm
      */
-    public Article(String Source, String Title, String Text, String Category,
-            String Feed, String imageUrl, Date date, Boolean toWrap) {
-        this.Source = Source;
+    public Article(Source source, String Title, String Text, String Category,
+            String Feed, Date date, Boolean toWrap) {
+        this.source = source;
         if (Text != null) {
             this.Text = cleanUp(Text.trim());
         } else {
@@ -116,12 +118,14 @@ public class Article implements java.io.Serializable {
             this.date = null;
         }
     }
+    
+    
     /**
      *
-     * @return the (String) permalink that contains the article.
+     * @return the Source that contains the article.
      */
-    public String getSource() {
-        return Source;
+    public Source getSource() {
+        return source;
     }
     /**
      *
@@ -176,10 +180,10 @@ public class Article implements java.io.Serializable {
     
     /**
      * Sets the source that contains the article
-     * @param Source The Source containing the Article
+     * @param source The source containing the Article
      */
-    public void setSource(String Source) {
-        this.Source = Source;
+    public void setSource(Source Source) {
+        this.source = Source;
     }
     /**
      * Sets the description of the Article (the Article Body)
@@ -244,6 +248,14 @@ public class Article implements java.io.Serializable {
     public String toString() {
         return Title + "\n" + Text;
     }
+    
+    public String toJSON() {
+        
+        return JSon.jsonize(this, Article.class);
+        
+        
+    }
+    
     /**
      * Cleans up extra whitespace from the given text
      * @param sText the Text to cleanup

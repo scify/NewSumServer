@@ -68,6 +68,7 @@ import org.scify.NewSumServer.Server.Storage.IDataStorage;
 import org.scify.NewSumServer.Server.Storage.InsectFileIO;
 import org.scify.NewSumServer.Server.Structures.Article;
 import org.scify.NewSumServer.Server.Structures.Sentence;
+import org.scify.NewSumServer.Server.Structures.Source;
 import org.scify.NewSumServer.Server.Structures.Topic;
 import org.scify.NewSumServer.Server.Summarisation.ArticleClusterer;
 import org.scify.NewSumServer.Server.Summarisation.Summariser;
@@ -600,22 +601,22 @@ public class Utilities {
         }
     }
 
-    public static int countDiffArticles(String[] Summary) {
-        int counter = 1;
-        if (Summary.length <= 2) {
-            return counter;
-        } else {
-            String InitialSource = Summary[1].split(Sentence.getSentenceSeparator())[1];
-            for (int i = 2; i < Summary.length; i++) {
-                String[] tmps = Summary[i].split(Sentence.getSentenceSeparator());
-                if (!InitialSource.contains(tmps[1])) {
-                    counter++;
-                }
-                InitialSource += tmps[1];
-            }
-            return counter;
-        }
-    }
+//    public static int countDiffArticles(String[] Summary) {
+//        int counter = 1;
+//        if (Summary.length <= 2) {
+//            return counter;
+//        } else {
+//            String InitialSource = Summary[1].split(Sentence.getSentenceSeparator())[1];
+//            for (int i = 2; i < Summary.length; i++) {
+//                String[] tmps = Summary[i].split(Sentence.getSentenceSeparator());
+//                if (!InitialSource.contains(tmps[1])) {
+//                    counter++;
+//                }
+//                InitialSource += tmps[1];
+//            }
+//            return counter;
+//        }
+//    }
     public static void checkForPossibleSpam(List<Article> lsArticleList, String sLang) {
         List lsSame = new LinkedList();
         for (int i = 0; i < lsArticleList.size() - 1; i++) {
@@ -921,12 +922,31 @@ public class Utilities {
 //        String sTop = cm.getTopicsByKeyword(ind, term, "All");
 //        System.out.println(sTop);
         /////////////////CHECK SEARCH END///////////////////////////////////
-
-        List<String> lsRes = new ArrayList<String>(Arrays.asList(new String[] {"World", "Europe", "Top News"}));
-        CategoriesData cd = new CategoriesData(lsRes);
-        System.out.println(cd.jsonize());
-        System.out.println(cd.get(1));
+        Source s1 = new Source("omg what a link", "the omg link source", "wooowwwooowwo nice logooooo!");
+        Source s2 = new Source("omg LO0K!", "the omFglink source", "wooowwwooowwo nice logoooooAGAIN !!!");
+        Article test1 = new Article(s1, "WHAT THE FUCK HAPPENED", "I WILL DESCRIBE REALLY NOW...", "WORLD", "http://feed.rss2", null, Boolean.TRUE);
+        Article test2 = new Article(s2, "WHAT HAPPENED?!??!??!", "I WILL tell REALLY NOW...", "WORLD", "http://feed.rss22", new Date(), Boolean.TRUE);
+        System.out.println(test1.toJSON());
+        System.out.println("+++++++++++");
+        
+        Topic New = new Topic();
+        New.add(test2);
+        New.add(test1);
+        System.out.println(New.toJSON());
+        
+        Sentence one = new Sentence("OMG WHAT THIS REPORTER IS TELLING", "HIT THIS LINK.com", "icamefromthatfeed.rss2", "areallybeautifullimage.url.com");
+        Sentence two = new Sentence("OMG look what another one IS TELLING", "HIT my link.gg", "icamefromanothertfeed.rss2", "suckthisbitch.url.com");
+        
+        // where the fuck is summary
+        LinkedList<Sentence> omgMySum = new LinkedList<Sentence>();
+        
+        omgMySum.add(one);
+        omgMySum.add(two);
+        
+        
+        
     }
+    
 //    public class debugLogger {
 //
 //        public void log(String sMessage, String sPathToFile) {

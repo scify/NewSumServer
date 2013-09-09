@@ -50,7 +50,7 @@ public interface IDataStorage {
      * @param sObjName Name of the object
      * @param sObjCategory Category of the object
      */
-    void SaveObject(Serializable sObj, String sObjName, String sObjCategory);
+    void saveObject(Serializable sObj, String sObjName, String sObjCategory);
     /**
      *
      * @param sObjName The name of the object to load
