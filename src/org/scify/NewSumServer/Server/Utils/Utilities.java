@@ -68,7 +68,8 @@ import org.scify.NewSumServer.Server.Storage.IDataStorage;
 import org.scify.NewSumServer.Server.Storage.InsectFileIO;
 import org.scify.NewSumServer.Server.Structures.Article;
 import org.scify.NewSumServer.Server.Structures.Sentence;
-import org.scify.NewSumServer.Server.Structures.Source;
+import org.scify.NewSumServer.Server.Structures.FeedSource;
+import org.scify.NewSumServer.Server.Structures.Summary;
 import org.scify.NewSumServer.Server.Structures.Topic;
 import org.scify.NewSumServer.Server.Summarisation.ArticleClusterer;
 import org.scify.NewSumServer.Server.Summarisation.Summariser;
@@ -922,10 +923,10 @@ public class Utilities {
 //        String sTop = cm.getTopicsByKeyword(ind, term, "All");
 //        System.out.println(sTop);
         /////////////////CHECK SEARCH END///////////////////////////////////
-        Source s1 = new Source("omg what a link", "the omg link source", "wooowwwooowwo nice logooooo!");
-        Source s2 = new Source("omg LO0K!", "the omFglink source", "wooowwwooowwo nice logoooooAGAIN !!!");
-        Article test1 = new Article(s1, "WHAT THE FUCK HAPPENED", "I WILL DESCRIBE REALLY NOW...", "WORLD", "http://feed.rss2", null, Boolean.TRUE);
-        Article test2 = new Article(s2, "WHAT HAPPENED?!??!??!", "I WILL tell REALLY NOW...", "WORLD", "http://feed.rss22", new Date(), Boolean.TRUE);
+        FeedSource s1 = new FeedSource("omg what a link", "the omg link source", "wooowwwooowwo nice logooooo!");
+        FeedSource s2 = new FeedSource("omg LO0K!", "the omFglink source", "wooowwwooowwo nice logoooooAGAIN !!!");
+        Article test1 = new Article("http://qq.com", "WHAT THE FUCK HAPPENED", "I WILL DESCRIBE REALLY NOW...", "WORLD", "http://feed.rss2", "imageLINK.com", null, Boolean.TRUE);
+        Article test2 = new Article("http://omg.qq", "WHAT HAPPENED?!??!??!", "I WILL tell REALLY NOW...", "WORLD", "http://feed.rss22", "imageLINK.eu", new Date(), Boolean.TRUE);
         System.out.println(test1.toJSON());
         System.out.println("+++++++++++");
         
@@ -934,15 +935,22 @@ public class Utilities {
         New.add(test1);
         System.out.println(New.toJSON());
         
-        Sentence one = new Sentence("OMG WHAT THIS REPORTER IS TELLING", "HIT THIS LINK.com", "icamefromthatfeed.rss2", "areallybeautifullimage.url.com");
-        Sentence two = new Sentence("OMG look what another one IS TELLING", "HIT my link.gg", "icamefromanothertfeed.rss2", "suckthisbitch.url.com");
+        Sentence one = new Sentence("OMG WHAT THIS REPORTER IS TELLING is really awesome", "HIT THIS LINK.com", "icamefromthatfeed.rss2", "areallybeautifullimage.url.com");
+        Sentence two = new Sentence("This is a really important sentence for the earth to keep turning...", "HIT my link.gg", "icamefromanothertfeed.rss2", "suckthisbitch.url.com");
+
+        // what about stupid links and labels
+        FeedSource rss1 = new FeedSource("http://com2.rss3", "to klama - kosmos", "whatanicelogo.url");
+        System.out.println(rss1.toJSON());
         
         // where the fuck is summary
-        LinkedList<Sentence> omgMySum = new LinkedList<Sentence>();
+        LinkedList<Sentence> whatAnOMGList = new LinkedList<Sentence>();
         
-        omgMySum.add(one);
-        omgMySum.add(two);
+        whatAnOMGList.add(one);
+        whatAnOMGList.add(two);
+        // here is the fucking thing
+        Summary anOMGSum = new Summary(whatAnOMGList);
         
+        System.out.println(anOMGSum.toJSON());
         
         
     }

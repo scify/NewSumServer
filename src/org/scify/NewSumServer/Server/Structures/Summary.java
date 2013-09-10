@@ -4,6 +4,7 @@ package org.scify.NewSumServer.Server.Structures;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import org.scify.NewSumServer.Server.JSon.JSon;
 
 /**
  *
@@ -13,10 +14,10 @@ import java.util.List;
 
 public class Summary extends LinkedList<Sentence> {
     
-//    /**
-//     * all the sources that the summary comes from
-//     */
-//    private String allSources;
+    /**
+     * all the sources that the summary comes from
+     */
+    private HashSet<String> allSources;
     
     
 
@@ -35,19 +36,25 @@ public class Summary extends LinkedList<Sentence> {
      * 
      * @return all different sources that this summary comes from
      */
-    public HashSet<Source> getAllSources() {
+    public HashSet<String> getAllSources() {
+        // TODO solve this. How can we design it so that all sources are inside, 
+        // even the ones ommited from the summariser.
         
-        HashSet allSources = new HashSet<Source>();
-        
-        
-        // TODO generate all sources. here or elsewhere?
+        String klein = "", mein;
+        // generate all sources. here or elsewhere?
         for (Sentence eachSentence : this) {
-            
-            allSources.add(new Source(eachSentence.getLinkToSource(), null, eachSentence.getSourceImageUrl()));
-            
+            allSources.add(eachSentence.getSource());
         }
-        
         return allSources;
+        // CAUTION. THIS is saved now, but when the summary will pass the redundancy remover, 
+        // some sources may be omitted.
+        // TODO in summariser, new Summary should be called, and stored to file.
+    }
+    
+    
+    public String toJSON() {
+        
+        return JSon.jsonize(this, Summary.class);
         
     }
     

@@ -653,8 +653,8 @@ public class Communicator {
     private ArrayList<SourceData> getSummarySources(ArrayList<Sentence> sentences) {
         ArrayList<SourceData> sources = new ArrayList();
         for (Sentence eachSen : sentences) {
-            if (!sources.contains(new SourceData(eachSen.getLinkToSource(), null, null))) { //created object just to use contains
-                sources.add(new SourceData(eachSen.getLinkToSource(), appendSourceLabel(eachSen.getFeed()), eachSen.getSourceImageUrl()));
+            if (!sources.contains(new SourceData(eachSen.getSource(), null, null))) { //created object just to use contains
+                sources.add(new SourceData(eachSen.getSource(), appendSourceLabel(eachSen.getFeed()), eachSen.getSourceImageUrl()));
             }
         }
         return sources;
@@ -663,7 +663,7 @@ public class Communicator {
     private ArrayList<SnippetData> getSummarySnippets(ArrayList<Sentence> sentences) {
         ArrayList<SnippetData> snippets = new ArrayList();
         for (Sentence eachSen : sentences) {
-            snippets.add(new SnippetData(eachSen.getSnippet(), eachSen.getLinkToSource(), appendSourceLabel(eachSen.getFeed()), eachSen.getFeed()));
+            snippets.add(new SnippetData(eachSen.getSnippet(), eachSen.getSource(), appendSourceLabel(eachSen.getFeed()), eachSen.getFeed()));
         }
         return snippets;
     }

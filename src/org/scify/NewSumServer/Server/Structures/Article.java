@@ -50,7 +50,7 @@ public class Article implements java.io.Serializable {
     /**
      * The source URL that the article is derived from.
      */
-    protected Source                    source;
+    protected String                    sSourceLink;
     /**
      * The article. The RSS description of the article fetched.
      */
@@ -98,9 +98,8 @@ public class Article implements java.io.Serializable {
      * @param toWrap    If true, the article's category will used to train the
      * machine learning algorithm
      */
-    public Article(Source source, String Title, String Text, String Category,
-            String Feed, Date date, Boolean toWrap) {
-        this.source = source;
+    public Article(String sSource, String Title, String Text, String Category, String Feed, String imageUrl, Date date, Boolean toWrap) {
+        this.sSourceLink = sSource;
         if (Text != null) {
             this.Text = cleanUp(Text.trim());
         } else {
@@ -124,8 +123,8 @@ public class Article implements java.io.Serializable {
      *
      * @return the Source that contains the article.
      */
-    public Source getSource() {
-        return source;
+    public String getSource() {
+        return this.sSourceLink;
     }
     /**
      *
@@ -182,8 +181,8 @@ public class Article implements java.io.Serializable {
      * Sets the source that contains the article
      * @param source The source containing the Article
      */
-    public void setSource(Source Source) {
-        this.source = Source;
+    public void setSource(String sSource) {
+        this.sSourceLink = sSource;
     }
     /**
      * Sets the description of the Article (the Article Body)

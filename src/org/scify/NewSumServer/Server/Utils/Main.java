@@ -804,7 +804,7 @@ public class Main {
         for (Sentence each : lsSen) {
             sb.append(each.getSnippet());
             sb.append("\n========================================\n");
-//            sb.append(each.getLinkToSource());
+//            sb.append(each.getSource());
 //            sb.append("\n");
 //            sb.append(each.getFeed());
 //            sb.append("\n");
@@ -816,7 +816,7 @@ public class Main {
     private static int getNumberOfSources(List<Sentence> lsSen) {
         HashSet<String> hsSources = new HashSet<String>();
         for (Sentence each : lsSen) {
-            hsSources.add(each.getLinkToSource());
+            hsSources.add(each.getSource());
         }
         return hsSources.size();
     }

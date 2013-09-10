@@ -56,7 +56,7 @@ import org.scify.NewSumServer.Server.DataCollections.Articles;
 import org.scify.NewSumServer.Server.SystemFactory.Configuration;
 import org.scify.NewSumServer.Server.Storage.IDataStorage;
 import org.scify.NewSumServer.Server.Structures.Article;
-import org.scify.NewSumServer.Server.Structures.Source;
+import org.scify.NewSumServer.Server.Structures.FeedSource;
 import org.scify.NewSumServer.Server.Structures.UnlabeledArticle;
 import org.scify.NewSumServer.Server.Utils.Utilities;
 
@@ -145,7 +145,7 @@ public class RssParser implements ISourceParser {
     protected String                    PATTERN;
 
     
-    protected HashSet<Source>         allSources;
+    protected HashSet<FeedSource>         allFeedSources; // link, label, logo
     
     /**
      * Constructor of the RssParser Class. Initializes the {@link #lsItems} list
@@ -204,10 +204,10 @@ public class RssParser implements ISourceParser {
                 date = entry.getPublishedDate();
                 
                 
-                // create new Source item
-                Source tmpSource = new Source(permalink, "ADD SOURCE NAME", "ADD SOURCE LOGO URL");
+                // create new FeedSource item // TODO. when all done save to file
+                FeedSource tmpSource = new FeedSource(urlString, "ADD SOURCE NAME", "ADD SOURCE LOGO URL");
                 // add source to sources set
-                allSources.add(tmpSource);
+                allFeedSources.add(tmpSource);
                 
                 //depeding on the type of sCategory 
                 if (sCategory.equals(UNCLASSIFIED)) {
@@ -217,8 +217,8 @@ public class RssParser implements ISourceParser {
                         UnlabeledArticle tmpUnArt =
 //                                new UnlabeledArticle(permalink, title.trim(),
 //                                description, null, urlString, imageUrl, date, false);
-                                new UnlabeledArticle(tmpSource, title.trim(), 
-                                    description, sCategory, urlString, date, Boolean.TRUE);
+                                new UnlabeledArticle(permalink, title.trim(), 
+                                    description, sCategory, urlString, imageUrl, date, Boolean.TRUE);
                         //filter Article text
                         tmpUnArt = (UnlabeledArticle) preProcessArticle(tmpUnArt, 9);
                         // Add the Article found to the list, avoid possible duplicates
@@ -235,8 +235,8 @@ public class RssParser implements ISourceParser {
                     Article tmpArt =
 //                            new Article(permalink, title.trim(),
 //                            description, sCategory, urlString, imageUrl, date, true);
-                        new Article(tmpSource, title.trim(), description, 
-                                sCategory, urlString, date, Boolean.TRUE);
+                        new Article(permalink, title.trim(), description, 
+                                sCategory, urlString, imageUrl, date, Boolean.TRUE);
                     //filter article text
                     tmpArt = preProcessArticle(tmpArt, 10);
                     // Add the Article found to the list, avoid possible duplicates
@@ -685,9 +685,9 @@ public class RssParser implements ISourceParser {
     }
     
     
-    public HashSet<Source> getAllSources() {
+    public HashSet<FeedSource> getAllSources() {
         
-        return allSources;
+        return allFeedSources;
         
         
     }

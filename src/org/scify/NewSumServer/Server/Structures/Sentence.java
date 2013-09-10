@@ -52,10 +52,10 @@ public class Sentence implements Serializable {
      */
     protected String                            sArtSnippet;
     /**
-     * The permalink that the article, from which the sentence was taken,
+     * The source link of the article, from which the sentence was taken,
      * comes from
      */
-    protected String                            sLink;
+    protected String                            sSourceLink;
     /**
      * The RSS Feed link that the article containing the Sentence was found in
      */
@@ -78,9 +78,9 @@ public class Sentence implements Serializable {
      * @param sLink         The permalink that links to the article this sentence comes from
      * @param sFeed         The Feed that the sentence came from
      */
-    public Sentence(String sArtSnippet, String sLink, String sFeed, String sSourceImageUrl) {
+    public Sentence(String sArtSnippet, String sSourceLink, String sFeed, String sSourceImageUrl) {
         this.sArtSnippet        = sArtSnippet;
-        this.sLink              = sLink;
+        this.sSourceLink            = sSourceLink;
         this.sFeed              = sFeed;
         this.sSourceImageUrl    = sSourceImageUrl;
     }
@@ -106,8 +106,8 @@ public class Sentence implements Serializable {
      *
      * @return The link that the Sentence comes from
      */
-    public String getLinkToSource() {
-        return sLink;
+    public String getSource() {
+        return this.sSourceLink;
     }
     /**
      *
@@ -124,18 +124,6 @@ public class Sentence implements Serializable {
         sArtSnippet = sSnippet;
     }
     /**
-     * Sets The link to the Article that contains the Sentence
-     * @param sLinkToSet The link that the sentence was found in.
-     */
-    public void setLinktoSentence(String sLinkToSet) {
-        if (Utilities.ValidURL(sLinkToSet)) {
-            sLink = sLinkToSet;
-        } else {
-            sLink = "";
-            LOGGER.log(Level.WARNING, "Invalid permalink for {0}", this.getSnippet());
-        }
-    }
-    /**
      * Sets the feed URL of the Sentence, if valid.
      * Sets null if the feed to set is invalid.
      * @param sFeedToSet The feed that contains the article snippet
@@ -150,7 +138,7 @@ public class Sentence implements Serializable {
     }
     @Override
     public String toString() {
-        return sArtSnippet + "\n" + sFeed + "\n" + sLink + "\n" + sSourceImageUrl;
+        return sArtSnippet + "\n" + sFeed + "\n" + sSourceLink + "\n" + sSourceImageUrl;
     }
     
     public String toJSON() {

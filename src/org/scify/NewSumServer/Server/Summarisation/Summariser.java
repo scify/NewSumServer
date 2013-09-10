@@ -274,7 +274,7 @@ public class Summariser {
                     // Create sentence object
                     Sentence sCur = 
                         new Sentence(sCurSentence.trim(), 
-                                    aCur.getSource().getSourceName(), 
+                                    aCur.getSource(), 
                                     aCur.getFeed(),
                                     aCur.getImageUrl());
                     // Add to all sentences list
@@ -307,7 +307,7 @@ public class Summariser {
                     // Create sentence object
                     Sentence sCur = 
                         new Sentence(sCurSentence.trim(), 
-                                    aCur.getSource().getSourceName(), 
+                                    aCur.getSource(), 
                                     aCur.getFeed(),
                                     aCur.getImageUrl());
                     // Add to all sentences list

@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import org.scify.NewSumServer.Server.Storage.InsectFileIO;
-import org.scify.NewSumServer.Server.Structures.Source;
+import org.scify.NewSumServer.Server.Structures.FeedSource;
 
 /**
  *
@@ -12,7 +12,7 @@ import org.scify.NewSumServer.Server.Structures.Source;
  */
 
 
-public class Sources extends ArrayList <Source> implements java.io.Serializable{
+public class Sources extends ArrayList <FeedSource> implements java.io.Serializable{
 
     private static final String OBJECTNAME = "Sources";
     private static final String CATEGORY = "Generic";
@@ -20,7 +20,7 @@ public class Sources extends ArrayList <Source> implements java.io.Serializable{
     public Sources() {
     }
 
-    public Sources(Collection<? extends Source> c) {
+    public Sources(Collection<? extends FeedSource> c) {
         super(c);
     }
     
