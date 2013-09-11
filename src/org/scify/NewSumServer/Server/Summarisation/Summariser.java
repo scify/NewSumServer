@@ -52,6 +52,7 @@ import opennlp.tools.util.ObjectStream;
 import opennlp.tools.util.PlainTextByLineStream;
 import org.scify.NewSumServer.Server.Structures.Article;
 import org.scify.NewSumServer.Server.Structures.Sentence;
+import org.scify.NewSumServer.Server.Structures.Summary;
 import org.scify.NewSumServer.Server.Structures.Topic;
 import static org.scify.NewSumServer.Server.Summarisation.Summariser.LOGGER;
 import org.scify.NewSumServer.Server.Utils.Main;
@@ -215,12 +216,12 @@ public class Summariser {
      * @param tTopic The Topic that will be processed
      * @return A List of Sentence Objects for the specified UUID.
      */
-    public List<Sentence> getSummary(Topic tTopic) {
+    public Summary getSummary(Topic tTopic) {
         // Check if already loaded in-memory
         if (hsSentencesPerCluster != null) {
             if (!hsSentencesPerCluster.isEmpty()) {
                 if (hsSentencesPerCluster.containsKey(tTopic.getID())) {
-                    return hsSentencesPerCluster.get(tTopic.getID());
+                    return new Summary(hsSentencesPerCluster.get(tTopic.getID()));
                 }
             }
         }
@@ -243,7 +244,7 @@ public class Summariser {
         else // else
         {
             // Return summary
-            return lAllSentences;
+            return new Summary(lAllSentences);
         }
 
 
@@ -281,7 +282,7 @@ public class Summariser {
                     lAllSentences.add(sCur);
                 }
             }
-            return lAllSentences;
+            return new Summary(lAllSentences);
         }
 
         // For every article in cluster
@@ -362,7 +363,7 @@ public class Summariser {
             LOGGER.log(Level.WARNING, "Could Not Save Summary with Topic ID {0} ", tTopic.getID());
         }
         // Return sorted sentences
-        return lAllSentences;
+        return new Summary(lAllSentences);
     }
 
     /**

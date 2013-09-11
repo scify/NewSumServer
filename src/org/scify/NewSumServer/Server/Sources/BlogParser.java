@@ -60,4 +60,8 @@ public class BlogParser implements ISourceParser {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+        @Override
+    public void saveAllSources() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }

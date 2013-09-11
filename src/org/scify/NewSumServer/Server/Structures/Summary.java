@@ -1,9 +1,9 @@
 
 package org.scify.NewSumServer.Server.Structures;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.List;
 import org.scify.NewSumServer.Server.JSon.JSon;
 
 /**
@@ -21,14 +21,14 @@ public class Summary extends LinkedList<Sentence> {
     
     
 
-    public Summary(LinkedList<Sentence> sentences) {
-        
+    public Summary(Collection<Sentence> sentences) {
         super(sentences);
+        allSources=this.getAllSources();
         
     }
 
     public Summary() {
-        
+   
         super();
     
     }
@@ -36,7 +36,7 @@ public class Summary extends LinkedList<Sentence> {
      * 
      * @return all different sources that this summary comes from
      */
-    public HashSet<String> getAllSources() {
+    public final HashSet<String> getAllSources() {
         // TODO solve this. How can we design it so that all sources are inside, 
         // even the ones ommited from the summariser.
         

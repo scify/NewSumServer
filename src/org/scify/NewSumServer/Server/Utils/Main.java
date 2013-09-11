@@ -287,6 +287,7 @@ public class Main {
         Utilities.checkForPossibleSpam(Articles, sLang);
         //Save Article List to Drive, so that the clusterer loads it
         isp.saveAllArticles(); //Name: "AllArticles", Category: "feeds"
+        isp.saveAllSources();
 //        ArticleClusterer ac = new ArticleClusterer(subArticles, ids, sArticlePath);
         //get least occurencies of articles
 //        threshold = Utilities.getLeastOccurencies(Articles);

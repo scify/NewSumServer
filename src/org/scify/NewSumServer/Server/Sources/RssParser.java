@@ -53,6 +53,7 @@ import java.util.regex.Pattern;
 import org.jdom.Attribute;
 import org.jdom.Element;
 import org.scify.NewSumServer.Server.DataCollections.Articles;
+import org.scify.NewSumServer.Server.DataCollections.FeedSources;
 import org.scify.NewSumServer.Server.SystemFactory.Configuration;
 import org.scify.NewSumServer.Server.Storage.IDataStorage;
 import org.scify.NewSumServer.Server.Structures.Article;
@@ -145,7 +146,7 @@ public class RssParser implements ISourceParser {
     protected String                    PATTERN;
 
     
-    protected HashSet<FeedSource>         allFeedSources; // link, label, logo
+    protected FeedSources         allFeedSources; // link, label, logo
     
     /**
      * Constructor of the RssParser Class. Initializes the {@link #lsItems} list
@@ -204,10 +205,10 @@ public class RssParser implements ISourceParser {
                 date = entry.getPublishedDate();
                 
                 
-                // create new FeedSource item // TODO. when all done save to file
-                FeedSource tmpSource = new FeedSource(urlString, "ADD SOURCE NAME", "ADD SOURCE LOGO URL");
-                // add source to sources set
-                allFeedSources.add(tmpSource);
+                // TODO. when all done save to file
+                String logoUrl=feed.getImage()==null? "" : feed.getImage().getUrl();
+                allFeedSources.addLogo(urlString, logoUrl);
+                //passes logo to source
                 
                 //depeding on the type of sCategory 
                 if (sCategory.equals(UNCLASSIFIED)) {
@@ -342,7 +343,18 @@ public class RssParser implements ISourceParser {
         Articles arts=new Articles(co);
         try{
         arts.save();
-        }catch(Exception e){}
+        }catch(Exception e){
+            LOGGER.log(Level.INFO, "Failed To SAVE ARTICLES <-- Malakia tou adrea");
+        }
+    }
+    //TODO Temporary -- this won't be needed
+    @Override
+    public void saveAllSources(){
+        try{
+            allFeedSources.save();
+        }catch(Exception e){
+            LOGGER.log(Level.INFO, "Failed To SAVE FEEDSOURCES <-- Malakia tou adrea");
+        }
     }
 
     /**

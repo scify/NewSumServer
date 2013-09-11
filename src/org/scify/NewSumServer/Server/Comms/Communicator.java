@@ -44,11 +44,10 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import static org.scify.NewSumServer.Server.Comms.Communicator.LOGGER;
+import org.scify.NewSumServer.Server.DataCollections.FeedSources;
 import org.scify.NewSumServer.Server.JSon.CategoriesData;
 import org.scify.NewSumServer.Server.JSon.JSon;
 import org.scify.NewSumServer.Server.JSon.LanguageData;
-import org.scify.NewSumServer.Server.JSon.LinkLabelData;
-import org.scify.NewSumServer.Server.JSon.LinksData;
 import org.scify.NewSumServer.Server.JSon.SnippetData;
 import org.scify.NewSumServer.Server.JSon.SourceData;
 import org.scify.NewSumServer.Server.JSon.SummaryData;
@@ -261,28 +260,17 @@ public class Communicator {
      * Returns the list of default sources the server uses.
      *
      * @throws ServerErrorException
-     * @return An Array of LinkLabels in JSON format containing all the links
+     * @return An Array of FeedSources in JSON format containing all the links
      * and their associated labels
      */
     public String getLinkLabelsFromFile() throws Exception {
-        LinksData links = new LinksData();
-        HashMap<String, String> hsLabels=null;
+        FeedSources sources=null;
         try{
-            hsLabels=(HashMap<String, String>) this.ids.loadObject("LinkLabels", "generic");
-        // construct a Sentence-Separator - Separator delimited String (as
-        // in the getSummary() method and return it
+            sources=FeedSources.load();
         }catch(Exception e){
             throw new ServerErrorException(); //if there is a problem reading files throw ServerError
         }
-        if (hsLabels != null) {
-            for (Map.Entry tmpEntry : hsLabels.entrySet()) {
-                links.add(new LinkLabelData((String) tmpEntry.getKey(), (String) tmpEntry.getValue(),null));
-            }
-        } else {
-            LOGGER.log(Level.SEVERE, "Unable to load Link Labels. Returning Null");
-            throw new ServerErrorException();
-        }
-        return links.jsonize();
+        return sources.jsonize();
     }
 
     /**
