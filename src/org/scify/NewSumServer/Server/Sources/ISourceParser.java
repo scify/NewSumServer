@@ -71,4 +71,7 @@ public interface ISourceParser {
      * Saves the full list of articles, to pass to the ArticleClusterer Class.
      */
     void saveAllArticles();
+    
+    //TODO remove this function please :P
+    void saveAllSources();
 }

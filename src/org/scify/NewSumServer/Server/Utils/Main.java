@@ -50,6 +50,7 @@ import java.util.regex.Pattern;
 import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.store.LockObtainFailedException;
 import org.scify.NewSumServer.Server.Comms.Communicator;
+import org.scify.NewSumServer.Server.DataCollections.Articles;
 import org.scify.NewSumServer.Server.JSon.TopicData;
 import org.scify.NewSumServer.Server.JSon.TopicsData;
 import org.scify.NewSumServer.Server.MachineLearning.classificationModule;
@@ -62,6 +63,7 @@ import org.scify.NewSumServer.Server.Storage.IDataStorage;
 import org.scify.NewSumServer.Server.Storage.InsectFileIO;
 import org.scify.NewSumServer.Server.Structures.Article;
 import org.scify.NewSumServer.Server.Structures.Sentence;
+import org.scify.NewSumServer.Server.Structures.Summary;
 import org.scify.NewSumServer.Server.Structures.Topic;
 import org.scify.NewSumServer.Server.Summarisation.ArticleClusterer;
 import org.scify.NewSumServer.Server.Summarisation.RedundancyRemover;
@@ -256,7 +258,7 @@ public class Main {
         //DEBUG LINES //get user input
         List al = new ArrayList(sCategories);
         ArrayList<String> subSources = null;
-        ArrayList<Article> Articles = new ArrayList<Article>();
+        ArrayList<Article> articles = new ArrayList<Article>();
         String sCurCateg = "0";
         if (bDebugRun) { // if only one category needed (quick run)
             System.out.println("Choose Category by number: \nIf -1, all categories are loaded");
@@ -272,21 +274,22 @@ public class Main {
                         (HashSet<String>) Utilities.getKeysByValue(Sources,
                         (String) al.get(Integer.valueOf(sCurCateg))));
                 //accept all articles from each category
-                Articles = (ArrayList<Article>) isp.getAllNewsByCategory(subSources,
+                articles = (ArrayList<Article>) isp.getAllNewsByCategory(subSources,
                         (String) al.get(Integer.valueOf(sCurCateg)));
 
             } else if (Integer.valueOf(sCurCateg) == -1) {
 
                 //get all articles
-                Articles = (ArrayList<Article>) isp.getAllArticles(Sources);
+                articles = (ArrayList<Article>) isp.getAllArticles(Sources);
             }
         } else { //if all categories by default (no user choosing - normal mode)
-            Articles = (ArrayList<Article>) isp.getAllArticles(Sources);
+            articles = (ArrayList<Article>) isp.getAllArticles(Sources);
         }
         // check for spam sentences
-        Utilities.checkForPossibleSpam(Articles, sLang);
+        Utilities.checkForPossibleSpam(articles, sLang);
         //Save Article List to Drive, so that the clusterer loads it
         isp.saveAllArticles(); //Name: "AllArticles", Category: "feeds"
+        isp.saveAllSources();
 //        ArticleClusterer ac = new ArticleClusterer(subArticles, ids, sArticlePath);
         //get least occurencies of articles
 //        threshold = Utilities.getLeastOccurencies(Articles);
@@ -317,7 +320,7 @@ public class Main {
 //        }
         // Initialize Clusterer
         ArticleClusterer ac = new ArticleClusterer(
-                (ArrayList<Article>) ids.loadObject("AllArticles", "feeds"), ids, conf);
+                Articles.load(), ids, conf);
         // Perform clustering calculations
         ac.calculateClusters();
 
@@ -338,7 +341,7 @@ public class Main {
         Summariser sum = new Summariser(new HashSet<Topic>(
                 ac.getArticlesPerCluster().values()), idb);
         // Perform summarization for all clusters
-        Map<String, List<Sentence>> AllSummaries;
+        Map<String, Summary> AllSummaries;
         // Obtain Summaries and save to File
         AllSummaries = sum.getSummaries();
 

@@ -22,6 +22,14 @@ public class FeedSource implements java.io.Serializable {
         this.sFeedLogoURL = sourceLogoUrl;
     
     }
+    
+    public FeedSource(String sFeed, String sourceName) {
+    
+        this.sFeedLink = sFeed;
+        this.sFeedLabel = sourceName;
+        this.sFeedLogoURL = null;
+    
+    }
     /**
      * 
      * @return The URL permalink that this source represents

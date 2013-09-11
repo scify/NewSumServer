@@ -1,0 +1,92 @@
+?2013-05-27
+?The Sources File. Add Source and 3 stars (***) and label afterwards.
+?Lines beginning with '?' are comment lines.
+?UNCLASSIFIED
+Γενικά
+http://www.koutipandoras.gr/?feed=rss2***ΚΟΥΤΙ ΤΗΣ ΠΑΝΔΩΡΑΣ
+?http://www.thepressproject.gr/xml/rss.xml***The Press Project
+http://www.thepressproject.gr/xml/rss_newsroom.xml***The Press Project
+http://topontiki.gr/rss***ΤΟ ΠΟΝΤΙΚΙ
+?http://www.avgi.gr/RSSStartPage.action***ΑΥΓΗ
+?AVGI RSS Currently non-existing
+http://www.enikos.gr/feeds/menu/specials.xml***ΕΝΙΚΟΣ
+http://xstefanou.infowarproductions.com/feed/***INFOWAR
+http://www.news.gr/rss.ashx?colid=2***NEWS GR
+http://www.newsit.gr/rss/artrss.php***NEWSIT
+?http://www.palo.gr/rss/simantikoterarss/***PALO
+Αθλητισμός
+http://www.tovima.gr/feed/sports/***ΤΟ ΒΗΜΑ
+http://rss.in.gr/feed/sports/***ΙΝ GR
+http://www.naftemporiki.gr/rssFeed?mode=section&id=5&atype=story***ΝΑΥΤΕΜΠΟΡΙΚΗ
+http://tvxs.gr/feeds/243/feed.xml***TVXS
+http://wk.kathimerini.gr/xml_files/sports.xml***ΚΑΘΗΜΕΡΙΝΗ
+http://www.gazzetta.gr/rssfeeds/allnewsfeed***Gazzetta
+Κόσμος
+http://www.tovima.gr/feed/world/***ΤΟ ΒΗΜΑ
+http://rss.in.gr/feed/news/world/***ΙΝ GR
+http://www.naftemporiki.gr/rssFeed?mode=section&id=4&atype=story***ΝΑΥΤΕΜΠΟΡΙΚΗ
+http://wk.kathimerini.gr/xml_files/world.xml***ΚΑΘΗΜΕΡΙΝΗ
+http://feeds.feedburner.com/skai/aqOL?format=xml***ΣΚΑΙ
+http://tvxs.gr/feeds/5/feed.xml***TVXS
+http://news.pathfinder.gr/rss/world.xml***PATHFINDER
+http://www.protothema.gr/rss/news/world***ΠΡΩΤΟ ΘΕΜΑ
+http://www.enikos.gr/feeds/menu/international.xml***ΕΝΙΚΟΣ
+http://www.parapolitika.gr/RSS/tabid/75/rssid/32/Default.aspx***ΠΑΡΑΠΟΛΙΤΙΚΑ
+http://www.onair24.gr/rss/channel/2***ONAIR24
+http://www.epikaira.gr/content/feed.php?category=87***ΕΠΙΚΑΙΡΑ
+http://www.ert.gr/eidiseis/diethni?format=feed***ΕΡΤ
+http://www.news.gr/rss.ashx?catid=10***NEWS GR
+Πολιτισμός
+http://rss.in.gr/feed/news/culture/***ΙΝ GR
+http://www.tovima.gr/feed/culture/***ΤΟ ΒΗΜΑ
+http://www.naftemporiki.gr/rssFeed?mode=section&id=6&atype=story***ΝΑΥΤΕΜΠΟΡΙΚΗ
+?http://ws.kathimerini.gr/xml_files/civnews.xml***ΚΑΘΗΜΕΡΙΝΗ NEED TO BE CHANGED WITH "PRINTED EDITION" (CURRENTLY UNAVAILABLE (redirects to sport))
+http://feeds.feedburner.com/skai/ppGl?format=xml***ΣΚΑΙ
+http://tvxs.gr/feeds/1317/feed.xml***TVXS
+http://www.thepressproject.gr/xml/rss_culture.xml***The Press Project
+Ελλάδα
+http://news.in.gr/feed/news/greece/***ΙΝ GR
+http://www.naftemporiki.gr/news/static/rss/news_pol_pol-gr.xml***ΝΑΥΤΕΜΠΟΡΙΚΗ
+http://wk.kathimerini.gr/xml_files/ell.xml***ΚΑΘΗΜΕΡΙΝΗ
+http://feeds.feedburner.com/skai/PLwa?format=xml***ΣΚΑΙ
+http://tvxs.gr/feeds/2/feed.xml***TVXS
+http://news.pathfinder.gr/rss/greece.xml***PATHFINDER
+http://www.protothema.gr/rss/news/greece***ΠΡΩΤΟ ΘΕΜΑ
+?http://www.pro.com.gr/el/category/92/feed***PROCOM
+http://www.epikaira.gr/content/feed.php?category=86***ΕΠΙΚΑΙΡΑ
+http://www.onair24.gr/rss/channel/1***ONAIR24
+?http://www.palo.gr/category/rss/?cid=23***PALO
+http://www.ert.gr/eidiseis/greece?format=feed***ΕΡΤ
+http://www.news.gr/rss.ashx?catid=7***NEWS GR
+Επιστήμη
+http://rss.in.gr/feed/news/science/***ΙΝ GR
+http://www.tovima.gr/feed/science/***ΤΟ ΒΗΜΑ
+http://ws.kathimerini.gr/xml_files/science.xml***ΚΑΘΗΜΕΡΙΝΗ
+?ΚΑΘΗΜΕΡΙΝΗ ΕΠΙΣΤΗΜΗ - NO PRINTED EDITION RSS
+http://tvxs.gr/feeds/26/feed.xml***TVXS
+http://news.pathfinder.gr/rss/eco-science.xml***PATHFINDER
+http://www.naftemporiki.gr/rssFeed?mode=section&id=7&atype=story***ΝΑΥΤΕΜΠΟΡΙΚΗ
+Οικονομία
+http://www.naftemporiki.gr/rssFeed?mode=section&id=1&atype=story***ΝΑΥΤΕΜΠΟΡΙΚΗ
+http://news.pathfinder.gr/rss/finance.xml***PATHFINDER
+http://wk.kathimerini.gr/xml_files/economy_1.xml***ΚΑΘΗΜΕΡΙΝΗ
+http://rss.in.gr/feed/news/economy/***IN GR
+http://www.epikaira.gr/content/feed.php?category=89***ΕΠΙΚΑΙΡΑ
+http://www.protothema.gr/rss/news/economy***ΠΡΩΤΟ ΘΕΜΑ
+http://feeds.feedburner.com/skai/oPUt?format=xml***ΣΚΑΙ
+http://www.onair24.gr/rss/channel/5***ONAIR24
+http://www.ert.gr/eidiseis/oikonomia?format=feed***ΕΡΤ
+http://www.news.gr/rss.ashx?catid=9***NEWS GR
+Τεχνολογία
+http://www.protothema.gr/rss/news/technology***ΠΡΩΤΟ ΘΕΜΑ
+http://www.epikaira.gr/content/feed.php?category=631***ΕΠΙΚΑΙΡΑ
+http://feeds.feedburner.com/skai/fqsg?format=xml***ΣΚΑΙ
+http://rss.in.gr/feed/technology/main/***IN GR
+http://www.onair24.gr/rss/channel/6***ONAIR24
+Εκπαίδευση
+http://www.sch.gr/index.php?option=com_ninjarsssyndicator&feed_id=1&format=raw***ΠΣΔ
+http://www.esos.gr/rss/***ESOS
+http://edu.klimaka.gr/index.php?format=feed&type=rss***ΕΚΠΑΙΔΕΥΤΙΚΗ ΚΛΙΜΑΚΑ
+SciFY News***60
+http://www.scify.gr/site/el/%CF%84%CE%B1-%CE%BD%CE%AD%CE%B1-%CE%BC%CE%B1%CF%82/project-news-el?format=feed&type=rss***Τα έργα μας
+http://www.scify.gr/site/el/%CF%84%CE%B1-%CE%BD%CE%AD%CE%B1-%CE%BC%CE%B1%CF%82/scify-news-company-el?format=feed&type=rss***Η εταιρία
