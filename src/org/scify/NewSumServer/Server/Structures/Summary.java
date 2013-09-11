@@ -17,7 +17,7 @@ public class Summary extends LinkedList<Sentence> {
     /**
      * all the sources that the summary comes from
      */
-    private HashSet<String> allSources;
+    private HashSet<String> allSources=new  HashSet<String>();
     
     
 

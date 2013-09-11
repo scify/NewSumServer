@@ -18,6 +18,7 @@ public class Articles extends ArrayList <Article> implements java.io.Serializabl
     private static final String CATEGORY = "feeds";
     
     public Articles() {
+        super();
     }
 
     public Articles(Collection<? extends Article> c) {
@@ -32,12 +33,12 @@ public class Articles extends ArrayList <Article> implements java.io.Serializabl
         InsectFileIO.getInstance().saveObject(this, name , category);
     }
     
-    public void load() throws IOException{
-        InsectFileIO.getInstance().loadObject(OBJECTNAME, CATEGORY);
+    public static Articles load() throws IOException{
+        return (Articles)InsectFileIO.getInstance().loadObject(OBJECTNAME, CATEGORY);
     }
     
-    public void load(String name,String category) throws IOException{
-        InsectFileIO.getInstance().loadObject(name , category);
+    public static Articles load(String name,String category) throws IOException{
+        return (Articles)InsectFileIO.getInstance().loadObject(name , category);
     }
     
 }

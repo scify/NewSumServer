@@ -35,7 +35,6 @@ import gr.demokritos.iit.jinsect.documentModel.representations.DocumentWordGraph
 import gr.demokritos.iit.jinsect.events.WordEvaluatorListener;
 import gr.demokritos.iit.jinsect.structs.GraphSimilarity;
 import gr.demokritos.iit.jinsect.structs.Pair;
-import gr.demokritos.iit.jinsect.utils;
 import java.io.*;
 import java.text.Collator;
 import java.util.*;
@@ -46,6 +45,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.lucene.search.ScoreDoc;
+import org.scify.NewSumServer.Server.DataCollections.Articles;
 import org.scify.NewSumServer.Server.Searching.Indexer;
 import org.scify.NewSumServer.Server.Searching.Searcher;
 import org.scify.NewSumServer.Server.Storage.IDataStorage;
@@ -92,7 +92,7 @@ public class ArticleClusterer {
     /**
      * The Original List of Articles to process
      */
-    protected List<Article>                     origArticles;
+    protected Articles                     origArticles;
     
     /** The folder where the Articles will be saved */
     protected String                            ArticlePath;
@@ -119,14 +119,14 @@ public class ArticleClusterer {
      * @param ArticlePath The path where the CLustered
      * Articles will be stored as text files
      */
-    public ArticleClusterer(List<Article> lsArticles,
+    public ArticleClusterer(Articles lsArticles,
             IDataStorage ids,
             Configuration config) {
         // should be constructed with the list of Articles
         // that the method getAllNews() of the SourceParser class returns
 
         // Keep copy of articles
-        origArticles            = new ArrayList(lsArticles);
+        origArticles            = new Articles(lsArticles);
         // Init maps
         hsArticlesPerCluster    = new HashMap<String, Topic>();
         hsClusterPerArticle     = new HashMap<Article, String>();
@@ -507,7 +507,7 @@ public class ArticleClusterer {
      * @param lsArticleList the List of Articles to mess
      * @return A list of article Pairs
      */
-    private List<Pair> getPairs(final List<Article> lsArticleList) {
+    private List<Pair> getPairs(final Articles lsArticleList) {
         // get available processors
         int iThreads = Runtime.getRuntime().availableProcessors();
         LOGGER.log(Level.INFO, "Creating Pairs...");
@@ -515,13 +515,13 @@ public class ArticleClusterer {
         ExecutorService es = Executors.newFixedThreadPool(iThreads);
         // divide list into iThreads parts
         int iParts = lsArticleList.size() / iThreads;
-        final List allLists = new ArrayList<List<Article>>();
+        final List allLists = new ArrayList<Articles>();
         // create sublists
         for (int i = 0; i < lsArticleList.size(); i += iParts) {
             allLists.add(lsArticleList.subList(i, i + Math.min(iParts, lsArticleList.size() - i)));
         }
         // for every sublist
-        for (final ListIterator<List<Article>> it = allLists.listIterator(); it.hasNext();) {
+        for (final ListIterator<Articles> it = allLists.listIterator(); it.hasNext();) {
             // call new thread
             es.submit(new Runnable() {
 
@@ -532,11 +532,11 @@ public class ArticleClusterer {
                     // know index of list 
                     int tmpIndex = it.nextIndex();
                     // process every sublist
-                    List<Article> tmpList = it.next();
+                    Articles tmpList = it.next();
                     // create the list with the remaining items (if we are in sublist 2, then create list combined (2-3-4))
-                    List<Article> tmpRemained = new ArrayList<Article>();
-                    for (ListIterator<Article> remainedIter = allLists.listIterator(tmpIndex); remainedIter.hasNext();) {
-                        List<Article> nextList = (List<Article>) remainedIter.next();
+                    Articles tmpRemained = new Articles();
+                    for (ListIterator<Articles> remainedIter = allLists.listIterator(tmpIndex); remainedIter.hasNext();) {
+                        Articles nextList = remainedIter.next();
                         tmpRemained.addAll(nextList);
                     }
                     // for every sublist's article

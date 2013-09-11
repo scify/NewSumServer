@@ -77,7 +77,7 @@ public class Summariser {
     /**
      * The map containing the summaries
      */
-    protected Map<String, List<Sentence>>   hsSentencesPerCluster;
+    protected Map<String, Summary>   hsSentencesPerCluster;
 
     /**
      * The Topics
@@ -197,10 +197,10 @@ public class Summariser {
      * Creates all Summaries
      * @return A map containing the Summary for each ID
      */
-    public Map<String, List<Sentence>> getSummaries() {
+    public Map<String, Summary> getSummaries() {
         LOGGER.log(Level.INFO, "Obtaining Summaries...");
         // Init result
-        Map<String, List<Sentence>> mRes = new HashMap<String, List<Sentence>>();
+        Map<String, Summary> mRes = new HashMap<String, Summary>();
         // For every cluster
         for (Topic tCurTopic : stTopics) {
             // Add its summary to the result map
@@ -355,10 +355,12 @@ public class Summariser {
         // Save summary
         try {
             // Only if it is not already available and valid
-            if (!bLoadedOK)
-                if (!SummaryStorage.existsObject(tTopic.getID(), SUMMARY_OBJTYPE))
+            if (!bLoadedOK){
+                if (!SummaryStorage.existsObject(tTopic.getID(), SUMMARY_OBJTYPE)){
                     SummaryStorage.saveObject(lAllSentences,
                       tTopic.getID(), SUMMARY_OBJTYPE);
+                }
+            }
         } catch (Exception ex) {
             LOGGER.log(Level.WARNING, "Could Not Save Summary with Topic ID {0} ", tTopic.getID());
         }

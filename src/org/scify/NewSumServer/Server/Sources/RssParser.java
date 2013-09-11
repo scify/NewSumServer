@@ -167,6 +167,11 @@ public class RssParser implements ISourceParser {
         this.PATTERN = readPattern(this.sLang);
         
         this.lsItems = new ArrayList<Article>();
+        try{
+            this.allFeedSources= new FeedSources();
+        }catch(Exception e){
+            LOGGER.log(Level.INFO, "FeedSources init fuckup <-- malakia tou adrea");
+        }
         
 //        LOGGER.log(Level.INFO, "Processing pattern {0}", sLang);
         
@@ -205,7 +210,6 @@ public class RssParser implements ISourceParser {
                 date = entry.getPublishedDate();
                 
                 
-                // TODO. when all done save to file
                 String logoUrl=feed.getImage()==null? "" : feed.getImage().getUrl();
                 allFeedSources.addLogo(urlString, logoUrl);
                 //passes logo to source
