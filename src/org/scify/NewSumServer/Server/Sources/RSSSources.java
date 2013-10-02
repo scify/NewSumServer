@@ -75,40 +75,56 @@ public class RSSSources {
     private String                  sPathToSources;
 
     /**
+     * Default constructor.
+     * @param sSourcesPath the path where the sources should be read from
+     */
+    public RSSSources(String sSourcesPath) {
+        
+        this.sPathToSources = sSourcesPath;
+
+    }
+    /**
      * Initializes the RSS Sources taking into account their categories,
      * using a default collection of sources.
      * @param ids The data storage module for file IO operations
-     * @param sSourcesPath The full path to the file where the sources are declared
      */
-    public RSSSources(IDataStorage ids, String sSourcesPath) {
-        this.sPathToSources = sSourcesPath;
+    public void initialize(IDataStorage ids) {
         try {
-            LOGGER.log(Level.INFO, "NOW Reading Sources From {0}", this.sPathToSources);//debug
-            initializeSources();//load sources from the text file
+            LOGGER.log(Level.INFO, "Acquiring Sources From {0}", this.sPathToSources);
+            //load sources from the text file
+            initializeSources();
         } catch (Exception ex) {//if cannot load sources from the text file,
             //try to load from the stored (from last session)
             LOGGER.log(Level.SEVERE, ex.getMessage());
             if (ids.objectExists(ids.getLinksName(), sGeneric)) {
                 //load the generic map
-                LOGGER.log(Level.INFO, "Could not initialise Sources. Loading the generic map");
+                LOGGER.log(Level.INFO, 
+                "Could not initialise Sources. Loading the generic map stored from previous runs");
+                
                 this.hmRssSources = ids.readSources(sGeneric);
                 this.sCategories = getCurrentCategories();
+                // save stuff
                 saveCurrentCategories(ids, null); //save generic categories to file
                 saveLinks(ids);
                 saveLinkLabels(ids);
                 saveSourceLabels(ids);
             } else {
-                LOGGER.log(Level.SEVERE, "Cannot Load Sources.\nAborting...");
+                LOGGER.log(Level.SEVERE, "Cannot Load Sources.\nI don't know how to continue...\n\n"
+                        + "Perhaps you should try adding an NewSum.sources file under /data/Sources/, please?");
                 System.exit(0);
             }
         } finally {
+            // get our beautifull categories
             this.sCategories = getCurrentCategories();
+            // save stuff
             saveCurrentCategories(ids, null); //save generic categories to file
             saveLinks(ids);
+            // save links and labels (will be FeedSources soon) i.e. (rss.url = BBC-world)
             saveLinkLabels(ids);
+            // save sources, i.e. (rss.url=in.gr)
             saveSourceLabels(ids);
         }
-    }
+    }    
     /**
      * Initializes the RSS Sources taking into account their categories,
      * according to each User's likings.

@@ -206,8 +206,10 @@ public class Main {
         IDataStorage ids = new InsectFileIO(sBaseDir);
 //        justWaitABit(50000);
         
-        //init rssSources and read the sources file
-        RSSSources r = new RSSSources(ids, sPathToSources);
+        //init rssSources 
+        RSSSources r = new RSSSources(sPathToSources);
+        // initialize sources: read the sources file
+        r.initialize(ids);
         //get the sources
         HashMap<String, String> Sources = r.getRssLinks();//link,category
         //get categories
