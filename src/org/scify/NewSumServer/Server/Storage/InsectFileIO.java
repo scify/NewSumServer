@@ -28,7 +28,7 @@
 
 package org.scify.NewSumServer.Server.Storage;
 
-import gr.demokritos.iit.jinsect.storage.INSECTFileDBWithDir;
+import gr.demokritos.iit.jinsect.storage.INSECTFileDB;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.Serializable;
@@ -56,7 +56,7 @@ public class InsectFileIO implements IDataStorage {
     private final String        sTopics    = "Topics";
     private final String        sCategories= "Categories";
     private final String        sGeneric   = "generic";
-    private INSECTFileDBWithDir db;
+    private INSECTFileDB        db;
     /**
      * The Directory where the Files are Saved
      */
@@ -72,16 +72,16 @@ public class InsectFileIO implements IDataStorage {
         if (sBaseDir == null) {
             LOGGER.log(Level.WARNING, "No Base Directory passed");
             this.BaseDir = new File("").getAbsolutePath();
-            db = new INSECTFileDBWithDir("_INSECT", this.BaseDir);
+            db = new INSECTFileDB("_INSECT", this.BaseDir);
         } else {
             File f = new File(sBaseDir);
             if (f.isDirectory()) {
                 this.BaseDir = sBaseDir;
-                db = new INSECTFileDBWithDir("INSECT ", this.BaseDir);
+                db = new INSECTFileDB("INSECT ", this.BaseDir);
             } else {
                 LOGGER.log(Level.WARNING, "Path Is not a directory");
                 this.BaseDir = new File("").getAbsolutePath();
-                db = new INSECTFileDBWithDir("_INSECT", this.BaseDir);
+                db = new INSECTFileDB("_INSECT", this.BaseDir);
             }
         }
     }

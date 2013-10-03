@@ -33,7 +33,7 @@ package org.scify.NewSumServer.Server.Utils;
 
 import gr.demokritos.iit.conceptualIndex.structs.Distribution;
 import gr.demokritos.iit.jinsect.storage.INSECTDB;
-import gr.demokritos.iit.jinsect.storage.INSECTFileDBWithDir;
+import gr.demokritos.iit.jinsect.storage.INSECTFileDB;
 import gr.demokritos.iit.jinsect.utils;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -301,7 +301,7 @@ public class Main {
             LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
         }
         // Init the summarizer and obtain summaries
-        INSECTDB idb = new INSECTFileDBWithDir("", sSummaryPath);
+        INSECTDB idb = new INSECTFileDB("", sSummaryPath);
         Summariser sum = new Summariser(new HashSet<Topic>(
                 ac.getArticlesPerCluster().values()), idb);
         // Perform summarization for all clusters
