@@ -32,6 +32,7 @@ import gr.demokritos.iit.jinsect.structs.Pair;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -115,7 +116,7 @@ public class Utilities {
                 fstream = new FileInputStream(fFile);
                 // Get the object of DataInputStream
                 DataInputStream in = new DataInputStream(fstream);
-                BufferedReader br = new BufferedReader(new InputStreamReader(in));
+                BufferedReader br = new BufferedReader(new InputStreamReader(in, Charset.forName("UTF-8")));
                 String sLine;
                 //Read File Line By Line
                 while ((sLine = br.readLine()) != null) {
@@ -159,7 +160,7 @@ public class Utilities {
             FileInputStream fstream = new FileInputStream(fFile);
             // Get the object of DataInputStream
             DataInputStream in = new DataInputStream(fstream);
-            BufferedReader br = new BufferedReader(new InputStreamReader(in));
+            BufferedReader br = new BufferedReader(new InputStreamReader(in, Charset.forName("UTF-8")));
             String sLine;
             ArrayList<String> alCategories = new ArrayList<String>();
             HashMap<String, String> hmSources = new HashMap<String, String>();
@@ -210,7 +211,7 @@ public class Utilities {
             FileInputStream fstream = new FileInputStream(fFile);
             // Get the object of DataInputStream
             DataInputStream in = new DataInputStream(fstream);
-            BufferedReader br = new BufferedReader(new InputStreamReader(in));
+            BufferedReader br = new BufferedReader(new InputStreamReader(in, Charset.forName("UTF-8")));
             String sLine;
             ArrayList<String> alCategories = new ArrayList<String>();
             LinkedHashMap<String, String> hmLinkLabels = new LinkedHashMap<String, String>();
@@ -258,7 +259,7 @@ public class Utilities {
             FileInputStream fstream = new FileInputStream(fFile);
             // Get the object of DataInputStream
             DataInputStream in = new DataInputStream(fstream);
-            BufferedReader br = new BufferedReader(new InputStreamReader(in));
+            BufferedReader br = new BufferedReader(new InputStreamReader(in, Charset.forName("UTF-8")));
             String sLine;
             LinkedHashMap<String, String> hmSourceLabels = new LinkedHashMap<String, String>();
             while ((sLine = br.readLine()) != null) {
@@ -282,7 +283,7 @@ public class Utilities {
             FileInputStream fstream = new FileInputStream(fFile);
             // Get the object of DataInputStream
             DataInputStream in = new DataInputStream(fstream);
-            BufferedReader br = new BufferedReader(new InputStreamReader(in));
+            BufferedReader br = new BufferedReader(new InputStreamReader(in, Charset.forName("UTF-8")));
             String sLine;
             LinkedHashMap<String, String> hmSourceLabels = new LinkedHashMap<String, String>();
             while ((sLine = br.readLine()) != null) {
@@ -409,7 +410,7 @@ public class Utilities {
         File fFile = new File(sPathtoFile);
         BufferedWriter bw = null;
         try {
-            bw = new BufferedWriter(new FileWriter(fFile, true));
+            bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fFile, true), Charset.forName("UTF-8"))); 
             bw.write(line);
             bw.newLine();
         } catch (Exception e) {
@@ -441,7 +442,7 @@ public class Utilities {
         File fFile = new File(sPathtoFile);
         BufferedWriter bw = null;
         try {
-            bw = new BufferedWriter(new FileWriter(fFile, false));
+            bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fFile), Charset.forName("UTF-8"))); 
             for (String each : lsToWrite) {
                 bw.write(each);
                 bw.newLine();
@@ -473,7 +474,7 @@ public class Utilities {
         File fFile = new File(sPathtoFile);
         BufferedWriter bw = null;
         try {
-            bw = new BufferedWriter(new FileWriter(fFile, true)); // append
+            bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fFile, true), Charset.forName("UTF-8"))); 
             bw.write(sToWrite);
             bw.newLine();
         } catch (Exception e) {
@@ -506,7 +507,7 @@ public class Utilities {
         }
         BufferedWriter bw = null;
         try {
-            bw = new BufferedWriter(new FileWriter(fFile, true)); // append
+            bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fFile, true), Charset.forName("UTF-8"))); 
             bw.write(sToWrite);
             bw.newLine();
         } catch (Exception e) {

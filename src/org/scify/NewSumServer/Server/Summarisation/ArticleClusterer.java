@@ -37,6 +37,7 @@ import gr.demokritos.iit.jinsect.structs.GraphSimilarity;
 import gr.demokritos.iit.jinsect.structs.Pair;
 import gr.demokritos.iit.jinsect.utils;
 import java.io.*;
+import java.nio.charset.Charset;
 import java.text.Collator;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -105,6 +106,8 @@ public class ArticleClusterer {
      * cluster calculation engine
      */
     private List<Pair> lsArticlePairs = Collections.synchronizedList(new ArrayList());
+    
+    private double NVSThreshold = 0.30, SSThreshold = 0.125; // default
 
     /**
      * Main Constructor of The ArticleClusterer Class.
@@ -180,9 +183,16 @@ public class ArticleClusterer {
      * Clusters the Articles and updates the
      * {@link #hsClusterPerArticle} and {@link #hsArticlesPerCluster}  Maps.
      */
-    public void calculateClusters() {
+    public void calculateClusters(double NVSThresholdArg, double SSThresholdArg) {
+        if (NVSThresholdArg != 0) {
+            NVSThreshold = NVSThresholdArg;
+        }
+        if (SSThresholdArg != 0) {
+            SSThreshold = SSThresholdArg;
+        }
         // DEBUG LINES
-        LOGGER.log(Level.INFO, "Clustering Version :{0}", VERSION);
+        LOGGER.log(Level.INFO, "Thresholds:\nNVS :{0} - SS {1} ", 
+            new Object[] {String.valueOf(NVSThresholdArg), String.valueOf(SSThreshold)});
 //        LOGGER.log(Level.INFO,"JISNECT splitToWords:" +
 //                utils.printIterable(Arrays.asList(
 //                utils.splitToWords("This is a test...")), " "));
@@ -318,10 +328,7 @@ public class ArticleClusterer {
 
         // debugging Method
         checkForInconsistencies();
-        //add as Topic Date the date of it's newest Article
-        Iterator nit = hsArticlesPerCluster.entrySet().iterator();
-        while (nit.hasNext()) {
-            Map.Entry mp = (Map.Entry) nit.next();
+        for (Map.Entry mp : hsArticlesPerCluster.entrySet()) {
             Topic tmpTopic = (Topic) mp.getValue();
             tmpTopic.setNewestDate(true);
             // Also set as the Topic Title for each Topic the Title from it's newest Article
@@ -387,22 +394,28 @@ public class ArticleClusterer {
         GraphSimilarity gs = compareArticles(aA, aB);
         double NVS = gs.SizeSimilarity == 0.0 ? 0.0 : gs.ValueSimilarity / gs.SizeSimilarity;
         // Updated rule for matching
-        boolean bMatch = (NVS > 0.20) && (gs.SizeSimilarity > 0.10);
+        
+//        boolean bMatch = (NVS > 0.20) && (gs.SizeSimilarity > 0.10);
+        
+        boolean bMatch = (NVS >= NVSThreshold) && (gs.SizeSimilarity > SSThreshold);
         // DEBUG LINES
-//        if (bMatch)
+//        if (bMatch) {
 //            System.out.println("**** Match (NVS=" + NVS + ", SS=" + gs.SizeSimilarity +
 //                    ") : \n" + aA + "\n---\n" + aB);
+//            System.out.println("-----------------------------------------------------");
+//        }
         //////////////
         // check titles for word similarity
         boolean TitleMatch = isPossiblySameSentence(
                 aA.getTitle(), aB.getTitle());
         // debug lines
-//        if (test) {
+//        if (TitleMatch || bMatch) {
 //            Utilities.appendToFile("/home/gkioumis/Programming/Java/NewSum/NewSumServer/data/temp/TestingTitles.csv",
 //                bMatch + " : " + TitleMatch + " === " + aA.getTitle() + " : " + aB.getTitle());
 //        }
         //////////////
-        return bMatch || TitleMatch;
+//        return bMatch || TitleMatch;
+        return TitleMatch || bMatch;
     }
     private boolean isPossiblySameSentence(String s1, String s2) {
         // split to words
@@ -425,7 +438,7 @@ public class ArticleClusterer {
         // for each word, compare similarity of words
         for (int i=0; i < ls1.size(); i++) {
             for (String bWord : ls2) {
-                if (isPossiblyEqual(ls1.get(i), bWord)) {
+                if (isPossiblyEqualWord(ls1.get(i), bWord)) {
                     iEqual ++;
                     break; // continue from another base word
                 }
@@ -456,7 +469,13 @@ public class ArticleClusterer {
      * @return True when the two words are possibly similar,
      * by counting letter equality
      */
-    private boolean isPossiblyEqual(String aWord, String bWord) {
+    private boolean isPossiblyEqualWord(String aWord, String bWord) {
+        // trim words
+        aWord = aWord.trim(); bWord = bWord.trim();
+        // if words equal return
+        if (aWord.equalsIgnoreCase(bWord)) {
+            return true;
+        }        
         // set collator locale and strength
         Collator col;
         if (isBothGreekLocale(aWord, bWord)) {
@@ -465,12 +484,7 @@ public class ArticleClusterer {
             col = Collator.getInstance(Locale.ENGLISH);
         }
         col.setStrength(Collator.PRIMARY);
-        // trim words
-        aWord = aWord.trim(); bWord = bWord.trim();
-        // if words equal return
-        if (aWord.equals(bWord)) {
-            return true;
-        }
+
         // get the max number of characters
         int iMax = Math.max(aWord.length(), bWord.length());
         int iMin = Math.min(aWord.length(), bWord.length());
@@ -487,7 +501,7 @@ public class ArticleClusterer {
                 break;
             }
         }
-        if ((iSame == iMin) || ((float) iSame / iMax) >= 0.65 ) {
+        if ((iSame == iMin) || ((float) iSame / iMax) >= 0.70 ) {
             return true;
         }
         return false;
@@ -791,7 +805,7 @@ public class ArticleClusterer {
                     "-" + String.valueOf(counter) + ".txt";
             File fFile = new File(sFullFileName);
             fFile.createNewFile();
-            BufferedWriter bw = new BufferedWriter(new FileWriter(fFile, true));
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fFile), Charset.forName("UTF-8"))); 
             bw.write("ClusterID" + sSeparator + sCluster);
             bw.newLine();
             bw.write("Κατηγορία" + sSeparator + aArt.getCategory());

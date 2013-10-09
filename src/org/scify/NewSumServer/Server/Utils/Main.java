@@ -153,6 +153,8 @@ public class Main {
     public static Integer threshold;
 
     protected static classificationModule clm;
+    
+    private static double NVSThreshold = 0, SSThreshold = 0;
 
     //TODO Currently, the ServerConfig.txt that Main class creates is located
     //at ./data/BaseDir. So if User changes this Dir, the freeService won't work
@@ -280,11 +282,14 @@ public class Main {
 //            }
 //        }
         // Initialize Clusterer
-        ArticleClusterer ac = new ArticleClusterer(
-                (ArrayList<Article>) ids.loadObject("AllArticles", "feeds"), ids, sArticlePath);
-        // Perform clustering calculations
-        ac.calculateClusters();
+        ArticleClusterer ac;
 
+        ac = new ArticleClusterer(
+                    (ArrayList<Article>) ids.loadObject("AllArticles", "feeds"), ids, sArticlePath);
+
+        // Perform clustering calculations
+
+        ac.calculateClusters(NVSThreshold, SSThreshold);
         //specify the locale for the indexer
         Locale loc = sPathToSources.endsWith("GR.txt") ? new Locale("el")
                 : new Locale("en");
@@ -308,6 +313,15 @@ public class Main {
         Map<String, List<Sentence>> AllSummaries;
         AllSummaries = sum.getSummaries();
 
+        // DEBUG // store summaries
+//        for (Map.Entry mp : AllSummaries.entrySet()) {
+//            String sUID = (String) mp.getKey();
+//            List<Sentence> lsSen = (List<Sentence>) mp.getValue();
+//            if (getNumberOfSources(lsSen) > 1) {
+//                writeSummaryToFile(lsSen, sUID, ac.getArticlesPerCluster());
+//            }
+//        }        
+        // DEBUG //
         if (bDebugRun) {
 
             // DEBUG LINES
@@ -413,6 +427,8 @@ public class Main {
                 "useInputDirData", Boolean.FALSE.toString()));
         bDebugRun = Boolean.valueOf(utils.getSwitch(hSwitches,
                 "DebugRun", Boolean.FALSE.toString()));
+        NVSThreshold = Double.valueOf(utils.getSwitch(hSwitches, "NVSThreshold", "0.20"));
+        SSThreshold = Double.valueOf(utils.getSwitch(hSwitches, "SSThreshold", "0.10"));
         //checking user input
         checkPaths(hSwitches.values().toArray()); // Check Switches
     }
@@ -429,7 +445,7 @@ public class Main {
         while (iIter.hasNext()) {
             String sCurSwitch = (String) iIter.next();
             if (!sCurSwitch.endsWith(".txt") && !sCurSwitch.equals("true") && !sCurSwitch.equals("false")
-                    && !Pattern.matches("[1-9]+", sCurSwitch)) {
+                    && !Pattern.matches("[0-9]+\\.*[0-9]*", sCurSwitch)) {
                 File fsw = new File(sCurSwitch);
                 if (!fsw.isDirectory()) {
                     LOGGER.log(Level.WARNING, "Error: {0} is not a directory", fsw);
@@ -538,6 +554,8 @@ public class Main {
         switches.put("useInputDirData", String.valueOf(bUseInputDirData));
         switches.put("ArticleMaxDays", String.valueOf(iArticleDays));
         switches.put("DebugRun", String.valueOf(bDebugRun));
+        switches.put("NVSThreshold", String.valueOf(NVSThreshold));
+        switches.put("SSThreshold", String.valueOf(SSThreshold));
 //        switches.put("SplitterTraining", String.valueOf(lFileSize));
         //write Config File, so that FreeService reads values from it
         File fConfig = new File(sBaseDir + "ServerConfig.txt");

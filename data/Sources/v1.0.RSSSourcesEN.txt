@@ -12,7 +12,7 @@ Europe
 http://feeds.bbci.co.uk/news/world/europe/rss.xml***BBC
 http://feeds.latimes.com/latimes/europe***Los Angeles Times
 http://www.spiegel.de/international/europe/index.rss***Spiegel
-?http://www.nytimes.com/services/xml/rss/nyt/Europe.xml***New York Times
+http://www.nytimes.com/services/xml/rss/nyt/Europe.xml***New York Times
 http://rss.cnn.com/rss/edition_europe.rss***CNN
 http://feeds.feedburner.com/euronews/en/europa?format=xml***EuroNews
 http://www.ft.com/rss/home/europe***Financial Times
@@ -64,5 +64,5 @@ Education
 http://feeds.latimes.com/latimes/news/education?format=xml***Los Angeles Times
 http://rss.feedsportal.com/c/266/f/3526/index.rss***The Independent
 SciFY News***60
-http://www.scify.gr/site/en/our-news/scify-news-company-en?format=feed&type=rss***The company
-http://www.scify.gr/site/en/our-news/project-news-en?format=feed&type=rss***Our Projects
+http://www.scify.gr/site/en/news/company?format=feed***The company
+http://www.scify.gr/site/en/news/projects?format=feed***Our Projects

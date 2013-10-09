@@ -3,7 +3,7 @@
 ?Lines beginning with '?' are comment lines.
 ?UNCLASSIFIED
 Γενικά
-http://www.koutipandoras.gr/?feed=rss2***ΚΟΥΤΙ ΤΗΣ ΠΑΝΔΩΡΑΣ
+http://www.koutipandoras.gr/feed***ΚΟΥΤΙ ΤΗΣ ΠΑΝΔΩΡΑΣ
 ?http://www.thepressproject.gr/xml/rss.xml***The Press Project
 http://www.thepressproject.gr/xml/rss_newsroom.xml***The Press Project
 http://topontiki.gr/rss***ΤΟ ΠΟΝΤΙΚΙ
@@ -14,6 +14,7 @@ http://xstefanou.infowarproductions.com/feed/***INFOWAR
 http://www.news.gr/rss.ashx?colid=2***NEWS GR
 http://www.newsit.gr/rss/artrss.php***NEWSIT
 ?http://www.palo.gr/rss/simantikoterarss/***PALO
+http://www.ertopen.com/eidiseis?format=feed***ERT OPEN
 Αθλητισμός
 http://www.tovima.gr/feed/sports/***ΤΟ ΒΗΜΑ
 http://rss.in.gr/feed/sports/***ΙΝ GR
@@ -34,7 +35,7 @@ http://www.enikos.gr/feeds/menu/international.xml***ΕΝΙΚΟΣ
 http://www.parapolitika.gr/RSS/tabid/75/rssid/32/Default.aspx***ΠΑΡΑΠΟΛΙΤΙΚΑ
 http://www.onair24.gr/rss/channel/2***ONAIR24
 http://www.epikaira.gr/content/feed.php?category=87***ΕΠΙΚΑΙΡΑ
-http://www.ert.gr/eidiseis/diethni?format=feed***ΕΡΤ
+?http://www.ert.gr/eidiseis/diethni?format=feed***ΕΡΤ
 http://www.news.gr/rss.ashx?catid=10***NEWS GR
 Πολιτισμός
 http://rss.in.gr/feed/news/culture/***ΙΝ GR
@@ -56,7 +57,7 @@ http://www.protothema.gr/rss/news/greece***ΠΡΩΤΟ ΘΕΜΑ
 http://www.epikaira.gr/content/feed.php?category=86***ΕΠΙΚΑΙΡΑ
 http://www.onair24.gr/rss/channel/1***ONAIR24
 ?http://www.palo.gr/category/rss/?cid=23***PALO
-http://www.ert.gr/eidiseis/greece?format=feed***ΕΡΤ
+?http://www.ert.gr/eidiseis/greece?format=feed***ΕΡΤ
 http://www.news.gr/rss.ashx?catid=7***NEWS GR
 Επιστήμη
 http://rss.in.gr/feed/news/science/***ΙΝ GR
@@ -75,7 +76,7 @@ http://www.epikaira.gr/content/feed.php?category=89***ΕΠΙΚΑΙΡΑ
 http://www.protothema.gr/rss/news/economy***ΠΡΩΤΟ ΘΕΜΑ
 http://feeds.feedburner.com/skai/oPUt?format=xml***ΣΚΑΙ
 http://www.onair24.gr/rss/channel/5***ONAIR24
-http://www.ert.gr/eidiseis/oikonomia?format=feed***ΕΡΤ
+?http://www.ert.gr/eidiseis/oikonomia?format=feed***ΕΡΤ
 http://www.news.gr/rss.ashx?catid=9***NEWS GR
 Τεχνολογία
 http://www.protothema.gr/rss/news/technology***ΠΡΩΤΟ ΘΕΜΑ
@@ -83,10 +84,10 @@ http://www.epikaira.gr/content/feed.php?category=631***ΕΠΙΚΑΙΡΑ
 http://feeds.feedburner.com/skai/fqsg?format=xml***ΣΚΑΙ
 http://rss.in.gr/feed/technology/main/***IN GR
 http://www.onair24.gr/rss/channel/6***ONAIR24
-Εκπαίδευση
-http://www.sch.gr/index.php?option=com_ninjarsssyndicator&feed_id=1&format=raw***ΠΣΔ
-http://www.esos.gr/rss/***ESOS
-http://edu.klimaka.gr/index.php?format=feed&type=rss***ΕΚΠΑΙΔΕΥΤΙΚΗ ΚΛΙΜΑΚΑ
+?Εκπαίδευση
+?http://www.sch.gr/index.php?option=com_ninjarsssyndicator&feed_id=1&format=raw***ΠΣΔ
+?http://www.esos.gr/rss/***ESOS
+?http://edu.klimaka.gr/index.php?format=feed&type=rss***ΕΚΠΑΙΔΕΥΤΙΚΗ ΚΛΙΜΑΚΑ
 SciFY News***60
-http://www.scify.gr/site/el/%CF%84%CE%B1-%CE%BD%CE%AD%CE%B1-%CE%BC%CE%B1%CF%82/project-news-el?format=feed&type=rss***Τα έργα μας
-http://www.scify.gr/site/el/%CF%84%CE%B1-%CE%BD%CE%AD%CE%B1-%CE%BC%CE%B1%CF%82/scify-news-company-el?format=feed&type=rss***Η εταιρία
+http://www.scify.gr/site/el/news/projects?format=feed***Τα έργα μας
+http://www.scify.gr/site/el/news/company?format=feed***Η εταιρία
